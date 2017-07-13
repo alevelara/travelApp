@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "\"Desarrollo backend fuckapp\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/fuck-app/backend.git"
+  },
+  "keywords": [
+    "backend"
+  ],
+  "author": "fuckapp devs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/fuck-app/backend/issues"
+  },
+  "homepage": "https://gitlab.com/fuck-app/backend#README"
+}
