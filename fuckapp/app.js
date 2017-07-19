@@ -8,7 +8,8 @@ var bodyParser = require('body-parser');
 // servidor, socket.io y mongo
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var mongo = require('mongodb');
+var mongoClient = require('mongodb').MongoClient 
+, format = require('util').format;
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -47,5 +48,14 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+mongoClient.connect('mongodb://127.0.0.1:27017/fuckapp', function(err, db){
+    if(err){
+      throw err;
+    } else {
+      console.log("successfully connected to fuckapp");
+    }
+});
+
 
 module.exports = app;
