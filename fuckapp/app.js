@@ -50,7 +50,8 @@ app.use(function(err, req, res, next) {
 });
 
 //servidor Albert
-mongoClient.connect('mongodb://atlas-lo.ddns.net/fuckapp', function(err, db){
+//mongoClient.connect('mongodb://atlas-lo.ddns.net/fuckapp', function(err, db){
+mongoClient.connect('mongodb://127.0.0.1:27017/fuckapp', function(err, db){
     if(err){
       throw err;
     } else {
