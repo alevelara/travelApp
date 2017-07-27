@@ -4,7 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongo = require('mongodb');
+
+// servidor, socket.io y mongo
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+var mongoClient = require('mongodb').MongoClient 
+, format = require('util').format;
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -43,5 +48,16 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+//servidor Albert
+//mongoClient.connect('mongodb://atlas-lo.ddns.net/fuckapp', function(err, db){
+mongoClient.connect('mongodb://127.0.0.1:27017/fuckapp', function(err, db){
+    if(err){
+      throw err;
+    } else {
+      console.log("successfully connected to fuckapp");
+    }
+});
+
 
 module.exports = app;
