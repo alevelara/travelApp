@@ -1,12 +1,3 @@
-/*var express = require('express');
-var router = express.Router();
-/* GET users listing. 
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
-
-module.exports = router;
-*/
 
 module.exports = function(app){
   var users = require('../controllers/userController');
@@ -17,6 +8,8 @@ app.route('/users')
 
 app.route('/users/:userid')
   .get(users.get_user)
-  .put(users.update_user)
+  //.put(users.update_user)
+
+  app.route('/delete/:userid')
   .delete(users.delete_user);
 }
