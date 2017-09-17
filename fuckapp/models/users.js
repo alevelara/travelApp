@@ -3,7 +3,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-
 var userSchema = new Schema({
     id: {
         type: Number,
@@ -16,16 +15,16 @@ var userSchema = new Schema({
     },
     surname: {
         type: String, //enum CORREGIR
-        required: true
+        required: false
     },
     // Selected Interests by user
     interests: { 
         type: String,        
-        required: true
+        required: false
     },
     username:{
         type: String,
-        required: true
+        required: false
     },
     password: {
         type: String, 
@@ -33,7 +32,7 @@ var userSchema = new Schema({
     },
     phone_number:{
         type: Number,
-        required: true
+        required: false
     },
     email:{
         type: String,
@@ -46,3 +45,4 @@ var userSchema = new Schema({
 });
 
 module.exports = mongoose.model('users',userSchema);
+
