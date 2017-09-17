@@ -1,12 +1,14 @@
 
-  var port = process.env.PORT || 3000;
+  var port = process.env.PORT || 8080;
   var mongoose = require('mongoose');
+  var config = require('config');
   require('./models/users');
   require('./models/register');
   require('./models/password');
+  
 
 mongoose.Promise = global.Promise;
-exports.mongo_connection = mongoose.connect('mongodb://localhost/fuckApp', { useMongoClient: true })
+exports.mongo_connection = mongoose.connect(config.DBHost, { useMongoClient: true })
         .then(() => {
             console.log('Api succesfully connected on port: ' + port);
             return mongoose.connection;

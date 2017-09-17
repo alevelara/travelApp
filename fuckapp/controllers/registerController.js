@@ -5,16 +5,19 @@ var mongoose = require('mongoose'),
  var error = require('../error');
 //get user  
 exports.get_user = function(req, res) {
-    register.findOne({username: register.name, password: register.password}, function(err, register){
+    let email = req.query.email
+    let password = req.query.password    
+    register.findOne({username: email, password: password}, function(err, register){
         if (err){
             console.log('Login fail: date: %d', Date.now);
             return err
         }             
         else
-            console.log('Login succes: name: %s password: %s - date: %d', register.name, register.password, Date.now);
+            console.log(register);
+            console.log('Login succes: name: %s password: %s - date: %d', email, password, Date.now);
+            return register;
     });
 };
-
 
 function check_username(username, callback){
     register.findOne({username: username}, function(err, register){

@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 exports.insert_user = function(req, res){
     var new_user = new user(req.body);
-    console.log(new_user);
+    
     new_user.save(function(err, user){
         if(err)
             res.send(err);
@@ -15,7 +15,7 @@ exports.insert_user = function(req, res){
      user.find({}, function(err, user){
         if (err)
             res.send(err);
-        res.json(user);        
+        res.json({message: 'User succesfully added', user});        
      });
  };
 

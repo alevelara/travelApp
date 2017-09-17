@@ -1,7 +1,11 @@
 module.exports = function(app){
   var login = require('../controllers/registerController');
 
-app.route('/login')
+app.route('/signup')
   .get(login.get_user)
   .post(login.insert_login);
+
+
+app.route('/login')
+  .get(login.get_user)
 }

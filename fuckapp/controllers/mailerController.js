@@ -7,7 +7,7 @@ exports.sendEmail = function(email){
         auth: {
             user: 'fkdevs@gmail.com',
             pass: 'FuckApp01'
-        }  ,
+        },
         debug: true // include SMTP traffic in the logs,
     });
 

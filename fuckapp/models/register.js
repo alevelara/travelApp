@@ -5,7 +5,11 @@ var Schema = mongoose.Schema;
 
 //use Login
 var registerSchema = new Schema({
-    username:{
+    name:{
+        type: String,
+        required: true
+    },
+    email:{
         type: String,
         required: true
     },
