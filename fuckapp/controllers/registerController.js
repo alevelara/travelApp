@@ -12,16 +12,16 @@ exports.login = function(req, res) {
         console.log(email);
         console.log(password);
         if (err){
-            console.log('Login fail: date: %d', Date.now);            
+            console.log('Login fail: date: %d', Date.now.toString());
             return res.json({error: err});     
             
         }else if(user == null){
-            console.log('Incorrect user or password: date: %d', Date.now);
-           return res.json({message:'404'});
+            console.log('Incorrect user or password: date: %d', Date.now.toString());
+           return res.json({status:'error', error_message:'Incorrect user or password'});
         }
         else            
-            console.log('Login succes: name: %s password: %s - date: %d', email, password, Date.now);
-           return res.json({message:'success'});
+            console.log('Login succes: name: %s password: %s - date: %d', email, password, Date.now.toString());
+           return res.json({status:'success', session_info:{token:"super_secret_token"}});
     });
 };
 
@@ -40,15 +40,15 @@ function check_username(username, callback){
     var user_login = check_username(req.body.email, function(user_login){        
         if(user_login){
         console.log(user_login.email + " already exists. ");     
-        res.json({message: user_login.email + " already exists. "});  
+        res.json({status:"error", error_message: user_login.email + " already exists. "});
         }else{
-            var login = new user(req.body);            
-            login.save(function(err, user){
+            var newUser = new user(req.body);
+            newUser.save(function(err, user){
             if(err){
-               res.json({error: err}); 
+               res.json({status:"error", error_message: err});
             }else{
                 console.log("Login Succesful");                
-                res.json({message:"success"}); 
+                res.json({status:"success"});
                 // After success login, we'll send a email verification          
                 mailCtrl.sendEmail(user.email);
             }  
