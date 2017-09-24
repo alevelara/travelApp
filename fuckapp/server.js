@@ -3,8 +3,6 @@
   var mongoose = require('mongoose');
   var config = require('config');
   require('./models/User');
-  require('./models/register');
-  require('./models/password');
   
 
 mongoose.Promise = global.Promise;
