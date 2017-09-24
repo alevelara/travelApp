@@ -1,0 +1,9 @@
+{
+    "development":{
+        "JWT_KEY": "123456"
+    },
+    "production":
+    {
+        "JWT_KEY": "123456"
+    }
+}
