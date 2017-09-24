@@ -1,28 +1,33 @@
+var passport = require('passport');
 var mongoose = require('mongoose'),
- register = mongoose.model('register');
- user = mongoose.model('users');
+ user = mongoose.model('User');
 
  var mailCtrl = require('./mailerController');
  var error = require('../error');
 //get user  
 exports.login = function(req, res) {
-    let email = req.body.email
-    let password = req.body.password    
-    user.findOne({email: email, password: password}, function(err, user){
-        console.log(email);
-        console.log(password);
-        if (err){
+
+    passport.authenticate('local', function(err, user, info){
+        var token;
+         if (err){
             console.log('Login fail: date: %d', Date.now.toString());
-            return res.json({error: err});     
-            
-        }else if(user == null){
+            res.status(404).json({error: err})
+            return;
+         }
+        if(user == null){
+            res.status(401).json({status:'error', error_message:'Incorrect user or password'});
             console.log('Incorrect user or password: date: %d', Date.now.toString());
-           return res.json({status:'error', error_message:'Incorrect user or password'});
+            console.log(info);
+           return;
         }
-        else            
-            console.log('Login succes: name: %s password: %s - date: %d', email, password, Date.now.toString());
-           return res.json({status:'success', session_info:{token:"super_secret_token"}});
-    });
+        else{
+            token = user.generateJwt();
+            res.status(200);
+            res.json({status:'success', session_info:{"token": token}});            
+           // console.log('Login succes: name: %s password: %s - date: %d', email, password, Date.now.toString());
+           return;
+        }                   
+    })(req,res);           
 };
 
 function check_username(username, callback){
@@ -43,12 +48,18 @@ function check_username(username, callback){
         res.json({status:"error", error_message: user_login.email + " already exists. "});
         }else{
             var newUser = new user(req.body);
+
+            newUser.setPassword(req.body.password);
             newUser.save(function(err, user){
             if(err){
                res.json({status:"error", error_message: err});
             }else{
-                console.log("Login Succesful");                
-                res.json({status:"success"});
+                var token;
+                token = newUser.generateJwt();
+                res.status(200);
+                console.log("Login Succesful"); 
+                console.log(token);                
+                res.json({"token": token, "message":"User save succesfully"});
                 // After success login, we'll send a email verification          
                 mailCtrl.sendEmail(user.email);
             }  

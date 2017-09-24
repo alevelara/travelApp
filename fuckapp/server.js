@@ -2,7 +2,7 @@
   var port = process.env.PORT || 8080;
   var mongoose = require('mongoose');
   var config = require('config');
-  require('./models/users');
+  require('./models/User');
   require('./models/register');
   require('./models/password');
   

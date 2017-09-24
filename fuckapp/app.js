@@ -8,11 +8,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var cons = require('consolidate');
+var config = require('config');
+var passport = require('passport');
 var methodOverride = require('method-override');
 var mongo_server = require('./server')
-var config = require('config');
 
-
+ require('./config/passport');
 // servidor, socket.io y mongo
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
@@ -33,6 +34,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 //var routes = require('./routes');
 //routes(app);
 
+passport.initialize();
 var index = require('./routes/index')
 index(app)
 var routes = require('./routes/users')
