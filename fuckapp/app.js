@@ -12,8 +12,10 @@ var config = require('config');
 var passport = require('passport');
 var methodOverride = require('method-override');
 var mongo_server = require('./server')
-
+var routes = require('./routes');
  require('./config/passport');
+
+
 // servidor, socket.io y mongo
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
@@ -31,17 +33,9 @@ app.use(methodOverride('_method'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-//var routes = require('./routes');
-//routes(app);
 
 passport.initialize();
-var index = require('./routes/index')
-index(app)
-var routes = require('./routes/users')
 routes(app);
-var login = require('./routes/login')
-login(app);
-
 
 if(config.util.getEnv('NODE_ENV') !== 'test') {
     //use morgan to log at command line

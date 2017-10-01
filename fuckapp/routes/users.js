@@ -10,6 +10,10 @@ app.route('/users/:userid')
   .get(users.get_user)
   //.put(users.update_user)
 
-  app.route('/delete/:userid')
+app.route('/delete/:userid')
   .delete(users.delete_user);
+
+/*app.route('/users/interests')
+  .post(users.update_interests);
+  */
 }
