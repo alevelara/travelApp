@@ -71,6 +71,25 @@ userSchema.methods.generateJwt = function() {
   }, env_var.development.JWT_KEY); 
 };
 
+userSchema.methods.validUser = function(req, res, next){
+    if(!req.headers.authorization){
+        return res
+        .status(403)
+        .send({message: "Tu petición no tiene cabezera de autorización"});
+    }
+    var token = req.headers.authorization.split(" ")[1];
+    var payload = jwt.decode(token, env_var.development.JWT_KEY);
+
+    if(payload.exp <= date.now()){
+        return res
+        .status(401)
+        .send({message:"El token ha expirado"});
+    }
+
+    req.user = payload.sub;
+    next();
+}
+
 
 module.exports = mongoose.model('User',userSchema);
 
