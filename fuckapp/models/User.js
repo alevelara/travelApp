@@ -51,11 +51,11 @@ var userSchema = new Schema({
 
 userSchema.methods.setPassword = function set_password(password){
         this.salt = crypto.randomBytes(16).toString('hex');
-        this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+        this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha256').toString('hex');
 };
 
 userSchema.methods.validPassword = function(password) {
-  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha256').toString('hex');
   return this.hash === hash;
 };
 
@@ -71,25 +71,35 @@ userSchema.methods.generateJwt = function() {
   }, env_var.development.JWT_KEY); 
 };
 
-userSchema.methods.validUser = function(req, res, next){
-    if(!req.headers.authorization){
-        return res
-        .status(403)
-        .send({message: "Tu petición no tiene cabezera de autorización"});
-    }
-    var token = req.headers.authorization.split(" ")[1];
-    var payload = jwt.decode(token, env_var.development.JWT_KEY);
 
-    if(payload.exp <= date.now()){
-        return res
-        .status(401)
-        .send({message:"El token ha expirado"});
-    }
-
-    req.user = payload.sub;
-    next();
-}
-
+userSchema.methods.verifyUser = function(req, res){
+    
+        if(!req.headers.authorization){
+            return res
+            .status(403)
+            .send({message: "Tu petición no tiene cabecera de autorización"});
+        }
+        var token = req.headers.authorization.split(" ")[1];
+                
+        jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){
+            console.log(payload);
+            if(err){
+                return res.status(403).send({                    
+                    message: 'Fallo al autentificar el token.'
+                });
+            }else{
+                if(payload.exp <= Date.now()){
+                    return res
+                    .status(401)
+                    .send({message:"El token ha expirado"});
+                }else{
+                    
+                    req.sub = payload;
+                    return res.status(200).json({message:"token OK"});                    
+                }    
+            }       
+        });
+    };
 
 module.exports = mongoose.model('User',userSchema);
 

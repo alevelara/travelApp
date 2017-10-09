@@ -45,5 +45,20 @@ exports.insert_user = function(req, res){
             res.send(err);
         res.json(user);
     });
-
  };
+
+ exports.update_user_interests = function(req, res){
+     var new_user = new user();
+     new_user.verifyUser(req,res);
+     new_user = req.sub;
+     new_user.findByIdAndUpdate({_id: req.sub._id}, {interests:req.body.interests}, {new: true}, function(err, user){
+        if(err){
+            return res
+            .status(401)
+            .send({message:"Error updating interests"});
+        }else{
+            return res.status(200).send({message:"interests updates"});
+        }
+    });
+     
+};
