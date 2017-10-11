@@ -15,7 +15,7 @@ app.route('/users/:userid',)
 app.route('/delete/:userid')
   .delete(users.delete_user);
 
-app.route('/user/interest')
+app.route('/user/:id/interests')
   .post(users.update_user_interests);
 /*app.route('/users/interests')
   .post(users.update_interests);

@@ -49,7 +49,7 @@ var userSchema = new Schema({
 
 });
 
-userSchema.methods.setPassword = function set_password(password){
+userSchema.methods.setPassword = function(password){
         this.salt = crypto.randomBytes(16).toString('hex');
         this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha256').toString('hex');
 };
@@ -57,6 +57,10 @@ userSchema.methods.setPassword = function set_password(password){
 userSchema.methods.validPassword = function(password) {
   var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha256').toString('hex');
   return this.hash === hash;
+};
+
+userSchema.methods.setInterests = function(interests){
+   this.interests = interests;
 };
 
 userSchema.methods.generateJwt = function() {
@@ -75,27 +79,27 @@ userSchema.methods.generateJwt = function() {
 userSchema.methods.verifyUser = function(req, res){
     
         if(!req.headers.authorization){
-            return res
-            .status(403)
-            .send({message: "Tu petición no tiene cabecera de autorización"});
+             res
+            .status(403);
+            //.json({message: "Tu petición no tiene cabecera de autorización"});
+            return;
         }
-        var token = req.headers.authorization.split(" ")[1];
-                
-        jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){
-            console.log(payload);
+        var token = req.headers.authorization.split(" ")[1];       
+        jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){        
             if(err){
-                return res.status(403).send({                    
-                    message: 'Fallo al autentificar el token.'
-                });
+                res.status(403);
+                //.json({message: 'Fallo al autentificar el token.'}); 
+                return;
             }else{
                 if(payload.exp <= Date.now()){
-                    return res
+                    res
                     .status(401)
-                    .send({message:"El token ha expirado"});
+                    //.json({message:"El token ha expirado"});
+                    return;
                 }else{
-                    
                     req.sub = payload;
-                    return res.status(200).json({message:"token OK"});                    
+                    res.status(200);//.json({message:"token OK"});         
+                    return;           
                 }    
             }       
         });
