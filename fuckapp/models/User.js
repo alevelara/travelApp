@@ -8,8 +8,7 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
     id: {
         type: Number,
-        autoIncrement: true,
-        default:0
+        autoIncrement: true        
     },
     name: {
         type: String,

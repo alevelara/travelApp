@@ -22,10 +22,9 @@ exports.login = function(req, res) {
         }
         else{
             token = user.generateJwt();
-            res.status(200);
-            res.json({status:'success', session_info:{"token":token, "user":user}});            
-           // console.log('Login succes: name: %s password: %s - date: %d', email, password, Date.now.toString());
-           return;
+            return res
+            .status(200)                        
+            .json({status:'success', session_info:{"token":token, "user":user}});            
         }                   
     })(req,res);           
 };
@@ -59,10 +58,7 @@ function check_username(username, callback){
             }else{
                 var token;
                 token = newUser.generateJwt();
-                res.status(200);
-                console.log("Login Succesful"); 
-                console.log(token);                
-                res.json({"token": token, message:"User save succesfully"});
+                res.status(200).json({status:'success', session_info:{"token":token, "user":user}});            
                 // After success login, we'll send a email verification          
                 mailCtrl.sendEmail(user.email);
             }  
