@@ -23,7 +23,7 @@ exports.login = function(req, res) {
         else{
             token = user.generateJwt();
             res.status(200);
-            res.json({status:'success', session_info:{"token":token}});            
+            res.json({status:'success', session_info:{"token":token, "user":user}});            
            // console.log('Login succes: name: %s password: %s - date: %d', email, password, Date.now.toString());
            return;
         }                   
