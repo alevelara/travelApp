@@ -61,6 +61,7 @@ function check_username(username, callback){
                 res.status(200).json({status:'success', session_info:{"token":token, "user":user}});            
                 // After success login, we'll send a email verification          
                 mailCtrl.sendEmail(user.email);
+                return;
             }  
         });
     };
