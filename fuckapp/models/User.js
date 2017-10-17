@@ -20,10 +20,10 @@ var userSchema = new Schema({
         required: false
     },
     // Selected Interests by user
-    interests: { 
+    interests: [{ 
         type: String,        
         required: false
-    },
+    }],
     username:{
         type: String,
         required: false
@@ -76,33 +76,29 @@ userSchema.methods.generateJwt = function() {
 };
 
 
-userSchema.methods.verifyUser = function(req, res){
-    
-        if(!req.headers.authorization){
-             res
-            .status(403);
-            //.json({message: "Tu petición no tiene cabecera de autorización"});
-            return;
-        }
-        var token = req.headers.authorization.split(" ")[1];       
-        jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){        
-            if(err){
-                res.status(403);
-                //.json({message: 'Fallo al autentificar el token.'}); 
-                return;
-            }else{
-                if(payload.exp <= Date.now()){
-                    res
-                    .status(401)
-                    //.json({message:"El token ha expirado"});
-                    return;
+userSchema.methods.verifyUser = function(req){
+    var isUser = false;   
+    if(!req.headers.authorization){        
+            return isUser;
+        }else{
+
+            var token = req.headers.authorization.split(" ")[1];       
+            jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){        
+                
+                if(err){  
+                    return isUser;
                 }else{
-                    req.sub = payload;
-                    res.status(200);//.json({message:"token OK"});         
-                    return;           
-                }    
-            }       
-        });
+                    if((payload.exp * 1000) <= Date.now()){             
+                        return isUser;
+                    }else{
+                        isUser = true;
+                        req.sub = payload;                       
+                        return isUser;
+                    }    
+                }       
+            });
+            return isUser;
+        }       
     };
 
 module.exports = mongoose.model('User',userSchema);

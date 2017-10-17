@@ -47,20 +47,23 @@ exports.insert_user = function(req, res){
     });
  };
 
- exports.update_user_interests = function(req, res){
-     var new_user = new user(user);
-     new_user.verifyUser(req,res);
-     
-     user.findByIdAndUpdate(req.params.id, {interests:req.body.interests},function(err, user){
-        if(err){
-            return res
-            .status(401)
-            .json({message:"Error updating interests"});
-        }else{
-            console.log({message:"interests updates"})
-            return res.status(200).json({message:"interests updates"});
-        }
-    });
-     
+ exports.update_user_interests = function(req, res){ 
+    var new_user = new user(user);
+    var isUser = new_user.verifyUser(req);
+     console.log(new_user.verifyUser(req));     
+     if(isUser == true){
+        user.findByIdAndUpdate(req.params.id, {interests:req.body.interests},function(err, user){
+            if(err){
+                return res
+                .status(401)
+                .json({message:"Error updating interests"});
+            }else{
+                console.log({message:"interests updates"})
+                return res.status(200).json({message:"interests updates"});
+            }
+        });
+    }else{
+        return res.status(403).json({message:"invalid token"});
+    }
      
 };
