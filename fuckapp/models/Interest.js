@@ -11,6 +11,10 @@ var InterestSchema = new Schema({
         type: String,
         required: true
     },
+    photo:{
+        type:String,
+        required: false
+    },
     datelog: {
         type: Date,
         default: Date.now

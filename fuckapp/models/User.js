@@ -2,7 +2,7 @@
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose');
-var env_var = require('../config/var.json')
+var env_var = require('../config/var.json');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
@@ -21,7 +21,8 @@ var userSchema = new Schema({
     },
     // Selected Interests by user
     interests: [{ 
-        type: String,        
+        type: Schema.Types.ObjectId,
+        ref: 'Interest',        
         required: false
     }],
     username:{

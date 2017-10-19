@@ -25,7 +25,6 @@ exports.sendEmail = function(email){
         }else{
             console.log(email);
             console.log("Email sent");
-            //res.status(200).jsonp(req.body);
         }
     });
 
