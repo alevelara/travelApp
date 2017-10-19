@@ -51,7 +51,7 @@ function check_username(username, callback){
 
             newUser.name = req.body.name;
             newUser.email = req.body.email;
-
+            
             newUser.setPassword(req.body.password);
             newUser.save(function(err, user){
             if(err){
