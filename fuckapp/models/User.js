@@ -79,11 +79,14 @@ userSchema.methods.generateJwt = function() {
 
 userSchema.methods.verifyUser = function(req){
     var isUser = false;   
-    if(!req.headers.authorization){        
-            return isUser;
+    if(!req.headers.auth_token){
+        console.log("Request: " + req);
+        console.log("Headers: " + req.headers);
+        console.log("UserToken: " + req.headers.UserToken);
+        return isUser;        
         }else{
 
-            var token = req.headers.authorization.split(" ")[1];       
+            var token = req.headers.auth_token;                   
             jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){        
                 
                 if(err){  
