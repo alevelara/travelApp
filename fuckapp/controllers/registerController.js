@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 
  var mailCtrl = require('./mailerController');
  var error = require('../error');
+ var util = require('../utils/registerUtil')
 //get user  
 exports.login = function(req, res) {
 
@@ -30,19 +31,9 @@ exports.login = function(req, res) {
     })(req,res);           
 };
 
-function check_username(username, callback){
-    user.findOne({email: username}, function(err, user){
-        if(err){                       
-            console.log(err);
-            return callback(err);
-        }else{            
-            return callback(user);
-        }
-    });
-};
 
  exports.signup = function(req, res){
-    var user_login = check_username(req.body.email, function(user_login){        
+    var user_login = util.check_username(req.body.email, function(user_login){        
         if(user_login){
         console.log(user_login.email + " already exists. ");     
         return res.

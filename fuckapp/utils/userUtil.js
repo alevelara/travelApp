@@ -1,0 +1,4 @@
+exports.generatePassword = function(callback){
+    
+};
+

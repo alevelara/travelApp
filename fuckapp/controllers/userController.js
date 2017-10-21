@@ -112,7 +112,19 @@ exports.get_user_interests = function(req, res){
             }
         });
     }
-    
 };
+
+exports.fotgotten_password = function(req, res){
+    var new_user = new user(user);
+    var isUser = new_user.verifyUser(req);
+    if(isUser == true){
+        return res.status(200).json({status:"OK", message:"email sended"});
+    }else{
+        return res.
+        status(403).
+        json({error_message:"invalid token"});
+    }
+
+}
 
 

@@ -18,4 +18,7 @@ app.route('/delete/:userid')
 app.route('/user/:id/interests')
   .post(users.update_user_interests)
   .get(users.get_user_interests);
+
+app.route('/user/:id/password')
+  .get(users.forgotten_password);
 }
