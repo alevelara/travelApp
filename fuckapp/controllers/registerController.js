@@ -22,9 +22,10 @@ exports.login = function(req, res) {
         }
         else{
             token = user.generateJwt();
-            return res
-            .status(200)                        
-            .json({status:'success', session_info:{"token":token, "user":user}});            
+            res.status(200);
+            res.json({status:'success', session_info:{"token":token,user:{"email":user.email,"name":user.name}}});            
+           // console.log('Login succes: name: %s password: %s - date: %d', email, password, Date.now.toString());
+           return;
         }                   
     })(req,res);           
 };
@@ -44,24 +45,28 @@ function check_username(username, callback){
     var user_login = check_username(req.body.email, function(user_login){        
         if(user_login){
         console.log(user_login.email + " already exists. ");     
-        res.json({status:"error", error_message: user_login.email + " already exists. "});
+        return res.
+        status(404)
+        .json({status:"error", error_message: user_login.email + " already exists. "});
         }else{
             var newUser = new user();
-
             newUser.name = req.body.name;
-            newUser.email = req.body.email;
-
+            newUser.email = req.body.email;            
             newUser.setPassword(req.body.password);
             newUser.save(function(err, user){
             if(err){
-               res.json({status:"error", error_message: err});
+               return res
+               .status(500)
+               .json({status:"error", error_message: err});
             }else{
                 var token;
                 token = newUser.generateJwt();
-                res.status(200).json({status:'success', session_info:{"token":token, "user":user}});            
+                
+                console.log("Login Succesful"); 
+                console.log(token);                                
                 // After success login, we'll send a email verification          
                 mailCtrl.sendEmail(user.email);
-                return;
+                return res.status(200).json({status:'success', session_info:{"token":token,user:{"email":user.email,"name":user.name}}});  
             }  
         });
     };

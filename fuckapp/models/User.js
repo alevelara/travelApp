@@ -2,7 +2,7 @@
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose');
-var env_var = require('../config/var.json')
+var env_var = require('../config/var.json');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
@@ -19,10 +19,11 @@ var userSchema = new Schema({
         required: false
     },
     // Selected Interests by user
-    interests: { 
-        type: String,        
+    interests: [{ 
+        type: Schema.Types.ObjectId,
+        ref: 'Interest',        
         required: false
-    },
+    }],
     username:{
         type: String,
         required: false
@@ -48,14 +49,18 @@ var userSchema = new Schema({
 
 });
 
-userSchema.methods.setPassword = function set_password(password){
+userSchema.methods.setPassword = function(password){
         this.salt = crypto.randomBytes(16).toString('hex');
-        this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+        this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha256').toString('hex');
 };
 
 userSchema.methods.validPassword = function(password) {
-  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha256').toString('hex');
   return this.hash === hash;
+};
+
+userSchema.methods.setInterests = function(interests){
+   this.interests = interests;
 };
 
 userSchema.methods.generateJwt = function() {
@@ -70,25 +75,32 @@ userSchema.methods.generateJwt = function() {
   }, env_var.development.JWT_KEY); 
 };
 
-userSchema.methods.validUser = function(req, res, next){
-    if(!req.headers.authorization){
-        return res
-        .status(403)
-        .send({message: "Tu petición no tiene cabezera de autorización"});
-    }
-    var token = req.headers.authorization.split(" ")[1];
-    var payload = jwt.decode(token, env_var.development.JWT_KEY);
 
-    if(payload.exp <= date.now()){
-        return res
-        .status(401)
-        .send({message:"El token ha expirado"});
-    }
+userSchema.methods.verifyUser = function(req){
+    var isUser = false;   
+    if(!req.headers.auth_token){
+        console.log(req.headers.auth_token);
+        return isUser;        
+        }else{
 
-    req.user = payload.sub;
-    next();
-}
-
+            var token = req.headers.auth_token;                   
+            jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){        
+                
+                if(err){  
+                    return isUser;
+                }else{
+                    if((payload.exp * 1000) <= Date.now()){             
+                        return isUser;
+                    }else{
+                        isUser = true;
+                        req.sub = payload;                       
+                        return isUser;
+                    }    
+                }       
+            });
+            return isUser;
+        }       
+    };
 
 module.exports = mongoose.model('User',userSchema);
 

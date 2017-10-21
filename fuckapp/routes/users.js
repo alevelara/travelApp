@@ -1,6 +1,8 @@
 
 module.exports = function(app){
-  var users = require('../controllers/userController');
+var users = require('../controllers/userController');
+var mongoose = require('mongoose'),
+user = mongoose.model('User');
 
 app.route('/users')
   .get(users.get_users)
@@ -13,7 +15,7 @@ app.route('/users/:userid')
 app.route('/delete/:userid')
   .delete(users.delete_user);
 
-/*app.route('/users/interests')
-  .post(users.update_interests);
-  */
+app.route('/user/:id/interests')
+  .post(users.update_user_interests)
+  .get(users.get_user_interests);
 }
