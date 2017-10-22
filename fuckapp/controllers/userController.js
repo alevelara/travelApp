@@ -74,27 +74,6 @@ exports.insert_user = function(req, res){
 };
 
 
-exports.update_user_interests = function(req, res){ 
-    var new_user = new user(user);
-    var isUser = new_user.verifyUser(req);
-     console.log(new_user.verifyUser(req));     
-     if(isUser == true){
-         console.log(req.body.interests);
-        user.findByIdAndUpdate(req.params.id, {interests:req.body.interests},function(err, user){
-            if(err){
-                return res
-                .status(404)
-                .json({status:"error", error_message:"Error updating interests:" + err.message});
-            }else{                
-                return res.status(200).json({status:"success", message:"interests updates"});
-            }
-        });
-    }else{
-        return res.status(403).json({message:"invalid token"});
-    }     
-};
-
-
 exports.get_user_interests = function(req, res){ 
     var new_user = new user(user);
     var isUser = new_user.verifyUser(req);
