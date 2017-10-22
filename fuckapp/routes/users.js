@@ -20,5 +20,5 @@ app.route('/user/:id/interests')
   .get(users.get_user_interests);
 
 app.route('/user/:id/password')
-  .get(users.forgotten_password);
+  .post(users.forgotten_password);
 }

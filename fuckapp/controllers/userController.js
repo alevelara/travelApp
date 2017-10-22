@@ -2,6 +2,10 @@ var crypto = require('crypto');
 var mongoose = require('mongoose'),
  user = mongoose.model('User');
 
+var utilRegister = require('../utils/registerUtil');
+var utilUser = require('../utils/userUtil');
+
+
 exports.insert_user = function(req, res){
     var new_user = new user(req.body);
     new_user.setPassword(req.body.passoword);    
@@ -114,8 +118,21 @@ exports.get_user_interests = function(req, res){
     }
 };
 
-exports.fotgotten_password = function(req, res){
-    var new_user = new user(user);
+exports.forgotten_password = function(req, res){
+    console.log(req.body.email);
+    var user_login = utilRegister.check_username(req.body.email, function(user_login){
+        if(user_login){
+            console.log(user_login);
+            var password = utilUser.generatePassword(password, function(password){
+                console.log(password);
+            });
+        }      
+    });
+};
+    
+    
+    
+   /* var new_user = new user(user);
     var isUser = new_user.verifyUser(req);
     if(isUser == true){
         return res.status(200).json({status:"OK", message:"email sended"});
@@ -123,8 +140,7 @@ exports.fotgotten_password = function(req, res){
         return res.
         status(403).
         json({error_message:"invalid token"});
-    }
+    }*/
 
-}
 
 
