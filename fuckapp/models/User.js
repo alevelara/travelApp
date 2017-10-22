@@ -40,6 +40,10 @@ var userSchema = new Schema({
         type: String,
         required: true
     },
+    tokenForgottenPassword:{
+        type: String, 
+        required: false
+    },
     date_log:{
         type: Date,
         default: Date.now

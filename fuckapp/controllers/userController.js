@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 
 var utilRegister = require('../utils/registerUtil');
 var utilUser = require('../utils/userUtil');
-
+var mailController = require('./mailerController');
 
 exports.insert_user = function(req, res){
     var new_user = new user(req.body);
@@ -122,25 +122,26 @@ exports.forgotten_password = function(req, res){
     console.log(req.body.email);
     var user_login = utilRegister.check_username(req.body.email, function(user_login){
         if(user_login){
-            console.log(user_login);
             var password = utilUser.generatePassword(password, function(password){
-                console.log(password);
+                console.log(user_login._id);
+                user.findByIdAndUpdate(user_login._id, {tokenForgottenPassword:password}, function(err, user){
+                    if(err){
+                        return res
+                        .status(401)
+                        .json({message_error:"Error updating token forgotten password: " + err.message});
+                    }else{                         
+                        mailController.sendNewPasswordEmail(req.body.email, password);
+                        return res
+                        .status(200)
+                        .json({status:"success", message:"Your email has sended correctly."});
+                    }
+                });
+
             });
         }      
     });
 };
-    
-    
-    
-   /* var new_user = new user(user);
-    var isUser = new_user.verifyUser(req);
-    if(isUser == true){
-        return res.status(200).json({status:"OK", message:"email sended"});
-    }else{
-        return res.
-        status(403).
-        json({error_message:"invalid token"});
-    }*/
+  
 
 
 
