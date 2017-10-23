@@ -121,6 +121,36 @@ exports.forgotten_password = function(req, res){
     });
 };
   
-
+exports.reset_password = function(req, res){
+    var user_login = utilRegister.check_username_and_token(req.body.email, function(user_login){        
+        if(user_login){
+        console.log(user_login.email + " already exists. ");     
+        return res.
+        status(404)
+        .json({status:"error", error_message: user_login.email + " already exists. "});
+        }else{
+            var newUser = new user();
+            newUser.name = req.body.name;
+            newUser.email = req.body.email;            
+            newUser.setPassword(req.body.password);
+            newUser.save(function(err, user){
+            if(err){
+               return res
+               .status(500)
+               .json({status:"error", error_message: err});
+            }else{
+                var token;
+                token = newUser.generateJwt();
+                
+                console.log("Login Succesful"); 
+                console.log(token);                                
+                // After success login, we'll send a email verification          
+                mailCtrl.sendEmail(user.email);
+                return res.status(200).json({status:'success', session_info:{"token":token,user:{"_id":user._id,"email":user.email,"name":user.name}}});  
+            }  
+        });
+    };
+});  
+};
 
 

@@ -21,4 +21,9 @@ app.route('/user/:id/interests')
 
 app.route('/user/:id/password')
   .post(users.forgotten_password);
+
+  app.route('/user/:id/password/reset')
+  .post(users.forgotten_password);
+
 }
+
