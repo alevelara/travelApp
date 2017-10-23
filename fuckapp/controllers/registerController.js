@@ -24,7 +24,7 @@ exports.login = function(req, res) {
         else{
             token = user.generateJwt();
             res.status(200);
-            res.json({status:'success', session_info:{"token":token,user:{"email":user.email,"name":user.name}}});            
+            res.json({status:'success', session_info:{"token":token,user:{"_id":user._id,"email":user.email,"name":user.name}}});            
            // console.log('Login succes: name: %s password: %s - date: %d', email, password, Date.now.toString());
            return;
         }                   
@@ -57,7 +57,7 @@ exports.login = function(req, res) {
                 console.log(token);                                
                 // After success login, we'll send a email verification          
                 mailCtrl.sendEmail(user.email);
-                return res.status(200).json({status:'success', session_info:{"token":token,user:{"email":user.email,"name":user.name}}});  
+                return res.status(200).json({status:'success', session_info:{"token":token,user:{"_id":user._id,"email":user.email,"name":user.name}}});  
             }  
         });
     };
