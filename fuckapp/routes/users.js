@@ -19,11 +19,9 @@ app.route('/user/:id/interests')
   .post(users.update_user_interests)
   .get(users.get_user_interests);
 
-app.route('/user/:id/password')
-  .post(users.forgotten_password);
+app.route('/user/password')
+  .post(users.send_email_password_user);
 
-  app.route('/user/:id/password/reset')
-  .post(users.forgotten_password);
-
+  app.route('/user/password/reset')
+  .post(users.reset_password);
 }
-

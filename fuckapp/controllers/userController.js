@@ -97,7 +97,7 @@ exports.get_user_interests = function(req, res){
     }
 };
 
-exports.forgotten_password = function(req, res){
+exports.send_email_password_user = function(req, res){
     console.log(req.body.email);
     var user_login = utilRegister.check_username(req.body.email, function(user_login){
         if(user_login){
@@ -122,35 +122,62 @@ exports.forgotten_password = function(req, res){
 };
   
 exports.reset_password = function(req, res){
-    var user_login = utilRegister.check_username_and_token(req.body.email, function(user_login){        
+    var user_login = utilRegister.check_username_and_token(req.body.email,req.body.tokenForgottenPassword, function(user_login){        
         if(user_login){
-        console.log(user_login.email + " already exists. ");     
-        return res.
-        status(404)
-        .json({status:"error", error_message: user_login.email + " already exists. "});
-        }else{
-            var newUser = new user();
-            newUser.name = req.body.name;
-            newUser.email = req.body.email;            
-            newUser.setPassword(req.body.password);
-            newUser.save(function(err, user){
-            if(err){
-               return res
-               .status(500)
-               .json({status:"error", error_message: err});
-            }else{
-                var token;
-                token = newUser.generateJwt();
-                
-                console.log("Login Succesful"); 
-                console.log(token);                                
-                // After success login, we'll send a email verification          
-                mailCtrl.sendEmail(user.email);
-                return res.status(200).json({status:'success', session_info:{"token":token,user:{"_id":user._id,"email":user.email,"name":user.name}}});  
-            }  
+            user_login.setPassword(req.body.new_password);
+            user_login.save(function(err, user){
+                if(err){
+                    return res
+                    .status(500)
+                    .send({message:"Request error"});
+                }else{
+                    token = user_login.generateJwt();                    
+                    return res.status(200).json({status:'success', session_info:{"token":token,user_login:{"_id":user_login._id,"email":user_login.email,"name":user_login.name}}});
+            }
         });
     };
 });  
 };
 
-
+exports.change_password = function(req, res){
+    //Looking for user: BodyParams email
+   user.findOne({email:req.body.email}, function(err, user){
+       //Error in query
+       if(err){
+           return res
+           .status(500)
+           .send({message:"Request error"});
+       }else{
+           //if user not exists
+           if(!user){
+               return res
+               .status(401)
+               .send({message:"User not found"});
+               //if user exits: Validate password
+           }else{
+               //Password incorrect
+               if(!user.validPassword(req.body.old_password)){
+                   return res
+                   .status(401)
+                   .send({message:'Incorrect password'});
+               }else{
+                       //Modify password
+                       user.setPassword(req.body.new_password);
+                       user.save(function(err, user){
+                           if(err){
+                               return res
+                               .status(500)
+                               .send({message:"Request error"});
+                           }else{
+                               return res
+                               .status(200)
+                               .send({message:"Password changed succesfully"});
+                       }
+                   });
+               }                                             
+           }
+       }
+   
+   })
+   
+};
