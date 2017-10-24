@@ -30,7 +30,7 @@
     "mongoose-type-email": "^1.0.5",
     "morgan": "^1.9.0",
     "mquery": "^2.3.2",
-    "nodemailer": "^4.2.0",
+    "nodemailer": "^4.3.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pug": "^2.0.0-rc.4",

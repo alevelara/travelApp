@@ -122,7 +122,7 @@ exports.send_email_password_user = function(req, res){
 };
   
 exports.reset_password = function(req, res){
-    var user_login = utilRegister.check_username_and_token(req.body.email,req.body.tokenForgottenPassword, function(user_login){        
+    var user_login = utilRegister.check_username_and_token(req.body.email, req.body.tokenForgottenPassword, function(user_login){        
         if(user_login){
             user_login.setPassword(req.body.new_password);
             user_login.save(function(err, user){
@@ -133,8 +133,8 @@ exports.reset_password = function(req, res){
                 }else{
                     token = user_login.generateJwt();                    
                     return res.status(200).json({status:'success', session_info:{"token":token,user_login:{"_id":user_login._id,"email":user_login.email,"name":user_login.name}}});
-            }
-        });
-    };
-});  
+                }
+            });
+        };
+    });  
 };
