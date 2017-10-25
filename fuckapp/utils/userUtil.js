@@ -9,3 +9,13 @@ exports.generatePassword = function(pw, callback){
     return callback(password);
 };
 
+exports.check_username_and_token = function(username, key_password, callback){
+    user.findOne({email: username, tokenForgottenPassword:key_password}, function(err, user){
+        if(err){                       
+            console.log(err);
+            return callback(err);
+        }else{            
+            return callback(user);
+        }
+    });
+};
