@@ -32,6 +32,11 @@ var userSchema = new Schema({
         type: String, 
         required:  false
     },
+    photoid:{
+        type:Schema.Types.ObjectId,
+        ref: 'Photo',
+        required: false
+    },
     phone_number:{
         type: Number,
         required: false

@@ -4,6 +4,9 @@ var mongoose = require('mongoose'),
 
 var utilRegister = require('../utils/registerUtil');
 var utilUser = require('../utils/userUtil');
+var utilPhoto = require('../utils/photUtil');
+
+var photoController = require('../controllers/photoController');
 var mailController = require('./mailerController');
 
 exports.insert_user = function(req, res){
@@ -73,7 +76,6 @@ exports.insert_user = function(req, res){
     }     
 };
 
-
 exports.get_user_interests = function(req, res){ 
     var new_user = new user(user);
     var isUser = new_user.verifyUser(req);
@@ -138,3 +140,30 @@ exports.reset_password = function(req, res){
         };
     });  
 };
+
+exports.add_user_photo = function(req, res){
+    var new_user = new user(user);
+    var isUser = new_user.verifyUser(req);
+    if(isUser == false){
+        return res.
+        status(403).
+        json({error_message:"invalid token"});
+    }else{
+        var photo = photoController.add_photo(req, res);
+        if (res.status == 500){
+            res.json({message_error:"Back ERROR: "+ err.message});
+        }else if(res.status == 200){
+            user.findByIdAndUpdate(new_user._id,{photoid: photo._id},function(err, user){
+                if(err){
+                    return res.
+                    status(500).
+                    json({error_message:"error adding photo: "+ err.message});
+                }else{
+                    return res
+                    .status(200)
+                    .json({message:"Successfully added photo"});
+                }
+            })
+        }
+    }
+}

@@ -8,11 +8,8 @@ app.route('/users')
   .get(users.get_users)
   .post(users.insert_user);
 
-app.route('/users/:userid')
+app.route('/user/:userid')
   .get(users.get_user)
-  //.put(users.update_user)
-
-app.route('/delete/:userid')
   .delete(users.delete_user);
 
 app.route('/user/:id/interests')
@@ -24,4 +21,8 @@ app.route('/user/password')
 
   app.route('/user/password/reset')
   .post(users.reset_password);
+
+  app.route('/user/photo')
+  .post(users.add_user_photo);
+  //.get(users.get_user_photo);
 }

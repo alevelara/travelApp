@@ -41,8 +41,9 @@ exports.login = function(req, res) {
         .json({status:"error", error_message: user_login.email + " already exists. "});
         }else{
             var newUser = new user();
+            console.log(req.body);
             newUser.name = req.body.name;
-            newUser.email = req.body.email;            
+            newUser.email = req.body.email;                 
             newUser.setPassword(req.body.password);
             newUser.save(function(err, user){
             if(err){
