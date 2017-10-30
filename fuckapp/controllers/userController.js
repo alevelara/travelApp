@@ -1,6 +1,7 @@
 var crypto = require('crypto');
 var mongoose = require('mongoose'),
- user = mongoose.model('User');
+ user = mongoose.model('User'),
+ photo = mongoose.model('Photo');
 
 var utilRegister = require('../utils/registerUtil');
 var utilUser = require('../utils/userUtil');
@@ -143,17 +144,19 @@ exports.reset_password = function(req, res){
 
 exports.add_user_photo = function(req, res){
     var new_user = new user(user);
-    var isUser = new_user.verifyUser(req);
+    var isUser = new_user.verifyUser(req);    
     if(isUser == false){
         return res.
         status(403).
         json({error_message:"invalid token"});
     }else{
-        var photo = photoController.add_photo(req, res);
-        if (res.status == 500){
+        var photo_result = new photo(req.file);
+        photoController.add_photo(req, res, photo_result);        
+        if (res.statusCode == 500){
             res.json({message_error:"Back ERROR: "+ err.message});
-        }else if(res.status == 200){
-            user.findByIdAndUpdate(new_user._id,{photoid: photo._id},function(err, user){
+        }else if(res.statusCode == 200){
+            console.log(req.sub._id);
+            user.findByIdAndUpdate(req.sub._id,{photoid: photo_result._id},function(err, user){
                 if(err){
                     return res.
                     status(500).
@@ -163,7 +166,7 @@ exports.add_user_photo = function(req, res){
                     .status(200)
                     .json({message:"Successfully added photo"});
                 }
-            })
+            });
         }
     }
-}
+};

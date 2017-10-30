@@ -87,8 +87,7 @@ userSchema.methods.generateJwt = function() {
 
 userSchema.methods.verifyUser = function(req){
     var isUser = false;   
-    if(!req.headers.auth_token){
-        console.log(req.headers.auth_token);
+    if(!req.headers.auth_token){        
         return isUser;        
         }else{
 
