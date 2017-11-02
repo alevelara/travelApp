@@ -97,6 +97,7 @@ exports.get_user_interests = function(req, res){
     }
 };
 
+
 exports.send_email_password_user = function(req, res){
     console.log(req.body.email);
     var user_login = utilRegister.check_username(req.body.email, function(user_login){
@@ -117,6 +118,10 @@ exports.send_email_password_user = function(req, res){
                 });
 
             });
+        }else{
+            res.status(401).json(info);
+            console.log('Incorrect user: date: %d', Date.now.toString());           
+           return;
         }      
     });
 };
@@ -132,9 +137,13 @@ exports.reset_password = function(req, res){
                     .send({message:"Request error"});
                 }else{
                     token = user_login.generateJwt();                    
-                    return res.status(200).json({status:'success', session_info:{"token":token,user_login:{"_id":user_login._id,"email":user_login.email,"name":user_login.name}}});
+                    return res.status(200).json({status:'success', session_info:{"token":token,user:{"_id":user_login._id,"email":user_login.email,"name":user_login.name}}});
                 }
             });
-        };
+        }else{
+            return res
+            .status(401)
+            .json({message_error:"Token not correct: " + err.message});
+        }
     });  
 };
