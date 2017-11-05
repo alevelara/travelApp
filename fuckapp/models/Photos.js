@@ -33,12 +33,7 @@ var PhotoSchema = new Schema({
     size:{
         type: Number, 
         required: true
-    },
-    profile:{
-        type: Boolean,
-        required: false,
-        default: false
-    },
+    },    
     datelog: {
         type: Date,
         default: Date.now

@@ -37,6 +37,11 @@ var userSchema = new Schema({
         ref: 'Photo',
         required: false
     },
+    photo_profile_id:{
+        type:Schema.Types.ObjectId,
+        ref: 'Photo',
+        required: false
+    },
     phone_number:{
         type: Number,
         required: false
@@ -90,7 +95,6 @@ userSchema.methods.verifyUser = function(req){
     if(!req.headers.auth_token){        
         return isUser;        
         }else{
-
             var token = req.headers.auth_token;                   
             jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){        
                 
