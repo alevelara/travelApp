@@ -10,8 +10,8 @@ module.exports = function(app){
 
 
 app.route('/signup')
-  .post(login.signup)
+  .post(login.signup);
 
 app.route('/login')
-  .post(login.login)
+  .post(login.login);
 }

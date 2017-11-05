@@ -11,8 +11,9 @@ var InterestSchema = new Schema({
         type: String,
         required: true
     },
-    photo:{
-        type:String,
+    photoid:{
+        type:Schema.Types.ObjectId,
+        ref: 'Photo',
         required: false
     },
     datelog: {

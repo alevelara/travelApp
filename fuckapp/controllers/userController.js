@@ -1,9 +1,16 @@
 var crypto = require('crypto');
+var q = require('q');
 var mongoose = require('mongoose'),
- user = mongoose.model('User');
+ user = mongoose.model('User'),
+ photo = mongoose.model('Photo');
+
+
 
 var utilRegister = require('../utils/registerUtil');
 var utilUser = require('../utils/userUtil');
+var utilPhoto = require('../utils/photUtil');
+
+var photoController = require('../controllers/photoController');
 var mailController = require('./mailerController');
 
 exports.insert_user = function(req, res){
@@ -27,14 +34,22 @@ exports.insert_user = function(req, res){
      });
  };
 
- exports.get_user = function(req, res){    
-     user.findById(req.params.userid, function(err, user){        
-        if(err){
-            res.status(401).json({message:"user fail"});
-        }           
-            res.status(200).json(user);
-            
-     });
+ exports.get_user = function(req, res){
+     var newUser = new user(user);
+     var isUser = newUser.verifyUser(req);
+     if(isUser == false){
+        return res.
+        status(403).
+        json({error_message:"invalid token"});
+     }else{
+        user.findById(req.sub._id, function(err, user){        
+            if(err){
+                res.status(401).json({message:"user fail"});
+            }           
+                res.status(200).json(user);                
+         });
+     } 
+    
  };
 
  exports.delete_user = function(req, res){    
@@ -73,7 +88,6 @@ exports.insert_user = function(req, res){
     }     
 };
 
-
 exports.get_user_interests = function(req, res){ 
     var new_user = new user(user);
     var isUser = new_user.verifyUser(req);
@@ -101,7 +115,7 @@ exports.get_user_interests = function(req, res){
 exports.send_email_password_user = function(req, res){
     console.log(req.body.email);
     var user_login = utilRegister.check_username(req.body.email, function(user_login){
-        if(user_login){
+        if(user_login){            
             var password = utilUser.generatePassword(password, function(password){
                 console.log(user_login._id);
                 user.findByIdAndUpdate(user_login._id, {tokenForgottenPassword:password}, function(err, user){
@@ -127,7 +141,7 @@ exports.send_email_password_user = function(req, res){
 };
   
 exports.reset_password = function(req, res){
-    var user_login = utilRegister.check_username_and_token(req.body.email, req.body.tokenForgottenPassword, function(user_login){        
+    var user_login = utilUser.check_username_and_token(req.body.email, req.body.tokenForgottenPassword, function(user_login){        
         if(user_login){
             user_login.setPassword(req.body.new_password);
             user_login.save(function(err, user){
@@ -147,3 +161,87 @@ exports.reset_password = function(req, res){
         }
     });  
 };
+
+exports.addUserPhotos = function(req, res){     
+    var new_user = new user(user),
+        isUser = new_user.verifyUser(req),
+        result = {};
+    if(isUser == false){
+        return res.
+        status(403).
+        json({error_message:"invalid token"});
+    }else{                  
+        var photo_result = photoController.add_photos(req, res, function(result){
+            console.log(result);
+            if (res.statusCode == 500){
+                res.json({message_error:"Back ERROR: "+ err.message});
+            }else if(res.statusCode == 200){               
+                    user.findByIdAndUpdate(req.sub._id ,{$addToSet: {photoid: {$each: photo_result}}} ,function(err, user){
+                        if(err){
+                            return res.
+                            status(500).
+                            json({error_message:"error adding photo: "+ err.message});
+                        }else{
+                            return res
+                            .status(200)
+                            .json({message:"Successfully added photos"});
+                        }
+                    });            
+            }
+        });                        
+    }
+};
+
+exports.addUserProfilePhoto = function(req, res){
+    var new_user = new user(user);
+    var isUser = new_user.verifyUser(req);    
+    if(isUser == false){
+        return res.
+        status(403).
+        json({error_message:"invalid token"});
+    }else{
+        var photo_result = new photo(req.file);        
+        photoController.add_photo(req, res, function(photo_result){
+            console.log(photo_result);        
+            if (res.statusCode == 500){
+                res.json({message_error:"Back ERROR: "+ err.message});
+            }else if(res.statusCode == 200){
+                user.findByIdAndUpdate(req.sub._id,{photo_profile_id: photo_result._id},function(err, user){
+                    if(err){
+                        return res.
+                        status(500).
+                        json({error_message:"error adding photo: "+ err.message});
+                    }else{
+                        return res
+                        .status(200)
+                        .json({message:"Successfully added photo"});
+                    }
+                });
+            }
+        });        
+    }
+};
+
+
+exports.getUserProfilePhoto = function(req, res){
+    var new_user = new user(user);    
+    var isUser = new_user.verifyUser(req);
+    if(isUser == false){
+        return res.
+        status(403).
+        json({error_message:"invalid token"});
+    }else{
+        user.findOne({_id: req.sub._id}).populate('photo_profile_id').exec( function(err, user) {
+            if (err) {
+                return res
+                .status(404)
+                .json({status:"error", error_message: "Error retrieving user" + err.message});
+            }else{
+                console.log(user);
+                return res
+                .status(200)
+                .json({message: user.photo_profile_id.path});
+            }
+        });
+    }
+}

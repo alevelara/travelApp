@@ -1,6 +1,7 @@
 module.exports = function(app) {
     require('./models/User');
     require('./models/Interest');
+    require('./models/Photos');
     
     var index = require('./routes/index')
     index(app)
@@ -10,4 +11,6 @@ module.exports = function(app) {
     login(app);
     var interests = require('./routes/interests')
     interests(app);
+    var photos = require('./routes/photos')
+    photos(app);
 }

@@ -1,5 +1,6 @@
 node_modules/
 uploads/
 fuck-app/node_modules/
+fuck-app/uploads/
 .idea/
 .vscode/

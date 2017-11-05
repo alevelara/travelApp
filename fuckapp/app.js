@@ -34,6 +34,8 @@ app.use(methodOverride('_method'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+
+
 passport.initialize();
 routes(app);
 

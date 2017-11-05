@@ -32,6 +32,16 @@ var userSchema = new Schema({
         type: String, 
         required:  false
     },
+    photoid:{
+        type:Schema.Types.ObjectId,
+        ref: 'Photo',
+        required: false
+    },
+    photo_profile_id:{
+        type:Schema.Types.ObjectId,
+        ref: 'Photo',
+        required: false
+    },
     phone_number:{
         type: Number,
         required: false
@@ -82,11 +92,9 @@ userSchema.methods.generateJwt = function() {
 
 userSchema.methods.verifyUser = function(req){
     var isUser = false;   
-    if(!req.headers.auth_token){
-        console.log(req.headers.auth_token);
+    if(!req.headers.auth_token){        
         return isUser;        
         }else{
-
             var token = req.headers.auth_token;                   
             jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){        
                 
