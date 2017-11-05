@@ -22,9 +22,9 @@ app.route('/user/password')
   app.route('/user/password/reset')
   .post(users.reset_password);
 
-  app.route('/user/photos')
+  /*app.route('/user/photos')
   .post(users.addUserPhotos);
-  
+  */
   app.route('/user/photoProfile')
   .post(users.addUserProfilePhoto)
   .get(users.getUserProfilePhoto);
