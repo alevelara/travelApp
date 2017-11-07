@@ -1,16 +1,17 @@
 module.exports = function(app) {
-    require('./models/User');
-    require('./models/Interest');
-    require('./models/Photos');
+    require('./models/users.models');
+    require('./models/interests.models');
+    require('./models/photos.models');
     
-    var index = require('./routes/index')
-    index(app)
-    var routes = require('./routes/users')
+    var index = require('./routes/index.routes'),
+        routes = require('./routes/user.routes'),
+        login = require('./routes/register.routes'),
+        interests = require('./routes/interest.routes'),
+        photos = require('./routes/photo.routes');
+        
+    index(app);
     routes(app);
-    var login = require('./routes/login')
-    login(app);
-    var interests = require('./routes/interests')
-    interests(app);
-    var photos = require('./routes/photos')
+    login(app);    
+    interests(app);    
     photos(app);
 }

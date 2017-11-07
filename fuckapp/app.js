@@ -3,22 +3,23 @@ var express = require('express'),
   port = process.env.PORT || 8080,
   bodyParser = require('body-parser');
 
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var cons = require('consolidate');
-var config = require('config');
-var passport = require('passport');
-var methodOverride = require('method-override');
-var mongo_server = require('./server')
-var routes = require('./routes');
+//Modules
+var path = require('path'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    cons = require('consolidate'),
+    config = require('config'),
+    passport = require('passport'),
+    methodOverride = require('method-override'),
+    mongoServer = require('./server'),
+    routes = require('./routes');
  require('./config/passport');
 
 
 // servidor, socket.io y mongo
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var server = require('http').createServer(app),
+    io = require('socket.io')(server);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,8 +36,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 
-
+//Initialize passport.
 passport.initialize();
+
+//Initialize routes
 routes(app);
 
 if(config.util.getEnv('NODE_ENV') !== 'test') {
@@ -52,6 +55,6 @@ app.use(function(req,res){
 
 app.listen(port);
 
-mongo_server.mongo_connection
+mongoServer.getConnection
 
 module.exports = app;
