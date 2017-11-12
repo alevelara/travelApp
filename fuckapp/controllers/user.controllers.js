@@ -131,13 +131,18 @@ exports.sendEmailUserPassword = function(req, res){
                 user.findByIdAndUpdate(userLogin._id, {reset_password_token:password}, function(err, user){
                     if(err){
                         return res
-                        .status(401)
+                        .status(500)
                         .json({message_error:"Error updating token forgotten password: " + err.message});
                     }else{                         
-                        mailController.sendNewPasswordEmail(req.body.email, password);
-                        return res
-                        .status(200)
-                        .json({status:"success", message:"Your email has sended correctly."});
+                        mailController.sendNewPasswordEmail(req.body.email, password, res);
+                        if (res.statusCode == 500){
+                            return res
+                            .json({message_error:"Error sending email: " + err.message});
+                        }else if (res.statusCode == 200){
+                            return res                            
+                            .json({status:"success", message:"Your email has sended correctly."});
+                        }
+                       
                     }
                 });
             });
@@ -166,7 +171,7 @@ exports.resetPassword = function(req, res){
         }else{
             return res
             .status(401)
-            .json({message_error:"Token not correct: " + err.message});
+            .json({message_error:"User doesn't exists"});
         }
     });  
 };

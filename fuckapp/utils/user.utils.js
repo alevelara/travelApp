@@ -1,4 +1,6 @@
 var generator = require('generate-password'),
+    mongoose = require('mongoose'),
+    user = mongoose.model('User'),
     jwt = require('jsonwebtoken');
 
 exports.generatePassword = function(pw, callback){
@@ -11,7 +13,7 @@ exports.generatePassword = function(pw, callback){
 };
 
 exports.getUserByEmailAndToken = function(username, tokenPassword, callback){
-    user.findOne({email: username, token_forgotten_password:tokenPassword}, function(err, user){
+    user.findOne({email: username, reset_password_token:tokenPassword}, function(err, user){
         if(err){                       
             console.log(err);
             return callback(err);
