@@ -25,14 +25,14 @@ app.route('/user/interests')
 app.route('/user/password/recovery')
   .post(users.sendEmailUserPassword);
 
-  app.route('/user/password/reset')
+app.route('/user/password/reset')
   .post(users.resetPassword);
 
   /*app.route('/user/photos')
   .post(users.addUserPhotos);
   */
 
-  app.route('/user/photo_profile')
+app.route('/user/photo/profile')
   .post(users.addUserProfilePhoto)
   .get(users.getUserProfilePhoto);
 }
