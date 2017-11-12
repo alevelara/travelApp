@@ -50,7 +50,7 @@ var userSchema = new Schema({
         type: String,
         required: true
     },
-    token_forgotten_password:{
+    token_reset_password:{
         type: String, 
         required: false
     },
