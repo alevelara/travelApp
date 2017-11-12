@@ -21,7 +21,7 @@ exports.addSimplePhoto = function(req, res, callback){
                         if(err){
                             res.status(500).json({message_error:"BACKEND ERROR: "+ err.message});
                         }else{
-                            res.status(200).json({photoid:newPhoto._id});                            
+                            res.status(200).json({photo_id:newPhoto._id});                            
                         }
                     });           
                  }   
