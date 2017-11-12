@@ -22,7 +22,7 @@ app.route('/user/interests')
   .post(users.updateUserInterest)
   .get(users.getUserInterests);
 
-app.route('/user/password')
+app.route('/user/password/recovery')
   .post(users.sendEmailUserPassword);
 
   app.route('/user/password/reset')
@@ -31,6 +31,7 @@ app.route('/user/password')
   /*app.route('/user/photos')
   .post(users.addUserPhotos);
   */
+
   app.route('/user/photo_profile')
   .post(users.addUserProfilePhoto)
   .get(users.getUserProfilePhoto);
