@@ -1,9 +1,14 @@
 {
     "development":{
-        "JWT_KEY": "123456"
+        "JWT_KEY": "123456",
+        "email": "fkdevs@gmail.com",
+        "password":"FkDevs01"
     },
     "production":
     {
-        "JWT_KEY": "123456"
+        "JWT_KEY": "123456",
+        "email": "fkdevs@gmail.com",
+        "password":"FkDevs01"
     }
+
 }

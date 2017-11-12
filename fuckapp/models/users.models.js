@@ -32,7 +32,7 @@ var userSchema = new Schema({
         type: String, 
         required:  false
     },
-    photoid:{
+    photo_id:{
         type:Schema.Types.ObjectId,
         ref: 'Photo',
         required: false
@@ -50,7 +50,7 @@ var userSchema = new Schema({
         type: String,
         required: true
     },
-    token_reset_password:{
+    reset_password_token:{
         type: String, 
         required: false
     },

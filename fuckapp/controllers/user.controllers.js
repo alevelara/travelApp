@@ -123,11 +123,12 @@ exports.getUserInterests = function(req, res){
 };
 
 
-exports.sendEmailUserPassword = function(req, res){    
+exports.sendEmailUserPassword = function(req, res){
     var userLogin = utilRegister.getUserByEmail(req.body.email, function(userLogin){
         if(userLogin){            
             var password = utilUser.generatePassword(password, function(password){                
-                user.findByIdAndUpdate(userLogin._id, {token_forgotten_password:password}, function(err, user){
+                console.log(password);
+                user.findByIdAndUpdate(userLogin._id, {reset_password_token:password}, function(err, user){
                     if(err){
                         return res
                         .status(401)
@@ -139,18 +140,17 @@ exports.sendEmailUserPassword = function(req, res){
                         .json({status:"success", message:"Your email has sended correctly."});
                     }
                 });
-
             });
         }else{
-            res.status(401).json(info);
+            res.status(401).json({message_error:"BACK ERROR"});
             console.log('Incorrect user: date: %d', Date.now.toString());           
            return;
         }      
     });
 };
-  
+
 exports.resetPassword = function(req, res){
-    var userLogin = utilUser.getUserByEmailAndToken(req.body.email, req.body.token_forgotten_password, function(userLogin){        
+    var userLogin = utilUser.getUserByEmailAndToken(req.body.email, req.body.reset_password_token, function(userLogin){        
         if(userLogin){
             userLogin.setPassword(req.body.new_password);
             userLogin.save(function(err, user){

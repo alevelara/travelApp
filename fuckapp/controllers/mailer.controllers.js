@@ -1,19 +1,23 @@
 //Modules
-var nodemailer = require('nodemailer');
+var nodemailer = require('nodemailer'),
+    smtpTransport = require('nodemailer-smtp-transport'),
+    vars = require('../config/var.json');
 
 exports.sendEmail = function(email){
-    
-    var transporter = nodemailer.createTransport({
+    console.log(vars.development.email);
+    console.log(vars.development.password);
+
+    var transporter = nodemailer.createTransport(smtpTransport({
         service: 'Gmail',
         auth: {
-            user: 'fkdevs@gmail.com',
-            pass: 'FuckApp01'
+            user: vars.development.email,
+            pass: vars.development.password
         },
         debug: true // include SMTP traffic in the logs,
-    });
+    }));
 
     var mailOption = {
-        from: 'fkdevs@gmail.com',
+        from: vars.development.email,
         to: email,
         subject: 'Asunto Prueba',
         text:'Login correcto PRUEBA'
@@ -31,21 +35,21 @@ exports.sendEmail = function(email){
 
 };
 
-
-    
 exports.sendNewPasswordEmail = function(email,password){
-    
-    var transporter = nodemailer.createTransport({
+    console.log(vars.development.email);
+    console.log(vars.development.password);
+
+    var transporter = nodemailer.createTransport(smtpTransport({
         service: 'Gmail',
         auth: {
-            user: 'fkdevs@gmail.com',
-            pass: 'FuckApp01'
+            user: vars.development.email,
+            pass: vars.development.password
         },
         debug: true // include SMTP traffic in the logs,
-    });
+    }));
 
     var mailOption = {
-        from: 'fkdevs@gmail.com',
+        from: vars.development.email,
         to: email,
         subject: 'Asunto Prueba',
         text:'Your new password is '+ password
