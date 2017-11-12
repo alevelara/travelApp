@@ -9,6 +9,25 @@ var mongoose = require('mongoose'),
 //Utils
 var photoUtil = require('../utils/photo.utils');
 
+
+exports.addSimplePhoto = function(req, res, callback){        
+    var upload = photoUtil.uploadPhoto(req);
+    upload(req, res, function(err) {        
+                 if (err) {        
+                     res.end(err.message);
+                 }else{
+                    var newPhoto = new photo(req.file);         
+                    newPhoto.save(function(err, photo){
+                        if(err){
+                            res.status(500).json({message_error:"BACKEND ERROR: "+ err.message});
+                        }else{
+                            res.status(200).json({photoid:newPhoto._id});                            
+                        }
+                    });           
+                 }   
+             });            
+};
+
 exports.addPhoto = function(req, res, callback){        
     var upload = photoUtil.uploadPhoto(req);
     upload(req, res, function(err) {        

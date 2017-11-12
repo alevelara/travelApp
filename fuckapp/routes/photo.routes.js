@@ -7,7 +7,7 @@ module.exports = function(app) {
     var photos = require('../controllers/photo.controllers');
 
     app.route('/photo')
-        .post(photos.addPhoto)
+        .post(photos.addSimplePhoto)
         .get(photos.getPhoto);
 
     app.route('/photo/:photoid')

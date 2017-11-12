@@ -10,8 +10,7 @@ var STORE = multer.diskStorage({
     }        
 });
 
-exports.uploadPhoto = function(req){    
-        
+exports.uploadPhoto = function(req){            
     var upload = multer({storage: STORE}).single("img");    
     return upload;
 };
