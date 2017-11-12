@@ -4,8 +4,6 @@ var nodemailer = require('nodemailer'),
     vars = require('../config/var.json');
 
 exports.sendEmail = function(email){
-    console.log(vars.development.email);
-    console.log(vars.development.password);
 
     var transporter = nodemailer.createTransport(smtpTransport({
         service: 'Gmail',
@@ -36,9 +34,6 @@ exports.sendEmail = function(email){
 };
 
 exports.sendNewPasswordEmail = function(email,password){
-    console.log(vars.development.email);
-    console.log(vars.development.password);
-
     var transporter = nodemailer.createTransport(smtpTransport({
         service: 'Gmail',
         auth: {
