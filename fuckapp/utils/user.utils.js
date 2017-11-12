@@ -26,7 +26,8 @@ exports.getUserByEmailAndToken = function(username, tokenPassword, callback){
 exports.verifyUser = function(req, res){  
     if(!req.headers.auth_token){                 
         }else{
-            var token = req.headers.auth_token;                   
+            var token = req.headers.auth_token;  
+            console.log(token);                 
             jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){         
                 if(err){                   
                    res.status(404);

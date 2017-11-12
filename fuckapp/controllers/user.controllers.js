@@ -84,7 +84,7 @@ exports.addUser = function(req, res){
         status(401).
         json({error_message:"Token has expired"});
      }else if(res.statusCode == 200){       
-        user.findByIdAndUpdate(req.params.id, {interests:req.body.interests},function(err, user){
+        user.findByIdAndUpdate(req.sub._id, {interests:req.body.interests},function(err, user){
             if(err){
                 return res
                 .status(401)
