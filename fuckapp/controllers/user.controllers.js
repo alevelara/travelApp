@@ -32,7 +32,7 @@ exports.addUser = function(req, res){
      user.find({}, function(err, user){
         if (err)
             res.send(err);
-        res.json({message: 'User succesfully added', user});        
+        res.status(200).json({message: 'User succesfully added', user});        
      });
  };
 
