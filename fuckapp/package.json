@@ -4,8 +4,11 @@
   "private": true,
   "scripts": {
     "start": "SET NODE_ENV=dev && node server.js",
-    "test": "mocha --timeout 10000"
-  },
+    "test-user": "mocha --timeout 10000 ./tests/user.tests.js"
+  },"pre-commit":[
+    "test-user"
+  ]    
+  ,
   "dependencies": {
     "angular": "^1.6.6",
     "bluebird": "^3.5.1",
@@ -37,6 +40,7 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "pre-commit": "^1.2.2",
     "pug": "^2.0.0-rc.4",
     "q": "^1.5.1",
     "qs": "^6.5.1",

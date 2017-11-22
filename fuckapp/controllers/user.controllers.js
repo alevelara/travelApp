@@ -17,22 +17,23 @@ var photoController = require('../controllers/photo.controllers'),
 
 exports.addUser = function(req, res){
     var newUser = new user(req.body);
-    newUser.setPassword(req.body.passoword);    
+    newUser.setPassword(req.body.password);    
     newUser.save(function(err, user){
         if(err)
-            res.send(err);
+            res.status(500).json({message_error: "BACKEND ERROR: "+ err.message});
         var token;
         token = newUser.generateJwt();
-        res.status(200);
-        res.json({"token": token}, user);
+        res.status(200).json({"token": token, user:user});
     });
 };
 
  exports.getUsers = function(req,res){
      user.find({}, function(err, user){
-        if (err)
-            res.send(err);
-        res.status(200).json({message: 'User succesfully added', user});        
+        if (err){
+            res.status(500).json({message_error: "BACKEND ERROR: "+ err.message});
+        }else{
+            res.status(200).json({message: 'User succesfully added', user});      
+        }          
      });
  };
 
@@ -51,7 +52,7 @@ exports.addUser = function(req, res){
             if(err){
                 res.status(404).json({message:"user fail"});
             }           
-                res.status(200).json(user);                
+                res.status(200).json({"user": user});                
          });
      } 
     
