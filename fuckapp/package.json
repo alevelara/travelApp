@@ -5,9 +5,9 @@
   "scripts": {
     "start": "SET NODE_ENV=dev && node server.js",
     "test-user": "mocha --timeout 10000 ./tests/user.tests.js"
-  },"pre-commit":[
-    "test-user"
-  ]    
+  },"pre-commit":{
+    "run": "test-user"
+  }
   ,
   "dependencies": {
     "angular": "^1.6.6",
