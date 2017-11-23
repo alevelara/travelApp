@@ -8,14 +8,12 @@ exports.generatePassword = function(pw, callback){
         length: 10,
         numbers: true
     });
-    console.log(password);    
     return callback(password);
 };
 
 exports.getUserByEmailAndToken = function(username, tokenPassword, callback){
     user.findOne({email: username, reset_password_token:tokenPassword}, function(err, user){
         if(err){                       
-            console.log(err);
             return callback(err);
         }else{            
             return callback(user);

@@ -110,13 +110,11 @@ exports.getUserInterests = function(req, res){
        json({error_message:"Token has expired"});
     }else if(res.statusCode == 200){ 
          user.findOne({_id:req.sub._id}).populate('interests').exec( function(err, user) {
-            console.log(user);
             if (err) {
                 return res
                 .status(404)
                 .json({status:"error", error_message: "Error retrieving user"});
             } else {
-                console.log(user);
                 return res.status(200).json({interests:user.interests})
             }
         });
@@ -124,11 +122,10 @@ exports.getUserInterests = function(req, res){
 };
 
 
-exports.sendEmailUserPassword = function(req, res){
+exports.sendEmailUserPassword = function(req, res){    
     var userLogin = utilRegister.getUserByEmail(req.body.email, function(userLogin){
         if(userLogin){            
-            var password = utilUser.generatePassword(password, function(password){                
-                console.log(password);
+            var password = utilUser.generatePassword(password, function(password){                          
                 user.findByIdAndUpdate(userLogin._id, {reset_password_token:password}, function(err, user){
                     if(err){
                         return res
@@ -156,6 +153,7 @@ exports.sendEmailUserPassword = function(req, res){
 };
 
 exports.resetPassword = function(req, res){
+ 
     var userLogin = utilUser.getUserByEmailAndToken(req.body.email, req.body.reset_password_token, function(userLogin){        
         if(userLogin){
             userLogin.setPassword(req.body.new_password);
@@ -225,9 +223,10 @@ exports.addUserProfilePhoto = function(req, res){
     
     }else if(res.statusCode == 200){ 
         
-        var photoResult = new photo(req.file);        
+        var photoResult = new photo(req.file);       
+         
         photoController.addPhoto(req, res, function(photoResult){                 
-            
+            console.log(req.file);
             if (res.statusCode == 500){
                 res.json({message_error:"Back ERROR: "+ err.message});
             }
@@ -272,7 +271,6 @@ exports.getUserProfilePhoto = function(req, res){
                 .status(404)
                 .json({status:"error", error_message: "Error retrieving user" + err.message});
             }else{
-                console.log(user);
                 return res
                 .status(200)
                 .json({message: user.photo_profile_id.path});

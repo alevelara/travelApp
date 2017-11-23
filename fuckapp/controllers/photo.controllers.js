@@ -34,7 +34,7 @@ exports.addPhoto = function(req, res, callback){
                  if (err) {        
                      res.end(err.message);
                  }else{
-                    var newPhoto = new photo(req.file);         
+                    var newPhoto = new photo(req.file);    
                     newPhoto.save(function(err, photo){
                         if(err){
                             res.status(500);
