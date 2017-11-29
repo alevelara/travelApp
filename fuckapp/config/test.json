@@ -1,3 +1,7 @@
 {
-    "DBHost": "mongodb://localhost/fuckApp_test"
+    "testUrl":{
+        "DBHost": "mongodb://localhost/fuckApp_test",
+        "serverHost": "http://localhost:8080"
+    }
+    
 }

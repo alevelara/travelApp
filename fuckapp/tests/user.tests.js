@@ -1,11 +1,12 @@
+process.env.NODE_ENV = "test";
+
 var app = require('../app');
 
 var chai = require('chai'),
     chaiHttp = require('chai-http'),
     mocha = require('mocha'),
     should = chai.should(),
-    expect = chai.expect;
-        
+    expect = chai.expect;        
     chai.use(chaiHttp);
 
 var api = chai.request(app);
@@ -21,8 +22,6 @@ const img = { fieldname: 'img',
     filename: 'img_1511466951625_1086321.png',
     path: 'uploads\\img_1511466951625_1086321.png',
     size: 9039 };
-
-
 
 describe('Users', function(){
     it('should return all users', function(done){

@@ -2,9 +2,9 @@
   "name": "adventour",
   "version": "0.0.0",
   "private": true,
-  "scripts": {    
+  "scripts": {
     "start": "SET NODE_ENV=dev && node server.js",
-    "test": "mocha --timeout 15000 ./tests/*.tests.js"
+    "test": "mocha ./tests/*.tests.js"
   },
   "dependencies": {
     "angular": "^1.6.6",
@@ -22,6 +22,7 @@
     "forever": "^0.15.3",
     "fs": "0.0.1-security",
     "generate-password": "^1.3.0",
+    "hooks-fixed": "^2.0.2",
     "iconv-lite": "^0.4.19",
     "jscs": "^3.0.7",
     "jsonwebtoken": "^8.1.0",
@@ -53,5 +54,5 @@
     "nodemon": "^1.12.1",
     "pre-commit": "^1.2.2"
   },
-  "pre-commit": "npm test" 
+  "pre-commit": "npm test"
 }
