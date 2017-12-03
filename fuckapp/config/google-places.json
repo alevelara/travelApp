@@ -1,0 +1,22 @@
+{
+    "development":{
+        "GOOGLE_KEY":"AIzaSyA90gKIioGv6FE-mfpxcGwjWS_DBTOUMmg",
+        "location":"37.3914105,-5.9591776",
+        "radius":1000,
+        "optionals":{
+            "keyword":"",
+            "language":"",
+            "minprice":"",
+            "maxprice":"",
+            "name":"",
+            "opennow":"",
+            "types":"restaurant"
+        }        
+    },
+    "test":{
+
+    },
+    "production":{
+
+    }
+}
