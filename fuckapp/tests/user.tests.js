@@ -11,7 +11,7 @@ var chai = require('chai'),
 
 var api = chai.request(app);
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWY1YzliODk2OGMwMzA1ZDg5Y2IyZjEiLCJlbWFpbCI6ImFsZXZlbGFyYUBnbWFpbC5jb20iLCJuYW1lIjoiQWxlamFuZHJvIiwiZXhwIjoxNTExOTc4MTkzLCJpYXQiOjE1MTEzNzMzOTN9.61C3QtLv8mj8h86gtajp6SFGryEh8Ebe3ilw2-cOZyY";
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTIyOWI5OWYwNzdjYzJmODRlOWNiYTYiLCJlbWFpbCI6ImFsZXZlbGFyYUBnbWFpbC5jb20iLCJuYW1lIjoiQWxlamFuZHJvIiwiZXhwIjoxNTEyODIyMjk3LCJpYXQiOjE1MTIyMTc0OTd9.kSer1wTPccBEH8WPgH_Ebsbw248Lwg3eZJYccjAnSw8";
 const token_error = "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWY1YzliODk2OGMwMzA1ZDg5Y2IyZjEiLCJlbWFpbCI6ImFsZXZlbGFyYUBnbWFpbC5jb20iLCJuYW1lIjoiQWxlamFuZHJvIiwiZXhwIjoxNTExOTc4MTkzLCJpYXQiOjE1MTEzNzMzOTN9.61C3QtLv8mj8h86gtajp6SFGryEh8Ebe3ilw2-cOZyY";
 const forgotten_token_password = "d6ejPgeaVE"
 const img = { fieldname: 'img',
@@ -174,7 +174,6 @@ describe('Users', function(){
             done();
         });
     });
-
 
     it('should return user photo profile', function(done){
         api.post('/user/photo/profile')

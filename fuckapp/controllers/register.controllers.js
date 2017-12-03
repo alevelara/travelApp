@@ -13,8 +13,6 @@ var util = require('../utils/register.utils');
     
 exports.login = function(req, res) {
     passport.authenticate('local', function(err, user, info){
-        var token;
-        console.log(user);
          if (err){
             console.log('Login fail: date: %d', Date.now.toString());
             res.status(404).json({error: err})
@@ -35,7 +33,7 @@ exports.login = function(req, res) {
 };
 
 
- exports.signup = function(req, res){
+ exports.signup = function(req, res){    
     var userLogin = util.getUserByEmail(req.body.email, function(userLogin){        
         if(userLogin){             
         return res.
