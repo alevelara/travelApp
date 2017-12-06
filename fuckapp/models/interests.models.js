@@ -16,6 +16,11 @@ var interestSchema = new Schema({
         ref: 'Photo',
         required: false
     },
+    google_types: [{
+        type: Schema.Types.ObjectId,
+        ref: 'GooglePlacesCategory',
+        required: true
+    }],
     datelog: {
         type: Date,
         default: Date.now
