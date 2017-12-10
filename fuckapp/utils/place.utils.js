@@ -47,3 +47,22 @@ exports.getPlacesByQuery = function(query, callback){
     callback(e.message);
   });
 };
+
+
+exports.getDetailsPlaces = function(idPlace, callback){
+  var url = setGoogleURL("details") + "&placeid=" + idPlace + "&extensions=review_summary" ;
+  console.log(url);
+  https.get(url, function(response) {
+    var body ='';
+    response.on('data', function(chunk) {
+      body += chunk;
+      });    
+  response.on('end', function() {
+      var places = JSON.parse(body);        
+      callback(places.results);
+    });
+  }).on('error', function(e) {
+    console.log("Got error: " + e.message);
+    callback(e.message);
+});
+};
