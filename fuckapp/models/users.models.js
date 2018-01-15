@@ -89,8 +89,5 @@ userSchema.methods.generateJwt = function() {
   }, env_var.development.JWT_KEY); 
 };
 
-
-
-
 module.exports = mongoose.model('User',userSchema);
 
