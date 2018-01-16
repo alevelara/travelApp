@@ -7,13 +7,13 @@ var mongoose = require('mongoose'),
     photo = mongoose.model('Photo');
 
 //utils
-var utilRegister = require('../utils/register.utils'),
-    utilUser = require('../utils/user.utils'),
-    utilPhoto = require('../utils/photo.utils');
+var utilRegister = require('../registers/register.utils'),
+    utilUser = require('./user.utils'),
+    utilPhoto = require('../photos/photo.utils');
 
 //controllers
-var photoController = require('../controllers/photo.controllers'),
-    mailController = require('./mailer.controllers');
+var photoController = require('../photos/photo.controllers'),
+    mailController = require('../mails/mailer.controllers');
 
 exports.addUser = function(req, res){
     var newUser = new user(req.body);

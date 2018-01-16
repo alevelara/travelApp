@@ -1,13 +1,13 @@
 module.exports = function(app) {
-    require('./models/users.models');
-    require('./models/interests.models');
-    require('./models/photos.models');
+    require('./components/users/users.models');
+    require('./components/interests/interests.models');
+    require('./components/photos/photos.models');
     
-    var index = require('./routes/index.routes'),
-        routes = require('./routes/user.routes'),
-        login = require('./routes/register.routes'),
-        interests = require('./routes/interest.routes'),
-        photos = require('./routes/photo.routes');
+    var index = require('./index.routes'),
+        routes = require('./components/users/user.routes'),
+        login = require('./components/registers/register.routes'),
+        interests = require('./components/interests/interest.routes'),
+        photos = require('./components/photos/photo.routes');
         
     index(app);
     routes(app);

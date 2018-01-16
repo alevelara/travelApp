@@ -6,7 +6,7 @@ module.exports = function(app){
 
 
 //Controllers
-  var users = require('../controllers/user.controllers');
+  var users = require('./user.controllers');
       
 
 app.route('/users')

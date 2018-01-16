@@ -1,10 +1,10 @@
 module.exports = function(app){
   //Modules
   var jwt = require('express-jwt'),
-      var_env = require('../config/var.json');
+      var_env = require('../../config/var.json');
       
   //Controllers
-  var login = require('../controllers/register.controllers');
+  var login = require('./register.controllers');
 
 app.route('/signup')
   .post(login.signup);

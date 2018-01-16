@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
     photo = mongoose.model('Photo');
 
 //Utils
-var photoUtil = require('../utils/photo.utils');
+var photoUtil = require('./photo.utils');
 
 
 exports.addSimplePhoto = function(req, res, callback){        

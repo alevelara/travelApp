@@ -1,7 +1,7 @@
 module.exports = function(app){
 
     //Controllers
-    var interests = require('../controllers/interest.controllers')
+    var interests = require('./interest.controllers')
 
     app.route('/interests')
         .get(interests.getInterests);

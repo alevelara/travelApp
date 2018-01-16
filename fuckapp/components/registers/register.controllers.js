@@ -6,10 +6,10 @@ var mongoose = require('mongoose'),
     user = mongoose.model('User');
 
 //Controllers
-var mailCtrl = require('./mailer.controllers');
+var mailCtrl = require('../mails/mailer.controllers');
 
 //Utils    
-var util = require('../utils/register.utils');
+var util = require('./register.utils');
     
 exports.login = function(req, res) {
     passport.authenticate('local', function(err, user, info){

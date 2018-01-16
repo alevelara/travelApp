@@ -1,7 +1,7 @@
 //Modules
 var crypto = require('crypto'),
     mongoose = require('mongoose');
-    env_var = require('../config/var.json'),
+    env_var = require('../../config/var.json'),
     jwt = require('jsonwebtoken'),
     Schema = mongoose.Schema;
 

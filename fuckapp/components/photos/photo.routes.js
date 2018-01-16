@@ -4,7 +4,7 @@ module.exports = function(app) {
     photo = mongoose.model('Photo');
 
     //Controllers
-    var photos = require('../controllers/photo.controllers');
+    var photos = require('./photo.controllers');
 
     app.route('/photo')
         .post(photos.addSimplePhoto)

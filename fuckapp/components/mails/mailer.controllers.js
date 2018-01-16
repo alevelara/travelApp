@@ -1,7 +1,7 @@
 //Modules
 var nodemailer = require('nodemailer'),
     smtpTransport = require('nodemailer-smtp-transport'),
-    vars = require('../config/var.json');
+    vars = require('../../config/var.json');
 
 exports.sendEmail = function(email){
 
