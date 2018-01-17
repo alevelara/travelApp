@@ -44,6 +44,8 @@ exports.login = function(req, res) {
             newUser.name = req.body.name;
             newUser.email = req.body.email;                 
             newUser.setPassword(req.body.password);
+            newUser.fullname = req.body.fullname;
+            newUser.
             newUser.save(function(err, user){
             if(err){
                return res

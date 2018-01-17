@@ -15,6 +15,10 @@ var utilRegister = require('../registers/register.utils'),
 var photoController = require('../photos/photo.controllers'),
     mailController = require('../mails/mailer.controllers');
 
+exports.createUser = function(req, res){
+
+}
+
 exports.addUser = function(req, res){
     var newUser = new user(req.body);
     newUser.setPassword(req.body.password);    
