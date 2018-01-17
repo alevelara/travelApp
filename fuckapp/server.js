@@ -3,7 +3,7 @@
     mongoose = require('mongoose'),
     config = require('./config/default.json');
     config_test = require('./config/test.json')
-    require('./components/users/users.models')
+    require('./components/users/users.model')
     urlHost = "";
 
 if(node_env === "dev"){

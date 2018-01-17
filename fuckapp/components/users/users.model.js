@@ -6,10 +6,6 @@ var crypto = require('crypto'),
     Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-    id: {
-        type: Number,
-        autoIncrement: true        
-    },
     fullname: {
         type: String,
         required: true
@@ -36,13 +32,13 @@ var userSchema = new Schema({
         required: false
     },
     followers:[{
-        type: Schema.types.ObjectId, 
+        type: Schema.Types.ObjectId, 
         ref:'User',
         required: false
     }],
 
     followings:[{
-        type: Schema.types.ObjectId, 
+        type: Schema.Types.ObjectId, 
         ref:'User',
         required: false
     }],
@@ -51,21 +47,21 @@ var userSchema = new Schema({
         default: 0,
         required: false
     },
-     /*
+     
     reviews_in: [{ 
         type: Schema.Types.ObjectId,
-        ref: 'Review',        
+        ref: 'Message',        
         required: false
     }],
     reviews_out: [{ 
         type: Schema.Types.ObjectId,
-        ref: 'Review',        
+        ref: 'Message',        
         required: false
-    }],*/
+    }],
     user_type:{
-        TOURIST : 'Tourist',
-        TOURIST_GUIDE : 'Tourist Guide',
-        TOURIST_AGENCY : 'Tourist AGENCY',
+       type: Number, 
+       required: false,
+       default: 0
     },
     rating:{ 
         type: Schema.Types.ObjectId,
