@@ -10,14 +10,6 @@ var userSchema = new Schema({
         type: Number,
         autoIncrement: true        
     },
-    /*name: {
-        type: String,
-        required: true
-    },
-    surname: {
-        type: String,
-        required: false
-    }*/
     fullname: {
         type: String,
         required: true
@@ -43,24 +35,48 @@ var userSchema = new Schema({
         type: Number,
         required: false
     },
-
-   followers:[{
+    followers:[{
         type: Schema.types.ObjectId, 
         ref:'User',
         required: false
-   }],
-
-   followings:[{
-    type: Schema.types.ObjectId, 
-    ref:'User',
-    required: false
     }],
 
+    followings:[{
+        type: Schema.types.ObjectId, 
+        ref:'User',
+        required: false
+    }],
     score:{
         type: Number,
         default: 0,
         required: false
-    }
+    },
+     /*
+    reviews_in: [{ 
+        type: Schema.Types.ObjectId,
+        ref: 'Review',        
+        required: false
+    }],
+    reviews_out: [{ 
+        type: Schema.Types.ObjectId,
+        ref: 'Review',        
+        required: false
+    }],*/
+    user_type:{
+        TOURIST : 'Tourist',
+        TOURIST_GUIDE : 'Tourist Guide',
+        TOURIST_AGENCY : 'Tourist AGENCY',
+    },
+    rating:{ 
+        type: Schema.Types.ObjectId,
+        ref: 'Ratio',        
+        required: false
+    },
+    description: {
+        type: String,
+        required: true
+    },
+
     // Selected Interests by user
     interests: [{ 
         type: Schema.Types.ObjectId,
@@ -68,12 +84,22 @@ var userSchema = new Schema({
         required: false
     }],
    
-    photo_id:{
-        type:Schema.Types.ObjectId,
-        ref: 'Photo',
+    features: [{ 
+        type: Schema.Types.ObjectId,
+        ref: 'Feature',        
+        required: false
+    }],
+
+    languajes: [{ 
+        type: String,        
+        required: false
+    }],
+
+    hometown:{ 
+        type: Schema.Types.ObjectId,
+        ref: 'City',        
         required: false
     },
-    
     
     reset_password_token:{
         type: String, 
