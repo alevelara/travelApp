@@ -12,7 +12,7 @@ var path = require('path'),
     config = require('config'),
     passport = require('passport'),
     methodOverride = require('method-override'),
-    mongoServer = require('./server'),
+    server = require('./server'),
     routes = require('./routes');
  require('./config/passport');
 
@@ -55,6 +55,6 @@ app.use(function(req,res){
 
 app.listen(port);
 
-mongoServer.getConnection
+server.Sequelize
 
 module.exports = app;

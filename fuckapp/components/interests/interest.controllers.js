@@ -1,6 +1,5 @@
 //Models
-var mongoose = require('mongoose'),
- interests = mongoose.model('Interest');
+var interests = require('../../models/interest');
 
   exports.getInterests = function(req,res){
      interests.find({}, function(err, interests){

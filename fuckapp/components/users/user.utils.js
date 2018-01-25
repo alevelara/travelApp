@@ -1,7 +1,7 @@
 var generator = require('generate-password'),
-    mongoose = require('mongoose'),
-    user = mongoose.model('User'),
-    jwt = require('jsonwebtoken');
+    user = require('../../models/user');
+const jwt = require('jsonwebtoken');
+const env_var = require('../../config/var.json');
 
 exports.generatePassword = function(pw, callback){
     var password = generator.generate({
@@ -13,31 +13,31 @@ exports.generatePassword = function(pw, callback){
 
 exports.getUserByEmailAndToken = function(username, tokenPassword, callback){
     user.findOne({email: username, reset_password_token:tokenPassword}, function(err, user){
-        if(err){                       
+        if(err){
             return callback(err);
-        }else{            
+        }else{
             return callback(user);
         }
     });
 };
 
-exports.verifyUser = function(req, res){  
-    if(!req.headers.auth_token){                 
-        }else{
-            var token = req.headers.auth_token;  
-            console.log(token);                 
-            jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){         
-                if(err){                   
-                   res.status(404);
+exports.verifyUser = function(req, res){
+    if(!req.headers.auth_token){
+    }else{
+        var token = req.headers.auth_token;
+        console.log(token);
+        jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){
+            if(err){
+                res.status(404);
+            }else{
+                if((payload.exp * 1000) <= Date.now()){
+                    res.status(401);
                 }else{
-                    if((payload.exp * 1000) <= Date.now()){             
-                        res.status(401);
-                    }else{
-                        req.sub = payload; 
-                        res.status(200);                                                                      
-                    }    
-                }       
-            });
-        }       
-    };
+                    req.sub = payload;
+                    res.status(200);
+                }
+            }
+        });
+    }
+};
 

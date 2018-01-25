@@ -1,9 +1,5 @@
 module.exports = function(app) {
-    //Models        
-    var mongoose = require('mongoose'),
-    photo = mongoose.model('Photo');
-
-    //Controllers
+ //Controllers
     var photos = require('./photo.controllers');
 
     app.route('/photo')
