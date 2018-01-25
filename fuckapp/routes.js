@@ -1,7 +1,7 @@
 module.exports = function(app) {
-    require('./components/users/users.model');
-    require('./components/interests/interests.model');
-    require('./components/photos/photos.model');
+    require('./models/user');
+    require('./models/interest');
+    require('./models/photo');
     
     var index = require('./index.routes'),
         routes = require('./components/users/user.routes'),

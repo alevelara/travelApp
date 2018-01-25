@@ -2,9 +2,9 @@
 var crypto = require('crypto'),
     q = require('q');
 //models
-var mongoose = require('mongoose'),
-    user = mongoose.model('User'),
-    photo = mongoose.model('Photo');
+var models = require('../../models');
+var User = models['user'];
+var userRepository = require('./user.repository');
 
 //utils
 var utilRegister = require('../registers/register.utils'),
@@ -15,33 +15,32 @@ var utilRegister = require('../registers/register.utils'),
 var photoController = require('../photos/photo.controllers'),
     mailController = require('../mails/mailer.controllers');
 
-exports.createUser = function(req, res){
 
-}
+
+exports.getAllUsers = function(req, res){
+    console.log('get all users');
+    userRepository.getAllUsers(function (users) {
+        console.log(users)
+        res.status(200).json({'users': users})
+    });
+};
 
 exports.addUser = function(req, res){
-    var newUser = new user(req.body);
-    newUser.setPassword(req.body.password);    
-    newUser.save(function(err, user){
-        if(err)
-            res.status(500).json({message_error: "BACKEND ERROR: "+ err.message});
-        var token;
-        token = newUser.generateJwt();
+    var newUser = new User(req.body);
+    newUser.setPassword(req.body.password);
+
+    userRepository.createUser(newUser, function(err, user){
+        if(err) {
+            console.log('error creating user: ' + err.getMessage());
+            res.status(500).json({message_error: "Error saving user"});
+        }
+        const token = newUser.generateJwt();
         res.status(200).json({"token": token, user:user});
     });
 };
 
- exports.getUsers = function(req,res){
-     user.find({}, function(err, user){
-        if (err){
-            res.status(500).json({message_error: "BACKEND ERROR: "+ err.message});
-        }else{
-            res.status(200).json({message: 'User succesfully added', user});      
-        }          
-     });
- };
 
- exports.getUser = function(req, res){
+exports.getUser = function(req, res){
      utilUser.verifyUser(req,res);
      if(res.statusCode == 404){
         return res.
@@ -52,18 +51,18 @@ exports.addUser = function(req, res){
         status(401).
         json({error_message:"Token has expired"});
      }else if(res.statusCode == 200){          
-        user.findById(req.sub._id, function(err, user){        
+        User.findById(req.sub._id, function(err, user){        
             if(err){
                 res.status(404).json({message:"user fail"});
             }           
                 res.status(200).json({"user": user});                
          });
-     } 
-    
- };
+     }
+
+};
 
  exports.deleteUser = function(req, res){    
-     user.remove({_id: req.params.userid }, function(err, user){
+     User.remove({_id: req.params.userid }, function(err, user){
         if(err)
             res.send(err);
         res.json({message: 'User succesfully deleted'});
@@ -71,7 +70,7 @@ exports.addUser = function(req, res){
  };
 
  exports.updateUser = function(req, res){
-    user.findByIdAndUpdate({_id: req.params.userid}, req.body, {new: true}, function(err, user){
+    User.findByIdAndUpdate({_id: req.params.userid}, req.body, {new: true}, function(err, user){
         if(err)
             res.send(err);
         res.json(user);

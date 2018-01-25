@@ -2,9 +2,10 @@
 var fs = require('fs'),
     q = require('q');
 
-//Models    
-var mongoose = require('mongoose'),
-    photo = mongoose.model('Photo');
+//Models
+models = require("../../models");
+User = models.user
+photo = models.photo
 
 //Utils
 var photoUtil = require('./photo.utils');

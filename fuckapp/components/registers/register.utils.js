@@ -1,5 +1,5 @@
-var mongoose = require('mongoose'),
-user = mongoose.model('User');
+const models = require('../../models');
+const user = models.user;
 
 exports.getUserByEmail = function(username, callback){
     console.log(username);

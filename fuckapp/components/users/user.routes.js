@@ -1,16 +1,12 @@
 
 module.exports = function(app){
-  //Models
-  var mongoose = require('mongoose'),
-      user = mongoose.model('User');
-
-
+  
 //Controllers
-  var users = require('./user.controllers');
+  var users = require('./user.controller');
       
 
 app.route('/users')
-  .get(users.getUsers);
+  .get(users.getAllUsers);
   
 app.route('/user')
   .post(users.addUser)

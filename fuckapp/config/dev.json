@@ -1,3 +1,3 @@
 {
-    "DBHost": "mongodb://localhost/fuckApp"
+    "DBHost": "mysql://localhost/fuckApp"
 }
