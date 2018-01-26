@@ -1,7 +1,7 @@
 'use strict';
 
 const models = require('../../models');
-const User = models.user;
+const User = models['user'];
 
 
 exports.getAllUsers = function (callback) {
@@ -10,15 +10,13 @@ exports.getAllUsers = function (callback) {
 
 exports.createUser = function(fullName, email, password, callback) {
     User.create({
-        where: {
+            username: fullName,
             email: email,
-            fullName: fullName,
+            full_name: fullName,
             password: password
-        }
-    }).then(user => user.save())
-        .then(user => callback(user))
-        .catch(error => callback(error))
-
+    })
+    .then(user => callback(user))
+    .catch(error => callback(error))
 };
 
 exports.findUserByEmail = function (email, callback) {
@@ -26,5 +24,17 @@ exports.findUserByEmail = function (email, callback) {
         where:{
             email: email
         }
-    }).then(user => callback(user))
+    })
+    .then(user => callback(user))
+    .catch(error => callback(error))
+};
+
+exports.findUserById = function (id, callback) {
+    User.findOne({
+        where:{
+            id: id
+        }
+    })
+    .then(user => callback(user))
+    .catch(error => callback(error))
 };

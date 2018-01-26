@@ -15,8 +15,6 @@ var utilRegister = require('../registers/register.utils'),
 var photoController = require('../photos/photo.controllers'),
     mailController = require('../mails/mailer.controllers');
 
-
-
 exports.getAllUsers = function(req, res){
     console.log('get all users');
     userRepository.getAllUsers(function (users) {
@@ -28,7 +26,6 @@ exports.getAllUsers = function(req, res){
 exports.addUser = function(req, res){
     var newUser = new User(req.body);
     newUser.setPassword(req.body.password);
-
     userRepository.createUser(newUser, function(err, user){
         if(err) {
             console.log('error creating user: ' + err.getMessage());
@@ -39,11 +36,10 @@ exports.addUser = function(req, res){
     });
 };
 
-
 exports.getUser = function(req, res){
      utilUser.verifyUser(req,res);
      if(res.statusCode == 404){
-        return res.
+        return  res.
         status(404).
         json({error_message:"Token not found"});
      }else if(res.statusCode == 401){
@@ -51,11 +47,13 @@ exports.getUser = function(req, res){
         status(401).
         json({error_message:"Token has expired"});
      }else if(res.statusCode == 200){          
-        User.findById(req.sub._id, function(err, user){        
-            if(err){
-                res.status(404).json({message:"user fail"});
+        userRepository.findUserById(req.params.id, function(user){        
+            if(!user){
+                console.log(0);
+               return res.status(404).json({message:"user not found"});
             }           
-                res.status(200).json({"user": user});                
+                console.log(1);
+                return res.status(200).json({"user": user});                
          });
      }
 
@@ -123,7 +121,6 @@ exports.getUserInterests = function(req, res){
         });
     }
 };
-
 
 exports.sendEmailUserPassword = function(req, res){    
     var userLogin = utilRegister.getUserByEmail(req.body.email, function(userLogin){

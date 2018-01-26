@@ -5,12 +5,8 @@ var path = require("path");
 var Sequelize = require("sequelize");
 var env = process.env.NODE_ENV || "dev";
 var config = require(path.join(__dirname, '..', 'config', 'database.json'))[env];
-console.log(config.database)
-console.log(config.username)
-console.log(config.password)
 var sequelize = new Sequelize(config.database, config.username, config.password, config);
 var db = {};
-
 
 fs
     .readdirSync(__dirname)
@@ -18,8 +14,8 @@ fs
         return (file.indexOf(".") !== 0) && (file !== "index.js");
     })
     .forEach(function(file) {
-        console.log(file)
         var model = sequelize.import(path.join(__dirname, file));
+        console.log(model.name);
         db[model.name] = model;
     });
 

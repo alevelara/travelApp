@@ -10,7 +10,9 @@ app.route('/users')
   
 app.route('/user')
   .post(users.addUser)
-  .get(users.getUser)
+  
+app.route('/user/:id')
+  .get(users.getUser)  
   .delete(users.deleteUser);
 
 app.route('/user/interests')
