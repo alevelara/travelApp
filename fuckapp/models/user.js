@@ -61,11 +61,6 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: null,
             allowNull: true
         },
-        score2:{
-            type: DataTypes.INTEGER,
-            defaultValue: null,
-            allowNull: true
-        },
         reset_password_token:{
             type: DataTypes.INTEGER,
             defaultValue: null,

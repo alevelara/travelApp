@@ -55,9 +55,9 @@ exports.signup = function(req, res){
                         status:'success',
                         session_info:{"token":token,
                             user:{
-                            "_id":user._id,
+                            "id":user.id,
                                 "email":user.email,
-                                "name":user.name}
+                                "name":user.full_name}
                         }});
                 }
             })
