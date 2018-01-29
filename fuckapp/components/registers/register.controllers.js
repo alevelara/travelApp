@@ -40,7 +40,8 @@ exports.signup = function(req, res){
         } else {
 
             var queryUser = {
-                 fullName: req.body.fullname,
+                 username: req.body.username,
+                 fullName: req.body.fullName,
                  email: req.body.email,
                  password: req.body.password
             };           
