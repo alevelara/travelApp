@@ -5,15 +5,17 @@ const User = models['user'];
 
 
 exports.getAllUsers = function (callback) {
-    User.findAll().then(users => callback(users))
+    User.findAll()
+    .then(users => callback(users))
+    .catch(error => callback(error))
 };
 
-exports.createUser = function(fullName, email, password, callback) {
+exports.createUser = function(queryUser, callback) {
     User.create({
-            username: fullName,
-            email: email,
-            full_name: fullName,
-            password: password
+            username: queryUser.fullName,
+            email: queryUser.email,
+            full_name: queryUser.fullName,
+            password: queryUser.password
     })
     .then(user => callback(user))
     .catch(error => callback(error))

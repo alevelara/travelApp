@@ -15,7 +15,6 @@ function(username, password, done) {
     userRepository.findUserByEmail(username, function(user){        
         //User not found
         
-        console.log(user.id) //.validPassword.validPassword(password));
         if(!user) {
             return done(null, false, {
                 status:'error', error_message:'Incorrect user or password'

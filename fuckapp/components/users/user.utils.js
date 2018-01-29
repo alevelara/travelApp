@@ -21,20 +21,17 @@ exports.getUserByEmailAndToken = function(username, tokenPassword, callback){
     });
 };
 
-exports.verifyUser = function(req, res){
-    if(!req.headers.auth_token){
-    }else{
-        var token = req.headers.auth_token;
-        console.log(token);
+exports.verifyUser = function(token, result){
+    if(token){                    
         jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){
             if(err){
-                res.status(404);
+                result.status = 404
             }else{
                 if((payload.exp * 1000) <= Date.now()){
-                    res.status(401);
+                    result.status = 401
                 }else{
-                    req.sub = payload;
-                    res.status(200);
+                    result.payload = payload;
+                    result.status = 200
                 }
             }
         });

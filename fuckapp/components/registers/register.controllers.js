@@ -12,7 +12,7 @@ exports.login = function(req, res) {
     passport.authenticate('local', function(err, user, info){
         if (err){
             console.log('Login fail: date: %d', Date.now.toString());
-            res.status(404).json({error: err})
+            res.status(500).json({error: err})
             return;
         }
         if(!user){
@@ -32,16 +32,20 @@ exports.login = function(req, res) {
 
 exports.signup = function(req, res){
     var userLogin = userRepository.findUserByEmail(req.body.email, function(user){
+        console.log(user);
         if(user){
             return res.
             status(404)
                 .json({status:"error", error_message: req.body.email + " already exists. "});
         } else {
-            var fullName = req.body.fullname;
-            var email = req.body.email;
-            var password = req.body.password;
 
-            userRepository.createUser(fullName, email, password, function(user){
+            var queryUser = {
+                 fullName: req.body.fullname,
+                 email: req.body.email,
+                 password: req.body.password
+            };           
+
+            userRepository.createUser(queryUser, function(user){
                 console.log(user);
                 if(!user){
                     return res

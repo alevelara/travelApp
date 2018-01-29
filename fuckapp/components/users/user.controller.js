@@ -15,45 +15,45 @@ var utilRegister = require('../registers/register.utils'),
 var photoController = require('../photos/photo.controllers'),
     mailController = require('../mails/mailer.controllers');
 
-exports.getAllUsers = function(req, res){
-    console.log('get all users');
-    userRepository.getAllUsers(function (users) {
-        console.log(users)
-        res.status(200).json({'users': users})
-    });
-};
-
-exports.addUser = function(req, res){
-    var newUser = new User(req.body);
-    newUser.setPassword(req.body.password);
-    userRepository.createUser(newUser, function(err, user){
-        if(err) {
-            console.log('error creating user: ' + err.getMessage());
-            res.status(500).json({message_error: "Error saving user"});
-        }
-        const token = newUser.generateJwt();
-        res.status(200).json({"token": token, user:user});
+// Get all users
+exports.getAllUsers = function(req, res){    
+    userRepository.getAllUsers(function (users) { 
+        if(!users){
+            res.status(500).json({err: 'Server Fail'})
+        }else{
+            res.status(200).json({'users': users})
+        }       
+       
     });
 };
 
 exports.getUser = function(req, res){
-     utilUser.verifyUser(req,res);
-     if(res.statusCode == 404){
+    var token = req.headers.auth_token;
+    var result = {
+        payload: null,
+        status: 0
+    };
+    var userId = req.params.id;
+     utilUser.verifyUser(token,result);
+     console.log(result);
+     if(result.status == 404){
         return  res.
         status(404).
-        json({error_message:"Token not found"});
-     }else if(res.statusCode == 401){
+        json({error_message: "Token not found"});
+     }else if(result.status == 401){
         return res.
         status(401).
         json({error_message:"Token has expired"});
-     }else if(res.statusCode == 200){          
-        userRepository.findUserById(req.params.id, function(user){        
+     }else if(result.status == 200){          
+        userRepository.findUserById(userId, function(user){        
             if(!user){
-                console.log(0);
-               return res.status(404).json({message:"user not found"});
+               return res
+               .status(404)
+               .json({error_message:"user not found"});
             }           
-                console.log(1);
-                return res.status(200).json({"user": user});                
+                return res
+                .status(200)
+                .json({"user": user});                
          });
      }
 
@@ -76,41 +76,52 @@ exports.getUser = function(req, res){
  };
 
  exports.updateUserInterest = function(req, res){ 
-    utilUser.verifyUser(req,res);
-    if(res.statusCode == 404){
+    var token = req.headers.auth_token;
+    var result = {
+        payload: null,
+        status: 0
+    };
+    utilUser.verifyUser(token, result);
+    if(result.status == 404){
         return res.
         status(404).
         json({error_message:"Token not found"});
-     }else if(res.statusCode == 401){
+     }else if(result.status == 401){
         return res.
         status(401).
         json({error_message:"Token has expired"});
-     }else if(res.statusCode == 200){       
-        user.findByIdAndUpdate(req.sub._id, {interests:req.body.interests},function(err, user){
+     }else if(result.status == 200){       
+        user.findByIdAndUpdate(result.payload.id, {interests:req.body.interests},function(err, user){
             if(err){
                 return res
                 .status(401)
                 .json({message:"Error updating interests"});
-            }else{
-                console.log({message:"interests updates"})
-                return res.status(200).json({message:"interests updates"});
+            }else{                
+                return res
+                .status(200)
+                .json({message:"interests updates"});
             }
         }); 
     }   
 };
 
-exports.getUserInterests = function(req, res){ 
-    utilUser.verifyUser(req,res);
-    if(res.statusCode == 404){
+exports.getUserInterests = function(req, res){
+    var token = req.headers.auth_token;
+    var result = {
+        payload: null,
+        status: 0
+    };
+    utilUser.verifyUser(token, result);
+    if(result.status == 404){
        return res.
        status(404).
        json({error_message:"Token not found"});
-    }else if(res.statusCode == 401){
+    }else if(result.status == 401){
        return res.
        status(401).
        json({error_message:"Token has expired"});
-    }else if(res.statusCode == 200){ 
-         user.findOne({_id:req.sub._id}).populate('interests').exec( function(err, user) {
+    }else if(result.status == 200){ 
+         user.findOne({_id: result.payload.id}).populate('interests').exec( function(err, user) {
             if (err) {
                 return res
                 .status(404)
@@ -176,21 +187,26 @@ exports.resetPassword = function(req, res){
 };
 
 exports.addUserPhotos = function(req, res){     
-    utilUser.verifyUser(req,res);
-    if(res.statusCode == 404){
+    var token = req.headers.auth_token;
+    var result = {
+        payload: null,
+        status: 0
+    };
+    utilUser.verifyUser(token, result);
+    if(result.status == 404){
        return res.
        status(404).
        json({error_message:"Token not found"});
-    }else if(res.statusCode == 401){
+    }else if(result.status == 401){
        return res.
        status(401).
        json({error_message:"Token has expired"});
-    }else if(res.statusCode == 200){                  
+    }else if(result.status == 200){                  
         var photoResult = photoController.addPhotos(req, res, function(result){            
-            if (res.statusCode == 500){
+            if (result.status == 500){
                 res.json({message_error:"Back ERROR: "+ err.message});
             }else if(res.statusCode == 200){               
-                    user.findByIdAndUpdate(req.sub._id ,{$addToSet: {photoid: {$each: photoResult}}} ,function(err, user){
+                    user.findByIdAndUpdate(result.payload.id ,{$addToSet: {photoid: {$each: photoResult}}} ,function(err, user){
                         if(err){
                             return res.
                             status(500).
@@ -207,21 +223,26 @@ exports.addUserPhotos = function(req, res){
 };
 
 exports.addUserProfilePhoto = function(req, res){
-    utilUser.verifyUser(req,res);
+    var token = req.headers.auth_token;
+    var result = {
+        payload: null,
+        status: 0
+    };
+    utilUser.verifyUser(token, result);
     
-    if(res.statusCode == 404){
+    if(result.status == 404){
        
         return res.
        status(404).
        json({error_message:"Token not found"});
     
-    }else if(res.statusCode == 401){
+    }else if(result.status == 401){
        
         return res.
        status(401).
        json({error_message:"Token has expired"});
     
-    }else if(res.statusCode == 200){ 
+    }else if(result.status == 200){ 
         
         var photoResult = new photo(req.file);       
          
@@ -232,7 +253,7 @@ exports.addUserProfilePhoto = function(req, res){
             }
             else if(res.statusCode == 200){
                 
-                user.findByIdAndUpdate(req.sub._id, { photo_profile_id: photoResult._id} ,function(err, user){
+                user.findByIdAndUpdate(result.payload.id, { photo_profile_id: photoResult._id} ,function(err, user){
                     
                     if(err){
                         
@@ -255,16 +276,21 @@ exports.addUserProfilePhoto = function(req, res){
 
 
 exports.getUserProfilePhoto = function(req, res){
-    utilUser.verifyUser(req,res);
-    if(res.statusCode == 404){
+    var token = req.headers.auth_token;
+    var result = {
+        payload: null,
+        status: 0
+    };
+    utilUser.verifyUser(token, result);
+    if(result.status == 404){
        return res.
        status(404).
        json({error_message:"Token not found"});
-    }else if(res.statusCode == 401){
+    }else if(result.status == 401){
        return res.
        status(401).
        json({error_message:"Token has expired"});
-    }else if(res.statusCode == 200){ 
+    }else if(result.status == 200){ 
         user.findOne({_id: req.sub._id}).populate('photo_profile_id').exec( function(err, user) {
             if (err) {
                 return res
