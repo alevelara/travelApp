@@ -28,14 +28,16 @@ exports.getAllUsers = function(req, res){
 };
 
 exports.getUser = function(req, res){
+    
     var token = req.headers.auth_token;
+    var userId = req.params.id;
     var result = {
         payload: null,
         status: 0
     };
-    var userId = req.params.id;
-     utilUser.verifyUser(token,result);
-     console.log(result);
+
+    utilUser.verifyUser(token,result);
+     
      if(result.status == 404){
         return  res.
         status(404).
@@ -59,28 +61,32 @@ exports.getUser = function(req, res){
 
 };
 
- exports.deleteUser = function(req, res){    
-     User.remove({_id: req.params.userid }, function(err, user){
-        if(err)
-            res.send(err);
-        res.json({message: 'User succesfully deleted'});
-     });
- };
-
  exports.updateUser = function(req, res){
-    User.findByIdAndUpdate({_id: req.params.userid}, req.body, {new: true}, function(err, user){
-        if(err)
-            res.send(err);
-        res.json(user);
-    });
- };
-
- exports.updateUserInterest = function(req, res){ 
-    var token = req.headers.auth_token;
+    var token = req.headers.auth_token;    
+    var reqUser = req.body.user;
     var result = {
         payload: null,
         status: 0
     };
+
+    console.log(req.body);
+
+    utilUser.verifyUser(token,result);
+    
+    userRepository.updateUserById(reqUser)
+    .then(user =>  res.status(200).json({"user": user}))
+    .catch(error =>  res.status(404).json({error_message:"user not found"}))
+    .catch(error =>  res.status(500).json({error_message:"Server error"}));
+   
+ };
+
+ exports.updateUserInterest = function(req, res){ 
+    var token = req.headers.auth_token;    
+    var result = {
+        payload: null,
+        status: 0
+    };
+    
     utilUser.verifyUser(token, result);
     if(result.status == 404){
         return res.
@@ -103,7 +109,7 @@ exports.getUser = function(req, res){
             }
         }); 
     }   
-};
+}; 
 
 exports.getUserInterests = function(req, res){
     var token = req.headers.auth_token;

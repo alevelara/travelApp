@@ -40,3 +40,10 @@ exports.findUserById = function (id, callback) {
     .then(user => callback(user))
     .catch(error => callback(error))
 };
+
+exports.updateUserById = function(user, callback){
+    User.update({ name: user.name },
+    { where:{ id: user.id } })
+    .then(user => callback(user))
+    .catch(error => callback(error));
+}
