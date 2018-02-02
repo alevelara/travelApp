@@ -1,6 +1,7 @@
 //Modules
 const crypto = require('crypto');
 
+
 module.exports = function(sequelize, DataTypes) {
     var user = sequelize.define('user', {
         id:{
@@ -22,11 +23,13 @@ module.exports = function(sequelize, DataTypes) {
         },
         phone_number:{
             type: DataTypes.STRING,
-            allowNull: false
+            defaultValue: null,
+            allowNull: true
         },
         description: {
             type: DataTypes.STRING,
-            allowNull: false
+            defaultValue: null,
+            allowNull: true
         },
         hometown:{
             type: DataTypes.INTEGER,
@@ -35,6 +38,7 @@ module.exports = function(sequelize, DataTypes) {
                 key: 'id',
                 deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
             },
+            defaultValue: null,
             allowNull: true
         },
         photo_profile_id:{
@@ -44,43 +48,39 @@ module.exports = function(sequelize, DataTypes) {
                 key: 'id',
                 deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
             },
-            allowNull: false
+            defaultValue: null,
+            allowNull: true
         },
         user_type:{
             type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 0
+            allowNull: true,
+            defaultValue: null
         },
         score:{
             type: DataTypes.INTEGER,
-            default: 0,
+            defaultValue: null,
             allowNull: true
         },
         reset_password_token:{
             type: DataTypes.INTEGER,
-            allowNull: false
+            defaultValue: null,
+            allowNull: true
         },
-        hash: DataTypes.INTEGER,
-        salt: DataTypes.INTEGER
+        hash: DataTypes.STRING,
+        salt: DataTypes.STRING
 
     },{
         setterMethods: {
             password: function(password){
-                this.salt = crypto.randomBytes(16).toDataTypes.DataTypes.INTEGER('hex');
-                this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha256').toDataTypes.DataTypes.INTEGER('hex');
+                this.salt = crypto.randomBytes(16).toString('hex');
+                this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha256').toString('hex');        
             },
             interests: function(interests){
                 this.interests = interests;
             }
-        },
-        instanceMethods: {
-            validPassword: function(password) {
-                var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha256').toDataTypes.DataTypes.INTEGER('hex');
-                return this.hash === hash;
-            },
-
-        }
+        }        
     });
 
+    
     return user;
 };

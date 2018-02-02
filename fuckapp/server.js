@@ -5,7 +5,7 @@
     db_config = require('./config/database.json')[node_env];
     Sequelize = require('sequelize');
      //Models
-    models = require("./models");
+    models = require("./models/index");
 
 var urlHost = "";
 
@@ -14,19 +14,26 @@ if(node_env === "dev"){
 }else{
     urlHost = config_test.testUrl.DBHost;
 }
-console.log("DBHost: " + db_config.database);
 
 var sequelize = new Sequelize(
     db_config.database,
     db_config.username,
     db_config.password,
+    
      {
         dialect: 'mysql',
         logging: console.log,
         define: {
             timestamps: false
-        }
+        }, 
+        pool: {
+            max: 5,
+            min: 0,
+            acquire: 30000,
+            idle: 10000
+          }
     }
+    
 );
 
   sequelize.authenticate().then(() => {
@@ -36,11 +43,10 @@ var sequelize = new Sequelize(
   });
 
 exports.sequelize = sequelize;
-
-
-
+  
+  /*
   //Sync Database
-  models.sequelize.sync().then(function() {
+  models.sequelize.sync({force: true}).then(function() {
 
       console.log('Nice! Database looks fine')
 
@@ -49,3 +55,4 @@ exports.sequelize = sequelize;
       console.log(err, "Something went wrong with the Database Update!")
 
   });
+*/
