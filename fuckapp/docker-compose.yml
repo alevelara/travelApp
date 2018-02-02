@@ -1,0 +1,21 @@
+version: '2'
+services:
+  mysql:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: fuckapp
+      MYSQL_USER: fuckapp
+      MYSQL_PASSWORD: fuckapp
+      MYSQL_DATABASE: fuckapp
+
+  fuckapp:
+    build: .
+    ports:
+      - 8080:8080
+    links:
+      - mysql:mysql
+    volumes:
+      - '.:/fuckapp'
+    command: bash -c "./install.sh && node app.js"
