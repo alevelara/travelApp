@@ -1,6 +1,8 @@
+
 //modules
 var crypto = require('crypto'),
-    q = require('q');
+    q = require('q'),
+    trys = require('bluebird');
 //models
 var models = require('../../models');
 var User = models['user'];
@@ -16,15 +18,26 @@ var photoController = require('../photos/photo.controllers'),
     mailController = require('../mails/mailer.controllers');
 
 // Get all users
-exports.getAllUsers = function(req, res){    
-    userRepository.getAllUsers(function (users) { 
-        if(!users){
+exports.getAllUsers = function(req, res){
+    var token = req.headers.auth_token;
+    var userId = req.params.id;
+    var result = {
+        payload: null,
+        status: 0,
+        message: ""
+    };
+    try {
+        utilUser.verifyUser(token,result);        
+        try {
+            userRepository.getAllUsers(function (users) {                 
+                res.status(200).json({'users': users});    
+            });               
+        } catch (error) {
             res.status(500).json({err: 'Server Fail'})
-        }else{
-            res.status(200).json({'users': users})
-        }       
-       
-    });
+        }
+    } catch (error) {
+        return res.status(result.status).json({error_message: error.message});
+    }    
 };
 
 exports.getUser = function(req, res){
@@ -33,31 +46,26 @@ exports.getUser = function(req, res){
     var userId = req.params.id;
     var result = {
         payload: null,
-        status: 0
+        status: 0,
+        message: ""
     };
 
-    utilUser.verifyUser(token,result);
-     
-     if(result.status == 404){
-        return  res.
-        status(404).
-        json({error_message: "Token not found"});
-     }else if(result.status == 401){
-        return res.
-        status(401).
-        json({error_message:"Token has expired"});
-     }else if(result.status == 200){          
-        userRepository.findUserById(userId, function(user){        
-            if(!user){
-               return res
-               .status(404)
-               .json({error_message:"user not found"});
-            }           
-                return res
-                .status(200)
-                .json({"user": user});                
-         });
-     }
+    try {
+        utilUser.verifyUser(token,result);
+        try {
+            userRepository.findUserById(userId, function(user){                            
+                if(user){
+                    return res.status(200).json({"user": user});                
+                }else{
+                    return res.status(404).json({error_message: "user not found"});                
+                }
+             });
+        } catch (error) {
+            return res.status(500).json({error_message: error.message});
+        }
+    } catch (error) {
+        return res.status(result.status).json({error_message: error.message});
+    }    
 
 };
 
@@ -66,48 +74,48 @@ exports.getUser = function(req, res){
     var reqUser = req.body.user;
     var result = {
         payload: null,
-        status: 0
-    };
-
-    utilUser.verifyUser(token,result);
-    
-    userRepository.updateUserById(reqUser, function(user){
-
-    })
-    .then(user =>  res.status(200).json({"user": user}))
-    .catch(error =>  res.status(404).json({error_message:"user not found"}))
-    .catch(error =>  res.status(500).json({error_message:"Server error"}));   
+        status: 0,
+        message: ""
+    };    
+    try {
+        utilUser.verifyUser(token,result);        
+        try {
+            userRepository.updateUserById(reqUser, function(user){
+                return res.status(200).json({user: reqUser});
+            });
+        } catch (error) {
+            return res.status(500).json({error_message: error.message});
+        }
+    } catch (error) {
+        return res.status(result.status).json({error_message: error.message});
+    }
+   
 };
 
  exports.updateUserInterest = function(req, res){ 
     var token = req.headers.auth_token;    
     var result = {
         payload: null,
-        status: 0
-    };
-    
-    utilUser.verifyUser(token, result);
-    if(result.status == 404){
-        return res.
-        status(404).
-        json({error_message:"Token not found"});
-     }else if(result.status == 401){
-        return res.
-        status(401).
-        json({error_message:"Token has expired"});
-     }else if(result.status == 200){       
-        user.findByIdAndUpdate(result.payload.id, {interests:req.body.interests},function(err, user){
-            if(err){
-                return res
-                .status(401)
-                .json({message:"Error updating interests"});
-            }else{                
-                return res
-                .status(200)
-                .json({message:"interests updates"});
-            }
-        }); 
-    }   
+        status: 0,
+        message: ""
+    };    
+    try {
+        utilUser.verifyUser(token, result);
+            user.findByIdAndUpdate(result.payload.id, {interests:req.body.interests},function(err, user){
+                if(err){
+                    return res
+                    .status(401)
+                    .json({message:"Error updating interests"});
+                }else{                
+                    return res
+                    .status(200)
+                    .json({message:"interests updates"});
+                }
+            });     
+
+    } catch (error) {
+      
+    }         
 }; 
 
 exports.getUserInterests = function(req, res){

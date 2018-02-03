@@ -1,3 +1,4 @@
+
 'use strict';
 
 const models = require('../../models');
@@ -42,8 +43,10 @@ exports.findUserById = function (id, callback) {
 };
 
 exports.updateUserById = function(user, callback){
-    User.update({ name: user.name },
+    User.update({ full_name: user.name },
     { where:{ id: user.id } })
     .then(user => callback(user))
-    .catch(error => callback(error));
+    .catch(error=> {
+        
+        callback(error)});
 }

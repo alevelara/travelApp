@@ -1,5 +1,8 @@
+
 var generator = require('generate-password'),
-    user = require('../../models/user');
+    user = require('../../models/user'),
+    text = require('body-parser');
+
 const jwt = require('jsonwebtoken');
 const env_var = require('../../config/var.json');
 
@@ -25,13 +28,18 @@ exports.verifyUser = function(token, result){
     if(token){                    
         jwt.verify(token, env_var.development.JWT_KEY, function(err, payload){
             if(err){
-                result.status = 404
+                result.status = 404;
+                result.message = 'Token not found';
+                throw new Error(result.message);
             }else{
-                if((payload.exp * 1000) <= Date.now()){
-                    result.status = 401
+                var expiredTime = (payload.exp * 1000);
+                if(expiredTime <= Date.now()){
+                    result.status = 401;
+                    result.message = "Token has expired";
+                    throw new Error(result.message);
                 }else{
                     result.payload = payload;
-                    result.status = 200
+                    result.status = 200;
                 }
             }
         });
