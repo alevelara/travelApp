@@ -13,9 +13,12 @@ var path = require('path'),
     passport = require('passport'),
     methodOverride = require('method-override'),
     server = require('./server'),
+    fucklogger = require('./components/logger/logger');
     routes = require('./routes');
  require('./config/passport');
 
+// Init logger
+fucklogger.init();
 
 // servidor, socket.io y mongo
 var server = require('http').createServer(app),

@@ -1,9 +1,10 @@
-  var port = process.env.PORT || 8080,
-    node_env = process.env.NODE_ENV || "dev"
-    config = require('./config/default.json');
-    config_test = require('./config/test.json')
-    db_config = require('./config/database.json')[node_env];
-    Sequelize = require('sequelize');
+var port = process.env.PORT || 8080,
+    node_env = process.env.NODE_ENV || "dev",
+    config = require('./config/default.json'),
+    config_test = require('./config/test.json'),
+    db_config = require('./config/database.json')[node_env],
+    Sequelize = require('sequelize'),
+    logger = require('./components/logger/logger'),
      //Models
     models = require("./models/index");
 
@@ -22,7 +23,7 @@ var sequelize = new Sequelize(
     
      {
         dialect: 'mysql',
-        logging: console.log,
+        logging: logger.debug,
         define: {
             timestamps: false
         }, 
@@ -37,9 +38,9 @@ var sequelize = new Sequelize(
 );
 
   sequelize.authenticate().then(() => {
-    console.log('Connection has been established successfully.')
+    logger.info('Connection has been established successfully.')
   }).catch(err => {
-    console.error('Unable to connect to the database:', err)
+    logger.error('Unable to connect to the database:', err)
   });
 
 exports.sequelize = sequelize;
@@ -48,11 +49,11 @@ exports.sequelize = sequelize;
   //Sync Database
   models.sequelize.sync({force: true}).then(function() {
 
-      console.log('Nice! Database looks fine')
+      logger.info('Nice! Database looks fine')
 
   }).catch(function(err) {
 
-      console.log(err, "Something went wrong with the Database Update!")
+      logger.error(err, "Something went wrong with the Database Update!")
 
   });
 */

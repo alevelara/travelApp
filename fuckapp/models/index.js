@@ -1,12 +1,13 @@
 "use strict";
 
-var fs = require("fs");
-var path = require("path");
-var Sequelize = require("sequelize");
-var env = process.env.NODE_ENV || "dev";
-var config = require(path.join(__dirname, '..', 'config', 'database.json'))[env];
-var sequelize = new Sequelize(config.database, config.username, config.password, config);
-var db = {};
+var fs = require("fs"),
+    path = require("path"),
+    Sequelize = require("sequelize"),
+    env = process.env.NODE_ENV || "dev",
+    config = require(path.join(__dirname, '..', 'config', 'database.json'))[env],
+    sequelize = new Sequelize(config.database, config.username, config.password, config),
+    db = {},
+    logger = require('../components/logger/logger');
 
 fs
     .readdirSync(__dirname)
@@ -15,7 +16,7 @@ fs
     })
     .forEach(function(file) {
         var model = sequelize.import(path.join(__dirname, file));
-        console.log(model.name);
+        logger.debug(model.name);
         db[model.name] = model;
     });
 

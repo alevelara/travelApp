@@ -1,6 +1,8 @@
 //modules
 var crypto = require('crypto'),
-    q = require('q');
+    q = require('q'),
+    logger = require('../../components/logger/logger');
+
 //models
 var models = require('../../models');
 var User = models['user'];
@@ -35,7 +37,7 @@ exports.getUser = function(req, res){
     };
     var userId = req.params.id;
      utilUser.verifyUser(token,result);
-     console.log(result);
+     logger.debug(result);
      if(result.status == 404){
         return  res.
         status(404).
@@ -157,7 +159,7 @@ exports.sendEmailUserPassword = function(req, res){
             });
         }else{
             res.status(401).json({message_error:"BACK ERROR"});
-            console.log('Incorrect user: date: %d', Date.now.toString());           
+            logger.error('Incorrect user: date: %d', Date.now.toString());           
            return;
         }      
     });
@@ -247,7 +249,7 @@ exports.addUserProfilePhoto = function(req, res){
         var photoResult = new photo(req.file);       
          
         photoController.addPhoto(req, res, function(photoResult){                 
-            console.log(req.file);
+            logger.debug(req.file);
             if (res.statusCode == 500){
                 res.json({message_error:"Back ERROR: "+ err.message});
             }

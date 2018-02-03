@@ -1,6 +1,7 @@
 //Modules
-var passport = require('passport');
-var userRepository = require('../users/user.repository')
+var passport = require('passport'),
+    userRepository = require('../users/user.repository'),
+    logger = require('../../components/logger/logger');
 
 //Controllers
 var mailCtrl = require('../mails/mailer.controllers');
@@ -11,13 +12,13 @@ var registerUtil = require('./register.utils');
 exports.login = function(req, res) {
     passport.authenticate('local', function(err, user, info){
         if (err){
-            console.log('Login fail: date: %d', Date.now.toString());
+            logger.error('Login fail: date: %d', Date.now.toString());
             res.status(500).json({error: err})
             return;
         }
         if(!user){
             res.status(401).json(info);
-            console.log('Incorrect user or password: date: %d', Date.now.toString());
+            logger.error('Incorrect user or password: date: %d', Date.now.toString());
             return;
         }
         else{
@@ -32,7 +33,7 @@ exports.login = function(req, res) {
 
 exports.signup = function(req, res){
     var userLogin = userRepository.findUserByEmail(req.body.email, function(user){
-        console.log(user);
+        logger.debug(user);
         if(user){
             return res.
             status(404)
@@ -47,7 +48,7 @@ exports.signup = function(req, res){
             };           
 
             userRepository.createUser(queryUser, function(user){
-                console.log(user);
+                logger.debug(user);
                 if(!user){
                     return res
                         .status(500)

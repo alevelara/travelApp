@@ -5,12 +5,14 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const env_var = require('../../config/var.json');
 
+var logger = require('../../components/logger/logger');
+
 exports.getUserByEmail = function(username, callback){
-    console.log(username);
+    logger.debug(username);
     user.findOne({email: username}, function(err, user){
-        console.log(user);
+        logger.debug(user);
         if(err){                       
-            console.log(err);
+            logger.error(err);
             return callback(err);
         }else{            
             return callback(user);
