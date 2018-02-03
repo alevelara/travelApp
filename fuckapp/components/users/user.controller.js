@@ -69,16 +69,15 @@ exports.getUser = function(req, res){
         status: 0
     };
 
-    console.log(req.body);
-
     utilUser.verifyUser(token,result);
     
-    userRepository.updateUserById(reqUser)
+    userRepository.updateUserById(reqUser, function(user){
+
+    })
     .then(user =>  res.status(200).json({"user": user}))
     .catch(error =>  res.status(404).json({error_message:"user not found"}))
-    .catch(error =>  res.status(500).json({error_message:"Server error"}));
-   
- };
+    .catch(error =>  res.status(500).json({error_message:"Server error"}));   
+};
 
  exports.updateUserInterest = function(req, res){ 
     var token = req.headers.auth_token;    
