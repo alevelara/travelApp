@@ -42,19 +42,19 @@ exports.signup = function(req, res){
 
             var queryUser = {
                  username: req.body.username,
-                 fullName: req.body.fullName,
+                 full_name: req.body.full_name,
                  email: req.body.email,
                  password: req.body.password
             };           
 
             userRepository.createUser(queryUser, function(user){
-                logger.debug(user);
+                //logger.debug(user);
                 if(!user){
                     return res
                         .status(500)
-                        .json({status:"error", error_message: err});
+                        .json({status:"error", error_message: "error creating user"});
                 }else{
-                    const token = registerUtil.generateJwt(user);                    ;
+                    const token = registerUtil.generateJwt(user);
                     // After success login, we'll send a email verification
                     mailCtrl.sendEmail(user.email);
                     return res.status(200).json({
