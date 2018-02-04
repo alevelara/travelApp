@@ -1,7 +1,8 @@
 //Modules
 var nodemailer = require('nodemailer'),
     smtpTransport = require('nodemailer-smtp-transport'),
-    vars = require('../../config/var.json');
+    vars = require('../../config/var.json'),
+    logger = require('../../components/logger/logger');
 
 exports.sendEmail = function(email){
 
@@ -23,11 +24,11 @@ exports.sendEmail = function(email){
 
     transporter.sendMail(mailOption, function(error, info){
         if(error){            
-            console.log(email);
-            console.log(error.message);
+            logger.error(email);
+            logger.error(error.message);
         }else{
-            console.log(email);
-            console.log("Email sent");
+            logger.debug(email);
+            logger.debug("Email sent");
         }
     });
 
@@ -52,12 +53,12 @@ exports.sendNewPasswordEmail = function(email,password, res){
 
     transporter.sendMail(mailOption, function(error, info){
         if(error){            
-            console.log(email);
-            console.log(error.message);
+            logger.error(email);
+            logger.error(error.message);
             res.status(500);
         }else{
-            console.log(email);
-            console.log("Email sent");
+            logger.debug(email);
+            logger.debug("Email sent");
             res.status(200);
         }
     });

@@ -1,0 +1,47 @@
+#fuckapp configuration file
+
+port: 8080
+serverHost: 'http://localhost'
+env: "dev"
+dbdriver: "mysql"
+
+################################################################################
+# Database settings
+################################################################################
+
+# MySql database info
+db:
+    dev: 
+        mysql:
+            driver: "mysql"
+            username: "root"
+            database: "fuckapp"
+            password: "fuckapp"
+            host: "127.0.0.1"
+            dialect: "mysql"
+            DBHost: "mysql://localhost/fuckApp"
+        mongo:
+            DBHost: "mongodb://localhost/fuckApp"
+    test: 
+        mysql:
+            driver: "mysql"
+            username: "root"
+            database: "fuckapp"
+            password: "fuckapp"
+            host: "127.0.0.1"
+            dialect: "mysql"
+            DBHost: "mysql://localhost/fuckApp_test"
+        mongo:
+            DBHost: "mongodb://localhost/fuckApp_test"
+
+################################################################################
+# Logging options
+################################################################################
+
+# Log file path
+log_file: './fuckapp_log.txt'
+
+# Log level to use, omits lower log levels
+# Levels, lowest to highest: silly, debug, verbose, info, warn, error
+# default = 'info'
+log_level: 'silly'

@@ -9,13 +9,12 @@ var path = require('path'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     cons = require('consolidate'),
-    config = require('config'),
+    config = require('./config/config'),
     passport = require('passport'),
     methodOverride = require('method-override'),
     server = require('./server'),
     routes = require('./routes');
  require('./config/passport');
-
 
 // servidor, socket.io y mongo
 var server = require('http').createServer(app),
@@ -35,14 +34,13 @@ app.use(methodOverride('_method'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-
 //Initialize passport.
 passport.initialize();
 
 //Initialize routes
 routes(app);
 
-if(config.util.getEnv('NODE_ENV') !== 'test') {
+if(config.get('env') !== 'test') {
     //use morgan to log at command line
     app.use(logger('combined')); //'combined' outputs the Apache style LOGs
 }
