@@ -20,6 +20,7 @@ var sequelize = new Sequelize(
     config.get('db:' + node_env + ':' + driver + ':username'),
     config.get('db:' + node_env + ':' + driver + ':password'),
     {
+        host: urlHost,
         dialect: driver,
         logging: logger.debug,
         define: {
@@ -43,6 +44,7 @@ sequelize.authenticate().then(() => {
 exports.sequelize = sequelize;
 
   /*
+
   //Sync Database
   models.sequelize.sync({force: true}).then(function() {
 
@@ -53,4 +55,6 @@ exports.sequelize = sequelize;
       logger.error(err, "Something went wrong with the Database Update!")
 
   });
-*/
+
+  */
+

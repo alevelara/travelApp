@@ -23,12 +23,12 @@ module.exports = function(sequelize, DataTypes) {
         },
         phone_number:{
             type: DataTypes.STRING,
-            defaultValue: null,
+            defaultValue: "",
             allowNull: true
         },
         description: {
             type: DataTypes.STRING,
-            defaultValue: null,
+            defaultValue: "",
             allowNull: true
         },
         hometown:{
@@ -58,16 +58,22 @@ module.exports = function(sequelize, DataTypes) {
         },
         score:{
             type: DataTypes.INTEGER,
-            defaultValue: null,
-            allowNull: true
+            allowNull: true,
+            defaultValue: null
         },
         reset_password_token:{
             type: DataTypes.INTEGER,
-            defaultValue: null,
-            allowNull: true
+            allowNull: true,
+            defaultValue: null
         },
-        hash: DataTypes.STRING,
-        salt: DataTypes.STRING
+        hash: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        salt: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
 
     },{
         setterMethods: {

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "SET NODE_ENV=dev && node server.js",
-    "test": "mocha ./tests/register.tests.js"
+    "test": "mocha ./test/register.test.js"
   },
   "dependencies": {
     "angular": "^1.6.8",

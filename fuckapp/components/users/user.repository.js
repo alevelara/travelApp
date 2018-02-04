@@ -13,13 +13,16 @@ exports.getAllUsers = function (callback) {
 
 exports.createUser = function(queryUser, callback) {
     User.create({
-            username: queryUser.fullName,
+            username: queryUser.username,
             email: queryUser.email,
-            full_name: queryUser.fullName,
+            full_name: queryUser.full_name,
             password: queryUser.password
     })
     .then(user => callback(user))
-    .catch(error => callback(error))
+    .catch(error => {
+        console.log(error)
+        callback()
+    })
 };
 
 exports.findUserByEmail = function (email, callback) {
