@@ -1,7 +1,0 @@
-{
-    "defaultUrl":{
-        "DBHost": "mongodb://localhost/fuckApp",
-        "serverHost": "http://localhost:8080"
-    }
-    
-}

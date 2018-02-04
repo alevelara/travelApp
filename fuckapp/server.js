@@ -1,50 +1,47 @@
-var port = process.env.PORT || 8080,
-    node_env = process.env.NODE_ENV || "dev",
-    config = require('./config/default.json'),
-    config_test = require('./config/test.json'),
-    db_config = require('./config/database.json')[node_env],
+var config = require('./config/config'),
     Sequelize = require('sequelize'),
     logger = require('./components/logger/logger'),
-     //Models
-    models = require("./models/index");
+    // models
+    models = require("./models/index"),
+    // env vars
+    driver = config.get('dbdriver'),
+    node_env = config.get('env'),
+    port = config.get('port'),
+    urlHost = "";
 
-var urlHost = "";
-
-if(node_env === "dev"){
-    urlHost = config.defaultUrl.DBHost;
-}else{
-    urlHost = config_test.testUrl.DBHost;
+if (node_env === "dev") {
+    urlHost = config.get('db:' + node_env + ':' + driver + ':DBHost');
+} else {
+    urlHost = config.get('db:' + node_env + ':' + driver + ':DBHost');
 }
 
 var sequelize = new Sequelize(
-    db_config.database,
-    db_config.username,
-    db_config.password,
-    
-     {
-        dialect: 'mysql',
+    config.get('db:' + node_env + ':' + driver + ':database'),
+    config.get('db:' + node_env + ':' + driver + ':username'),
+    config.get('db:' + node_env + ':' + driver + ':password'),
+    {
+        dialect: driver,
         logging: logger.debug,
         define: {
             timestamps: false
-        }, 
+        },
         pool: {
             max: 5,
             min: 0,
             acquire: 30000,
             idle: 10000
-          }
+        }
     }
-    
 );
 
-  sequelize.authenticate().then(() => {
+sequelize.authenticate().then(() => {
     logger.info('Connection has been established successfully.')
-  }).catch(err => {
+}).catch(err => {
     logger.error('Unable to connect to the database:', err)
-  });
+});
 
 exports.sequelize = sequelize;
-  
+
   /*
   //Sync Database
   models.sequelize.sync({force: true}).then(function() {
