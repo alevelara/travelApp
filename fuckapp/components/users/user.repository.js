@@ -1,13 +1,14 @@
 'use strict';
 
 const models = require('../../models');
-const User = models['user'];
+const User = models.user;
+const UserInterest = models.userInterest;
+const userInterestSequelize = UserInterest.sequelize;
 
-
-exports.getAllUsers = function (callback) {
+exports.getAllUsers =  function (callback) {
     User.findAll()
     .then(users => callback(users))
-    .catch(error => callback(error))
+    .catch(error => callback(error));
 };
 
 exports.createUser = function(queryUser, callback) {
@@ -18,10 +19,7 @@ exports.createUser = function(queryUser, callback) {
             password: queryUser.password
     })
     .then(user => callback(user))
-    .catch(error => {
-        console.log(error)
-        callback()
-    })
+    .catch(error => callback(error));    
 };
 
 exports.findUserByEmail = function (email, callback) {
@@ -31,7 +29,7 @@ exports.findUserByEmail = function (email, callback) {
         }
     })
     .then(user => callback(user))
-    .catch(error => callback(error))
+    .catch(error => callback(error));
 };
 
 exports.findUserById = function (id, callback) {
@@ -41,7 +39,7 @@ exports.findUserById = function (id, callback) {
         }
     })
     .then(user => callback(user))
-    .catch(error => callback())
+    .catch(error => callback());
 };
 
 exports.updateUserById = function(userId, user, callback){
@@ -57,13 +55,19 @@ exports.updateUserById = function(userId, user, callback){
         }
     )
         .then(result => {
-            this.findUserById(userId, function (user) {
-                console.log(user)
-                callback(user)
-            })
+            this.findUserById(userId, function (user) {                
+                callback(user);
+            });
         })
-        .catch(error=> {
-            console.log(error)
-            callback()}
-            );
-}
+        .catch(error =>  callback(error));            
+};
+
+exports.getInterestsByUserId = function(userId, callback){        
+    userInterestSequelize.query('CALL getInterestsByUserId(:user_id)', 
+    {
+        replacements: { user_id: userId},
+        type: userInterestSequelize.QueryTypes.SELECT        
+    })
+    .then(userinterest => callback(userinterest))
+    .catch(error => callback(error));
+};

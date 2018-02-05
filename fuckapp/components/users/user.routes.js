@@ -12,8 +12,7 @@ app.route('/user/:id')
   .get(users.getUser)  
   .put(users.updateUser);
 
-app.route('/user/interests')
-  .post(users.updateUserInterest)
+app.route('/user/:user_id/interests')  
   .get(users.getUserInterests);
 
 app.route('/user/password/recovery')
@@ -21,10 +20,6 @@ app.route('/user/password/recovery')
 
 app.route('/user/password/reset')
   .post(users.resetPassword);
-
-  /*app.route('/user/photos')
-  .post(users.addUserPhotos);
-  */
 
 app.route('/user/photo/profile')
   .post(users.addUserProfilePhoto)

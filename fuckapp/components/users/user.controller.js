@@ -95,58 +95,27 @@ exports.getUser = function(req, res){
    
 };
 
- exports.updateUserInterest = function(req, res){ 
-    var token = req.headers.auth_token;    
+exports.getUserInterests = function(req, res){
+    var token = req.headers.auth_token;
+    var userId = req.params.user_id;
     var result = {
         payload: null,
         status: 0,
         message: ""
-    };    
-    try {
-        utilUser.verifyUser(token, result);
-            user.findByIdAndUpdate(result.payload.id, {interests:req.body.interests},function(err, user){
-                if(err){
-                    return res
-                    .status(401)
-                    .json({message:"Error updating interests"});
-                }else{                
-                    return res
-                    .status(200)
-                    .json({message:"interests updates"});
-                }
-            });     
-
-    } catch (error) {
-      
-    }         
-}; 
-
-exports.getUserInterests = function(req, res){
-    var token = req.headers.auth_token;
-    var result = {
-        payload: null,
-        status: 0
     };
-    utilUser.verifyUser(token, result);
-    if(result.status == 404){
-       return res.
-       status(404).
-       json({error_message:"Token not found"});
-    }else if(result.status == 401){
-       return res.
-       status(401).
-       json({error_message:"Token has expired"});
-    }else if(result.status == 200){ 
-         user.findOne({_id: result.payload.id}).populate('interests').exec( function(err, user) {
-            if (err) {
-                return res
-                .status(404)
-                .json({status:"error", error_message: "Error retrieving user"});
-            } else {
-                return res.status(200).json({interests:user.interests})
-            }
-        });
-    }
+    
+    try {
+        utilUser.verifyUser(token,result);
+        try {
+            userRepository.getInterestsByUserId(userId, function(userinterest){                            
+                return res.status(200).json({"interests": userinterest});                               
+             });
+        } catch (error) {
+            return res.status(500).json({error_message: error.message});
+        } 
+    } catch (error) {
+        return res.status(result.status).json({error_message: error.message});
+    }     
 };
 
 exports.sendEmailUserPassword = function(req, res){    
@@ -180,7 +149,7 @@ exports.sendEmailUserPassword = function(req, res){
 };
 
 exports.resetPassword = function(req, res){
- 
+
     var userLogin = utilUser.getUserByEmailAndToken(req.body.email, req.body.reset_password_token, function(userLogin){        
         if(userLogin){
             userLogin.setPassword(req.body.new_password);
