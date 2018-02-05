@@ -71,19 +71,20 @@ exports.getUser = function(req, res){
 
 };
 
- exports.updateUser = function(req, res){
-    var token = req.headers.auth_token;    
+exports.updateUser = function(req, res){
+    var token = req.headers.auth_token;
+    var userId = req.params.id;
     var reqUser = req.body.user;
     var result = {
         payload: null,
         status: 0,
         message: ""
-    };    
+    };
     try {
-        utilUser.verifyUser(token,result);        
+        utilUser.verifyUser(token,result);
         try {
-            userRepository.updateUserById(reqUser, function(user){
-                return res.status(200).json({user: reqUser});
+            userRepository.updateUserById(userId, reqUser, function(user){
+                return res.status(200).json({user: user});
             });
         } catch (error) {
             return res.status(500).json({error_message: error.message});
@@ -91,8 +92,9 @@ exports.getUser = function(req, res){
     } catch (error) {
         return res.status(result.status).json({error_message: error.message});
     }
-   
+
 };
+
 
  exports.updateUserInterest = function(req, res){ 
     var token = req.headers.auth_token;    

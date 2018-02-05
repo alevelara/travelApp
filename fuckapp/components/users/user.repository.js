@@ -45,11 +45,27 @@ exports.findUserById = function (id, callback) {
     .catch(error => callback(error))
 };
 
-exports.updateUserById = function(user, callback){
-    User.update({ full_name: user.name },
-    { where:{ id: user.id } })
-    .then(user => callback(user))
-    .catch(error=> {
-        
-        callback(error)});
+exports.updateUserById = function(userId, user, callback){
+    User.update(
+        {
+            full_name: user.full_name,
+            username: user.username,
+            description: user.description,
+            photo_profile_id: user.photo_profile_id
+        },
+        {
+            where: { id: userId },
+            returning: true,
+        }
+    )
+        .then(result => {
+            this.findUserById(userId, function (user) {
+                console.log(user)
+                callback(user)
+            })
+        })
+        .catch(error=> {
+            console.log(error)
+            callback()}
+        );
 }
