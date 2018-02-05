@@ -16,7 +16,7 @@ var utilRegister = require('../registers/register.utils'),
     utilPhoto = require('../photos/photo.utils');
 
 //controllers
-var photoController = require('../photos/photo.controllers'),
+var photoController = require('../photos/photo.controller'),
     mailController = require('../mails/mailer.controllers');
 
 // Get all users

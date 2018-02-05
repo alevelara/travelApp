@@ -1,12 +1,12 @@
+const photoController = require('./photo.controller');
+const uploadAvatar = require('./photo.utils').uploadAvatar();
+
+
 module.exports = function(app) {
- //Controllers
-    var photos = require('./photo.controllers');
 
-    app.route('/photo')
-        .post(photos.addSimplePhoto)
-        .get(photos.getPhoto);
+    app.post('/photo', uploadAvatar, function(req, res) {
+        photoController.addSimplePhoto(req, res)
+    });
 
-    app.route('/photo/:photoid')
-        .get(photos.getPhoto)
-        .delete(photos.deletePhoto);
-}   
+    app.get('/photo/:id', photoController.getPhoto);
+};
