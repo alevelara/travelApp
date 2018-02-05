@@ -71,7 +71,11 @@ exports.getUser = function(req, res){
 
 };
 
+<<<<<<< 09e478d091337711a41c1f8c4e1f93031deb9159
  exports.updateUser = function(req, res){
+=======
+exports.updateUser = function(req, res){
+>>>>>>> Add support for uploading/downloading photos.
     var token = req.headers.auth_token;
     var userId = req.params.id;
     var reqUser = req.body.user;
@@ -79,9 +83,9 @@ exports.getUser = function(req, res){
         payload: null,
         status: 0,
         message: ""
-    };    
+    };
     try {
-        utilUser.verifyUser(token,result);        
+        utilUser.verifyUser(token,result);
         try {
             userRepository.updateUserById(userId, reqUser, function(user){
                 return res.status(200).json({user: user});
@@ -92,8 +96,9 @@ exports.getUser = function(req, res){
     } catch (error) {
         return res.status(result.status).json({error_message: error.message});
     }
-   
+
 };
+
 
  exports.updateUserInterest = function(req, res){ 
     var token = req.headers.auth_token;    

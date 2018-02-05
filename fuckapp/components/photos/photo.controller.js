@@ -69,35 +69,3 @@ exports.getPhoto = function(req, res){
     })
 };
 
-
-exports.addPhotos = function(req, res, callback){
-    var upload = photoUtil.uploadMultiplePhotos(req),
-    result = {};    
-    upload(req, res, function(err) {        
-                 if (err) {        
-                     res.end(err.message);
-                     deferred.reject(err.message);                           
-                 }else{                                                             
-                        result = photo.insertMany(req.files, function(err, photo){
-                            if(err){
-                                res.status(500);
-                            }else{
-                                res.status(200);  
-                                callback(result);                                                                
-                            }
-                        });                       
-                }
-                
-            });
-        };
-
-exports.getPhotos = function(req, res){
-    photo.find({},function(err, photo){
-        if(err){
-            return res.status(500).json({message_error: "Back Error"+ err.message})
-        }else{
-            return res.status(200).json({photos:photo})
-        }
-    });
-};
-
