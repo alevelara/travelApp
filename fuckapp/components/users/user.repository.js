@@ -1,4 +1,3 @@
-
 'use strict';
 
 const models = require('../../models');
@@ -50,7 +49,8 @@ exports.updateUserById = function(userId, user, callback){
         {
             full_name: user.full_name,
             username: user.username,
-            description: user.description
+            description: user.description,
+            hometown: user.hometown
         },
         {
             where: { id: userId },
