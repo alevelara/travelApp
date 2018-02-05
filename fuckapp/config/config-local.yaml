@@ -19,7 +19,7 @@ db:
             password: "fuckapp"
             host: "127.0.0.1"
             dialect: "mysql"
-            DBHost: "mysql://localhost/fuckApp"
+            DBHost: "localhost"
         mongo:
             DBHost: "mongodb://localhost/fuckApp"
     test: 
@@ -30,7 +30,7 @@ db:
             password: "fuckapp"
             host: "127.0.0.1"
             dialect: "mysql"
-            DBHost: "mysql://localhost/fuckApp_test"
+            DBHost: "localhost"
         mongo:
             DBHost: "mongodb://localhost/fuckApp_test"
 

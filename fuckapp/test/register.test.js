@@ -14,8 +14,9 @@ var api = chai.request(app);
 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTIyOWI5OWYwNzdjYzJmODRlOWNiYTYiLCJlbWFpbCI6ImFsZXZlbGFyYUBnbWFpbC5jb20iLCJuYW1lIjoiQWxlamFuZHJvIiwiZXhwIjoxNTEyODIyMjk3LCJpYXQiOjE1MTIyMTc0OTd9.kSer1wTPccBEH8WPgH_Ebsbw248Lwg3eZJYccjAnSw8";
 const username = "Alejandra1";
 const fullName = "Alejandra velasca1";
-const email = "Alejandra@gmail.com1"
-const password = "prueba_pw1"
+const email = "Alejandra@gmail.com1";
+const password = "prueba_pw1";
+
 describe('Register', function(){
     it('Should signup new user', function(done){
         api.post('/signup')

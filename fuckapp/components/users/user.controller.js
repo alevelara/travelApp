@@ -64,7 +64,7 @@ exports.getUser = function(req, res){
              });
         } catch (error) {
             return res.status(500).json({error_message: error.message});
-        }
+        } 
     } catch (error) {
         return res.status(result.status).json({error_message: error.message});
     }    
