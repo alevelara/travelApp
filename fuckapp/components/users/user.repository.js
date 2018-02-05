@@ -49,8 +49,7 @@ exports.updateUserById = function(userId, user, callback){
         {
             full_name: user.full_name,
             username: user.username,
-            description: user.description,
-            hometown: user.hometown
+            description: user.description
         },
         {
             where: { id: userId },
