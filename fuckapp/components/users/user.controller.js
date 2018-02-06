@@ -71,11 +71,15 @@ exports.getUser = function(req, res){
 
 };
 
+<<<<<<< HEAD
 <<<<<<< 09e478d091337711a41c1f8c4e1f93031deb9159
  exports.updateUser = function(req, res){
 =======
 exports.updateUser = function(req, res){
 >>>>>>> Add support for uploading/downloading photos.
+=======
+exports.updateUser = function(req, res){
+>>>>>>> d5aaa805f732ace498ec3a7bec3eef1904f3d503
     var token = req.headers.auth_token;
     var userId = req.params.id;
     var reqUser = req.body.user;
