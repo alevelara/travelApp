@@ -10,9 +10,9 @@ var config = require('./config/config'),
     urlHost = "";
 
 if (node_env === "dev") {
-    urlHost = config.get('db:' + node_env + ':' + driver + ':DBHost');
+    urlHost = config.get('db:' + node_env + ':' + driver + ':host');
 } else {
-    urlHost = config.get('db:' + node_env + ':' + driver + ':DBHost');
+    urlHost = config.get('db:' + node_env + ':' + driver + ':host');
 }
 
 var sequelize = new Sequelize(

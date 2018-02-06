@@ -15,7 +15,7 @@ var fs = require("fs"),
 var sequelize = new Sequelize(config.get('db:' + env + ':' + driver + ':database'),
     config.get('db:' + env + ':' + driver + ':username'),
     config.get('db:' + env + ':' + driver + ':password'), {
-        host: config.get('db:' + env + ':' + driver + ':DBHost'),
+        host: config.get('db:' + env + ':' + driver + ':host'),
         dialect: config.get('db:' + env + ':' + driver + ':dialect'),
         pool: {
             max: 5,
