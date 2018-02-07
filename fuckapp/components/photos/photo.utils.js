@@ -7,6 +7,7 @@ const path = require('path');
 const STORAGE = multer.diskStorage({
     destination: "uploads/",
     filename: function(req, file, callback) {
+        // This will encrypt the filename of the uploads
         crypto.pseudoRandomBytes(16, function(err, raw) {
             if (err) return callback(err);
 
@@ -15,12 +16,12 @@ const STORAGE = multer.diskStorage({
     }        
 });
 
-exports.uploadAvatar = function(){
-    return multer({storage: STORAGE}).single("file");
+
+exports.uploadSinglePhoto = function(){
+    return multer({storage: STORAGE}).single("photo");
 };
 
- 
 exports.uploadMultiplePhotos = function(){
-    var upload = multer({storage: STORAGE}).array("img",10);
+    var upload = multer({storage: STORAGE}).array("photo_multiple",10);
     return upload;
 };

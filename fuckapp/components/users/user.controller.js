@@ -1,98 +1,47 @@
+//controllers
+const mailController = require('../mails/mailer.controllers');
 
 //modules
-var crypto = require('crypto'),
-    q = require('q'),
-    trys = require('bluebird'),
-    logger = require('../../components/logger/logger');
+const logger = require('../../components/logger/logger');
 
-//models
-var models = require('../../models');
-var User = models['user'];
-var userRepository = require('./user.repository');
+//repos
+const userRepository = require('./user.repository');
 
 //utils
-var utilRegister = require('../registers/register.utils'),
-    utilUser = require('./user.utils'),
-    utilPhoto = require('../photos/photo.utils');
+const utilRegister = require('../registers/register.utils');
+const utilUser = require('./user.utils');
 
-//controllers
-var photoController = require('../photos/photo.controller'),
-    mailController = require('../mails/mailer.controllers');
 
 // Get all users
 exports.getAllUsers = function(req, res){
-    var token = req.headers.auth_token;
-    var userId = req.params.id;
-    var result = {
-        payload: null,
-        status: 0,
-        message: ""
-    };
     try {
-        utilUser.verifyUser(token,result);        
-        try {
-            userRepository.getAllUsers(function (users) {                 
-                res.status(200).json({'users': users});    
-            });               
-        } catch (error) {
-            res.status(500).json({err: 'Server Fail'})
-        }
+        userRepository.getAllUsers(function (users) {
+            res.status(200).json({'users': users});
+        });
     } catch (error) {
-        return res.status(result.status).json({error_message: error.message});
-    }    
+        res.status(500).json({err: 'Server Fail'})
+    }
 };
+
 
 exports.getUser = function(req, res){
-    
-    var token = req.headers.auth_token;
-    var userId = req.params.id;
-    var result = {
-        payload: null,
-        status: 0,
-        message: ""
-    };
+    const userId = req.params.id;
 
-    try {
-        utilUser.verifyUser(token,result);
-        try {
-            userRepository.findUserById(userId, function(user){                            
-                if(user){
-                    return res.status(200).json({"user": user});                
-                }else{
-                    return res.status(404).json({error_message: "user not found"});                
-                }
-             });
-        } catch (error) {
-            return res.status(500).json({error_message: error.message});
-        }
-    } catch (error) {
-        return res.status(result.status).json({error_message: error.message});
-    }    
-
+    userRepository
+        .findUserById(userId)
+        .then(user => res.status(200).json({user: user}))
+        .catch(error => res.status(404).json({error_message: "user not found"}));
 };
 
-exports.updateUser = function(req, res){
-    var token = req.headers.auth_token;
-    var userId = req.params.id;
-    var reqUser = req.body.user;
-    var result = {
-        payload: null,
-        status: 0,
-        message: ""
-    };
-    try {
-        utilUser.verifyUser(token,result);
-        try {
-            userRepository.updateUserById(userId, reqUser, function(user){
-                return res.status(200).json({user: user});
-            });
-        } catch (error) {
-            return res.status(500).json({error_message: error.message});
-        }
-    } catch (error) {
-        return res.status(result.status).json({error_message: error.message});
-    }
+exports.updateUser = function(req, res) {
+    const userId = req.params.id;
+    const user = req.body.user;
 
+    userRepository
+        .updateUserById(userId, user)
+        .then(result => userRepository.findUserById(userId))
+        .then(user => res.status(200).json({user: user}))
+        .catch(error => res.status(500).json({error_message: error.message}));
 };
 
 
@@ -202,122 +151,3 @@ exports.resetPassword = function(req, res){
         }
     });  
 };
-
-exports.addUserPhotos = function(req, res){     
-    var token = req.headers.auth_token;
-    var result = {
-        payload: null,
-        status: 0
-    };
-    utilUser.verifyUser(token, result);
-    if(result.status == 404){
-       return res.
-       status(404).
-       json({error_message:"Token not found"});
-    }else if(result.status == 401){
-       return res.
-       status(401).
-       json({error_message:"Token has expired"});
-    }else if(result.status == 200){                  
-        var photoResult = photoController.addPhotos(req, res, function(result){            
-            if (result.status == 500){
-                res.json({message_error:"Back ERROR: "+ err.message});
-            }else if(res.statusCode == 200){               
-                    user.findByIdAndUpdate(result.payload.id ,{$addToSet: {photoid: {$each: photoResult}}} ,function(err, user){
-                        if(err){
-                            return res.
-                            status(500).
-                            json({error_message:"error adding photo: "+ err.message});
-                        }else{
-                            return res
-                            .status(200)
-                            .json({message:"Successfully added photos"});
-                        }
-                    });            
-            }
-        });                        
-    }
-};
-
-exports.addUserProfilePhoto = function(req, res){
-    var token = req.headers.auth_token;
-    var result = {
-        payload: null,
-        status: 0
-    };
-    utilUser.verifyUser(token, result);
-    
-    if(result.status == 404){
-       
-        return res.
-       status(404).
-       json({error_message:"Token not found"});
-    
-    }else if(result.status == 401){
-       
-        return res.
-       status(401).
-       json({error_message:"Token has expired"});
-    
-    }else if(result.status == 200){ 
-        
-        var photoResult = new photo(req.file);       
-         
-        photoController.addPhoto(req, res, function(photoResult){                 
-            logger.debug(req.file);
-            if (res.statusCode == 500){
-                res.json({message_error:"Back ERROR: "+ err.message});
-            }
-            else if(res.statusCode == 200){
-                
-                user.findByIdAndUpdate(result.payload.id, { photo_profile_id: photoResult._id} ,function(err, user){
-                    
-                    if(err){
-                        
-                        return res.
-                        status(500).
-                        json({error_message:"error adding photo: "+ err.message});
-                    
-                    }else{
-                        
-                        return res
-                        .status(200)
-                        .json({message:"Successfully added photo"});
-                    
-                    }
-                });
-            }
-        });        
-    }
-};
-
-
-exports.getUserProfilePhoto = function(req, res){
-    var token = req.headers.auth_token;
-    var result = {
-        payload: null,
-        status: 0
-    };
-    utilUser.verifyUser(token, result);
-    if(result.status == 404){
-       return res.
-       status(404).
-       json({error_message:"Token not found"});
-    }else if(result.status == 401){
-       return res.
-       status(401).
-       json({error_message:"Token has expired"});
-    }else if(result.status == 200){ 
-        user.findOne({_id: req.sub._id}).populate('photo_profile_id').exec( function(err, user) {
-            if (err) {
-                return res
-                .status(404)
-                .json({status:"error", error_message: "Error retrieving user" + err.message});
-            }else{
-                return res
-                .status(200)
-                .json({message: user.photo_profile_id.path});
-            }
-        });
-    }
-}

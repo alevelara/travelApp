@@ -32,13 +32,8 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true
         },
         hometown:{
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'cities',
-                key: 'id',
-                deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
-            },
-            defaultValue: null,
+            type: DataTypes.STRING,
+            defaultValue: "",
             allowNull: true
         },
         photo_profile_id:{

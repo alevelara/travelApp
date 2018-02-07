@@ -34,36 +34,21 @@ exports.findUserByEmail = function (email, callback) {
     .catch(error => callback(error))
 };
 
-exports.findUserById = function (id, callback) {
-    User.findOne({
-        where:{
-            id: id
-        }
+exports.findUserById = function(userId) {
+    return User.findOne({
+        where: {id: userId}
     })
-    .then(user => callback(user))
-    .catch(error => callback())
 };
 
-exports.updateUserById = function(userId, user, callback){
-    User.update(
-        {
+exports.updateUserById = function(userId, user) {
+    return User.update({
             full_name: user.full_name,
             username: user.username,
-            description: user.description
-        },
-        {
-            where: { id: userId },
-            returning: true,
+            description: user.description,
+            hometown: user.hometown,
+            photo_profile_id: user.photo_profile_id
+        }, {
+            where: {id: userId},
         }
     )
-        .then(result => {
-            this.findUserById(userId, function (user) {
-                console.log(user)
-                callback(user)
-            })
-        })
-        .catch(error=> {
-            console.log(error)
-            callback()}
-    );
-}
+};

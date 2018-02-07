@@ -1,32 +1,37 @@
+const users = require('./user.controller');
+const userUtil = require('./user.utils');
 
 module.exports = function(app){
 
-//Controllers
-    var users = require('./user.controller');
+    app.get('/users', validateSecureRequest, users.getAllUsers);
 
+    app.get('/user/:id', validateSecureRequest, users.getUser);
+    app.put('/user/:id', validateSecureRequest, users.updateUser);
 
-    app.route('/users')
-        .get(users.getAllUsers);
-
-    app.route('/user/:id')
-        .get(users.getUser)
-        .put(users.updateUser);
-
-    app.route('/user/interests')
-        .post(users.updateUserInterest)
-        .get(users.getUserInterests);
+    app.get('/user/:id/interests', validateSecureRequest, users.getUserInterests);
+    app.get('/user/:id/interests', validateSecureRequest, users.updateUserInterest);
 
     app.route('/user/password/recovery')
         .post(users.sendEmailUserPassword);
 
     app.route('/user/password/reset')
         .post(users.resetPassword);
+};
 
-    /*app.route('/user/photos')
-    .post(users.addUserPhotos);
-    */
 
-    app.route('/user/photo/profile')
-        .post(users.addUserProfilePhoto)
-        .get(users.getUserProfilePhoto);
-}
+const validateSecureRequest = function (req, res, next) {
+    var token = req.headers.auth_token;
+    var userId = req.params.id;
+    var result = {
+        payload: null,
+        status: 0,
+        message: ""
+    };
+
+    try {
+        userUtil.verifyUser(token,result);
+    } catch(error) {
+        return res.status(result.status).json({error_message: error.message});
+    }
+    next()
+};
