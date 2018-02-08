@@ -19,10 +19,9 @@ module.exports = function(app){
 };
 
 
-const validateSecureRequest = function (req, res, next) {
-    var token = req.headers.auth_token;
-    var userId = req.params.id;
-    var result = {
+function validateSecureRequest(req, res, next) {
+    const token = req.headers.auth_token;
+    const result = {
         payload: null,
         status: 0,
         message: ""
@@ -34,4 +33,4 @@ const validateSecureRequest = function (req, res, next) {
         return res.status(result.status).json({error_message: error.message});
     }
     next()
-};
+}
