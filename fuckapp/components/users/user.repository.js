@@ -2,6 +2,7 @@
 
 const models = require('../../models');
 const User = models.user;
+const Interest = models.interest;
 const UserInterest = models.userInterest;
 const userInterestSequelize = UserInterest.sequelize;
 
@@ -63,11 +64,22 @@ exports.updateUserById = function(userId, user, callback){
 };
 
 exports.getInterestsByUserId = function(userId, callback){        
-    userInterestSequelize.query('CALL getInterestsByUserId(:user_id)', 
+    /*userInterestSequelize.query('CALL getInterestsByUserId(:user_id)', 
     {
         replacements: { user_id: userId},
         type: userInterestSequelize.QueryTypes.SELECT        
     })
-    .then(userinterest => callback(userinterest))
+   */
+    console.log(Interest);
+    UserInterest.findAll({
+        include:
+        [{
+            model: Interest            
+        }],
+        where: {user_id: userId}
+        }
+    )
+    .then(interests => callback(interests))
     .catch(error => callback(error));
+  
 };

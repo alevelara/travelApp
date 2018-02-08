@@ -44,6 +44,7 @@ sequelize.authenticate().then(() => {
 exports.sequelize = sequelize;
 
   
+
 /*
   //Sync Database
   models.sequelize.sync({force: true}).then(function() {
@@ -56,5 +57,5 @@ exports.sequelize = sequelize;
 
   });
 
- */
+*/
 

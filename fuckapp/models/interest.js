@@ -1,7 +1,7 @@
 
 
 module.exports = function(sequelize, DataTypes){
-    return sequelize.define('interest', {
+    const interest =  sequelize.define('interest', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -21,4 +21,14 @@ module.exports = function(sequelize, DataTypes){
             allowNull: false
         }
     });
+
+
+    interest.associate = models => {
+        interest.hasMany(models.userInterest, {
+            foreignKey: 'interest_id',
+            sourceKey: 'id'
+        });
+    };
+
+    return interest;
 };

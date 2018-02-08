@@ -1,7 +1,6 @@
 //Modules
 const crypto = require('crypto');
 
-
 module.exports = function(sequelize, DataTypes) {
     var user = sequelize.define('user', {
         id:{
@@ -86,6 +85,13 @@ module.exports = function(sequelize, DataTypes) {
         }        
     });
 
+    user.associate = models => {
+        user.hasMany(models.userInterest, {
+            foreignKey: 'user_id',
+            sourceKey: 'id'
+        });
+    };
     
+
     return user;
 };
