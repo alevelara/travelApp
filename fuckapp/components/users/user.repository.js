@@ -5,7 +5,7 @@ const User = models['user'];
 
 
 exports.getAllUsers = function (callback) {
-    User.findAll()
+    User.findAll({role: 'api'})
     .then(users => callback(users))
     .catch(error => callback(error))
 };
@@ -25,19 +25,17 @@ exports.createUser = function(queryUser, callback) {
 };
 
 exports.findUserByEmail = function (email, callback) {
-    User.findOne({
-        where:{
-            email: email
-        }
-    })
+    User.findOne(
+        {where:{email: email}},
+        {role: 'api'})
     .then(user => callback(user))
     .catch(error => callback(error))
 };
 
 exports.findUserById = function(userId) {
-    return User.findOne({
-        where: {id: userId}
-    })
+    return User.findOne(
+        {where: {id: userId}},
+        {role: 'api'})
 };
 
 exports.updateUserById = function(userId, user) {

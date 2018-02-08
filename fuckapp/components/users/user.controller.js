@@ -29,23 +29,38 @@ exports.getUser = function(req, res){
 
     userRepository
         .findUserById(userId)
-        .then(user => res.status(200).json({user: user}))
-        .catch(error => res.status(404).json({error_message: "user not found"}));
+        .then(user => {
+            if (user) {
+                res.status(200).json({user: user})
+            } else {
+                res.status(404).json({error_message: "user not found"})
+            }
+        })
+        .catch(error => res.status(500).json({error_message: "Server error"}));
 };
 
 exports.updateUser = function(req, res) {
     const userId = req.params.id;
     const user = req.body.user;
 
-    userRepository
-        .updateUserById(userId, user)
+    validateUser(user)
+        .then(user =>  userRepository.updateUserById(userId, user))
         .then(result => userRepository.findUserById(userId))
         .then(user => res.status(200).json({user: user}))
         .catch(error => res.status(500).json({error_message: error.message}));
 };
 
+function validateUser(user) {
+    return new Promise(function (fulfill, reject) {
+        if (!user) {
+            reject("User is null")
+            return;
+        }
+        fulfill(user)
+    })
+}
 
- exports.updateUserInterest = function(req, res){ 
+ exports.updateUserInterest = function(req, res){
     var token = req.headers.auth_token;    
     var result = {
         payload: null,
