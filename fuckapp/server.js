@@ -1,26 +1,16 @@
-var config = require('./config/config'),
+const config = require('./config/config'),
     Sequelize = require('sequelize'),
     logger = require('./components/logger/logger'),
-    // models
-    models = require("./models/index"),
-    // env vars
     driver = config.get('dbdriver'),
-    node_env = config.get('env'),
-    port = config.get('port'),
-    urlHost = "";
+    env = process.env.NODE_ENV;
 
-if (node_env === "dev") {
-    urlHost = config.get('db:' + node_env + ':' + driver + ':host');
-} else {
-    urlHost = config.get('db:' + node_env + ':' + driver + ':host');
-}
 
-var sequelize = new Sequelize(
-    config.get('db:' + node_env + ':' + driver + ':database'),
-    config.get('db:' + node_env + ':' + driver + ':username'),
-    config.get('db:' + node_env + ':' + driver + ':password'),
+const sequelize = new Sequelize(
+    config.get('db:' + env + ':' + driver + ':database'),
+    config.get('db:' + env + ':' + driver + ':username'),
+    config.get('db:' + env + ':' + driver + ':password'),
     {
-        host: urlHost,
+        host: config.get('db:' + env + ':' + driver + ':host'),
         dialect: driver,
         logging: logger.debug,
         define: {
@@ -42,19 +32,3 @@ sequelize.authenticate().then(() => {
 });
 
 exports.sequelize = sequelize;
-
-  /*
-
-  //Sync Database
-  models.sequelize.sync({force: true}).then(function() {
-
-      logger.info('Nice! Database looks fine')
-
-  }).catch(function(err) {
-
-      logger.error(err, "Something went wrong with the Database Update!")
-
-  });
-
-  */
-

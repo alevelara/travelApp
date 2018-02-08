@@ -14,7 +14,7 @@ db:
     dev: 
         mysql:
             driver: "mysql"
-            username: "root"
+            username: "fuckapp"
             database: "fuckapp"
             password: "fuckapp"
             host: "localhost"
@@ -22,12 +22,10 @@ db:
             DBHost: "localhost"
         mongo:
             DBHost: "localhost"
-        storage:
-            uploads_path: "uploads/"
     test: 
         mysql:
             driver: "mysql"
-            username: "root"
+            username: "fuckapp"
             database: "fuckapp_test"
             password: "fuckapp"
             host: "localhost"
@@ -49,3 +47,13 @@ log_file: './fuckapp_log.txt'
 # Levels, lowest to highest: silly, debug, verbose, info, warn, error
 # default = 'info'
 log_level: 'silly'
+
+################################################################################
+# Storage options
+################################################################################
+
+storage:
+    dev:
+        uploads_path: "uploads/"
+    test:
+        uploads_path: "uploads-test/"

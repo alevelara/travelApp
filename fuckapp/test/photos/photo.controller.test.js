@@ -1,21 +1,22 @@
 process.env.NODE_ENV = "test";
 
+const app = require('../../app');
+const fs = require('fs');
 const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised");
 const chaiHttp = require('chai-http');
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
+const api = chai.request(app);
 const should = chai.should();
 const expect = chai.expect;
 const photoController = require('../../components/photos/photo.controller');
-const app = require('../../app');
-const api = chai.request(app);
-const fs = require('fs');
 
-const photoName = 'viaje.jpg';
-const photoPath = __dirname + '/' + photoName;
+
 
 describe('savePhoto', function () {
+    const photoName = 'viaje.jpg';
+    const photoPath = __dirname + '/' + photoName;
     var photoId;
     it('should store the photo and return its id', function () {
         return api.post('/photo')
@@ -28,10 +29,10 @@ describe('savePhoto', function () {
 
     });
     it('should be possible to download the photo using its id', function () {
-        api.get(`/photo/${photoId}`)
+        return api.get(`/photo/${photoId}`)
             .then((res) => {
-                expect(res.headers).to.have.property("Content-Type");
-                expect(res.headers).to.have.property("Content-Disposition");
+                expect(res.headers).to.have.property("content-type");
+                expect(res.headers).to.have.property("content-disposition");
             })
     });
 });

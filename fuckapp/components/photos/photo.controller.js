@@ -19,27 +19,26 @@ exports.getPhoto = function(req, res) {
         .findPhotoById(photoId)
         .then(photo => {
             const path = photo.path;
-            validatePath(path)
-                .then(() => {
-                    addContentResponseHeaders(photo, res);
-                    fs.createReadStream(path).pipe(res);
-                })
+
+            if (isValidPath(path)) {
+                addContentResponseHeaders(photo, res);
+                fs.createReadStream(path).pipe(res);
+            }
         })
         .catch(() =>
             res.status(404).json({error_message: `Photo with id ${photoId} not found`}));
 };
 
-const savePhoto = function (photo) {
+function savePhoto(photo) {
     return new Promise(function(fulfill, reject) {
-        validatePhotoFile(photo)
-            .then(() => sanitizePhoto(photo))
-            .then(photo => photoRepository.savePhoto(photo))
+        validatePhotoPromise(photo)
+            .then(() => photoRepository.savePhoto(sanitizePhoto(photo)))
             .then(savedPhoto => fulfill(savedPhoto))
             .catch(error => reject(error));
     })
-};
+}
 
-validatePhotoFile = function (file) {
+function validatePhotoPromise(file) {
     return new Promise(function(fulfill, reject) {
         if (!file) {
             reject("File is null");
@@ -60,33 +59,28 @@ validatePhotoFile = function (file) {
         }
         fulfill(true)
     })
-};
+}
 
-sanitizePhoto = function (file) {
-    return new Promise(function(fulfill, reject) {
-        const sanitizedPhoto = {
-            field_name: file.fieldname,
-            original_name: file.originalname,
-            encoding: file.encoding,
-            mime_type: file.mimetype,
-            destination: file.destination,
-            file_name: file.filename,
-            path: file.path,
-            size: file.size
-        };
-        fulfill(sanitizedPhoto);
-    })
-};
+function sanitizePhoto(file) {
+    return {
+        field_name: file.fieldname,
+        original_name: file.originalname,
+        encoding: file.encoding,
+        mime_type: file.mimetype,
+        destination: file.destination,
+        file_name: file.filename,
+        path: file.path,
+        size: file.size
+    };
+}
 
-validatePath = function (path) {
-    return new Promise(function (fulfill, reject) {
-        fs.existsSync(path) ? fulfill(true) : reject("Path doesn't exist");
-    })
-};
+function isValidPath(path) {
+    return path !== null && fs.existsSync(path);
+}
 
-addContentResponseHeaders = function (photo, res) {
+function addContentResponseHeaders(photo, res) {
     res.writeHead(200, {
         "Content-Type": "application/octet-stream",
         "Content-Disposition": "attachment; filename=" + photo.file_name
     });
-};
+}

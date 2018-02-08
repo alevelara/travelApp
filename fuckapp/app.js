@@ -5,14 +5,14 @@ var express = require('express'),
 
 //Modules
 var path = require('path'),
-    favicon = require('serve-favicon'),
+
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
-    cons = require('consolidate'),
+
     config = require('./config/config'),
     passport = require('passport'),
     methodOverride = require('method-override'),
-    server = require('./server'),
+
     routes = require('./routes');
  require('./config/passport');
 
@@ -52,7 +52,5 @@ app.use(function(req,res){
 });
 
 app.listen(port);
-
-server.Sequelize
 
 module.exports = app;
