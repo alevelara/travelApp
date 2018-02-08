@@ -17,22 +17,26 @@ db:
             username: "root"
             database: "fuckapp"
             password: "fuckapp"
-            host: "127.0.0.1"
+            host: "localhost"
             dialect: "mysql"
-            DBHost: "mysql://localhost/fuckApp"
+            DBHost: "localhost"
         mongo:
-            DBHost: "mongodb://localhost/fuckApp"
+            DBHost: "localhost"
+        storage:
+            uploads_path: "uploads/"
     test: 
         mysql:
             driver: "mysql"
             username: "root"
-            database: "fuckapp"
+            database: "fuckapp_test"
             password: "fuckapp"
-            host: "127.0.0.1"
+            host: "localhost"
             dialect: "mysql"
-            DBHost: "mysql://localhost/fuckApp_test"
+            DBHost: "localhost"
         mongo:
-            DBHost: "mongodb://localhost/fuckApp_test"
+            DBHost: "localhost"
+        storage:
+            uploads_path: "uploads-test/"
 
 ################################################################################
 # Logging options

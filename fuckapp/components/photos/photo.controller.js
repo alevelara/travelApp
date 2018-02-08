@@ -12,7 +12,7 @@ exports.savePhoto = function (req, res) {
         })
 };
 
-exports.getPhoto = function(req, res){
+exports.getPhoto = function(req, res) {
     const photoId = req.params.id;
 
     photoRepository
@@ -25,12 +25,13 @@ exports.getPhoto = function(req, res){
                     fs.createReadStream(path).pipe(res);
                 })
         })
-        .catch(() => res.status(404).json({error_message: `Photo with id ${photoId} not found`}));
+        .catch(() =>
+            res.status(404).json({error_message: `Photo with id ${photoId} not found`}));
 };
 
 const savePhoto = function (photo) {
     return new Promise(function(fulfill, reject) {
-        validatePhoto(photo)
+        validatePhotoFile(photo)
             .then(() => sanitizePhoto(photo))
             .then(photo => photoRepository.savePhoto(photo))
             .then(savedPhoto => fulfill(savedPhoto))
@@ -38,21 +39,34 @@ const savePhoto = function (photo) {
     })
 };
 
-const validatePhoto = function (file) {
+validatePhotoFile = function (file) {
     return new Promise(function(fulfill, reject) {
         if (!file) {
             reject("File is null");
             return;
         }
+        if (!file.hasOwnProperty('fieldname')
+            || !file.hasOwnProperty('originalname')
+            || !file.hasOwnProperty('encoding')
+            || !file.hasOwnProperty('mimetype')
+            || !file.hasOwnProperty('destination')
+            || !file.hasOwnProperty('filename')
+            || !file.hasOwnProperty('path')
+            || !file.hasOwnProperty('size')) {
+            reject("Invalid file");
+        }
+        if (!file.mimetype.startsWith("image/")) {
+            reject("Invalid mime-type: " + file.mimetype);
+        }
         fulfill(true)
     })
 };
 
-const sanitizePhoto = function (file) {
+sanitizePhoto = function (file) {
     return new Promise(function(fulfill, reject) {
         const sanitizedPhoto = {
             field_name: file.fieldname,
-            original_name: file.filename,
+            original_name: file.originalname,
             encoding: file.encoding,
             mime_type: file.mimetype,
             destination: file.destination,
@@ -64,16 +78,15 @@ const sanitizePhoto = function (file) {
     })
 };
 
-const validatePath = function (path) {
+validatePath = function (path) {
     return new Promise(function (fulfill, reject) {
         fs.existsSync(path) ? fulfill(true) : reject("Path doesn't exist");
     })
 };
 
-const addContentResponseHeaders = function (photo, res) {
+addContentResponseHeaders = function (photo, res) {
     res.writeHead(200, {
         "Content-Type": "application/octet-stream",
         "Content-Disposition": "attachment; filename=" + photo.file_name
     });
 };
-

@@ -2,10 +2,12 @@
 const multer = require('multer');
 const crypto = require('crypto');
 const path = require('path');
+const config = require('../../config/config');
+const env = config.get('env');
 
-//TODO: Move destination to config file
+
 const STORAGE = multer.diskStorage({
-    destination: "uploads/",
+    destination: config.get('db:' + env + ':storage' + ':uploads_path'),
     filename: function(req, file, callback) {
         // This will encrypt the filename of the uploads
         crypto.pseudoRandomBytes(16, function(err, raw) {
