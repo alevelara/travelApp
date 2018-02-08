@@ -1,3 +1,5 @@
+'use strict';
+
 const photoController = require('./photo.controller');
 const uploadSinglePhoto = require('./photo.utils').uploadSinglePhoto();
 

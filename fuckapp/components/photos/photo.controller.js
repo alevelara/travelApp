@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('fs');
 const photoRepository = require('./photo.repository');
 const Promise = require('promise');
