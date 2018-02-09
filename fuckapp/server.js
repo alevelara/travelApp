@@ -1,8 +1,11 @@
 const config = require('./config/config'),
     Sequelize = require('sequelize'),
     logger = require('./components/logger/logger'),
+    // models
+    models = require("./models/index"),
+    // env vars
     driver = config.get('dbdriver'),
-    env = process.env.NODE_ENV;
+    env = config.get('env');
 
 
 const sequelize = new Sequelize(
@@ -11,7 +14,7 @@ const sequelize = new Sequelize(
     config.get('db:' + env + ':' + driver + ':password'),
     {
         host: config.get('db:' + env + ':' + driver + ':host'),
-        dialect: driver,
+        dialect: config.get('db:' + env + ':' + driver + ':dialect'),
         logging: logger.debug,
         define: {
             timestamps: false
