@@ -1,0 +1,14 @@
+2018-02-09T10:07:01.114Z - info: Loading config file: /home/eduardo/mine/fuckapp/backend/fuckapp/config/config-local.yaml
+2018-02-09T10:07:01.120Z - info: Setup successfully
+2018-02-09T10:07:01.191Z - debug: Adding model: city
+2018-02-09T10:07:01.193Z - debug: Adding model: interest
+2018-02-09T10:07:01.194Z - debug: Adding model: interest
+2018-02-09T10:07:01.195Z - debug: Adding model: photo
+2018-02-09T10:07:01.196Z - debug: Adding model: rating
+2018-02-09T10:07:01.200Z - debug: Adding model: user
+2018-02-09T10:07:01.347Z - debug: Executing (default): SELECT 1+1 AS result logging=function (msg) {
+      // build argument list (level, msg, ... [string interpolate], [{metadata}], [callback])
+      var args = [level].concat(Array.prototype.slice.call(arguments));
+      target.log.apply(target, args);
+    }, plain=true, raw=true, showWarnings=false, type=SELECT
+2018-02-09T10:07:01.349Z - info: Connection has been established successfully.

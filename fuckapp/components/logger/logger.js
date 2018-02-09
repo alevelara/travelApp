@@ -14,7 +14,7 @@ winston.init = function () {
     // Levels, lowest to highest: silly, debug, verbose, info, warn, error
     // default = 'debug'
     var logLevel = 'debug';
-    var logFile = '../../fuckapp.log';
+    var logFile = __basedir + '/fuckapp.log';
 
     winston.remove(winston.transports.Console);
     winston.add(winston.transports.Console, {level: logLevel, colorize: true, timestamp: true});
