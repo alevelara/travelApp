@@ -3,8 +3,6 @@ var express = require('express'),
   port = process.env.PORT || 8080,
   bodyParser = require('body-parser');
 
-global.__basedir = __dirname;
-
 //Modules
 var path = require('path'),
     favicon = require('serve-favicon'),
