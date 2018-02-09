@@ -1,6 +1,8 @@
+'use strict';
+
 //Modules
 const crypto = require('crypto');
-const ssaclAttributeRoles = require('ssacl-attribute-roles')
+const ssaclAttributeRoles = require('ssacl-attribute-roles');
 
 module.exports = function(sequelize, DataTypes) {
     ssaclAttributeRoles(sequelize);
@@ -78,8 +80,11 @@ module.exports = function(sequelize, DataTypes) {
     },{
         setterMethods: {
             password: function(password){
-                this.salt = crypto.randomBytes(16).toString('hex');
-                this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha256').toString('hex');        
+                const buff = crypto.randomBytes(17).toString('hex');
+                const hash = crypto.pbkdf2Sync(password, buff, 1000, 64, 'sha256').toString('hex');
+
+                this.salt = buff;
+                this.hash = hash;
             },
             interests: function(interests){
                 this.interests = interests;

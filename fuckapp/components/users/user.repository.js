@@ -10,26 +10,19 @@ exports.getAllUsers = function (callback) {
     .catch(error => callback(error))
 };
 
-exports.createUser = function(queryUser, callback) {
-    User.create({
-            username: queryUser.username,
-            email: queryUser.email,
-            full_name: queryUser.full_name,
-            password: queryUser.password
-    })
-    .then(user => callback(user))
-    .catch(error => {
-        console.log(error)
-        callback()
-    })
+exports.createUser = function(newUser) {
+    return User.create({
+        username: newUser.username,
+        email: newUser.email,
+        full_name: newUser.full_name,
+        password: newUser.password
+    });
 };
 
-exports.findUserByEmail = function (email, callback) {
-    User.findOne(
+exports.findUserByEmail = function (email) {
+    return User.findOne(
         {where:{email: email}},
-        {role: 'api'})
-    .then(user => callback(user))
-    .catch(error => callback(error))
+        {role: 'api'});
 };
 
 exports.findUserById = function(userId) {
