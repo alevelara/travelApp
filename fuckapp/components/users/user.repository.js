@@ -64,21 +64,15 @@ exports.updateUserById = function(userId, user, callback){
 };
 
 exports.getInterestsByUserId = function(userId, callback){        
-    /*userInterestSequelize.query('CALL getInterestsByUserId(:user_id)', 
+    
+    var querySQL = 'Select interest.* from interests interest ' + 
+    'LEFT JOIN userinterests ui ON interest.id = ui.interest_id ' +
+    'where ui.user_id = :user_id';
+    userInterestSequelize.query(querySQL, 
     {
         replacements: { user_id: userId},
         type: userInterestSequelize.QueryTypes.SELECT        
     })
-   */
-    console.log(Interest);
-    UserInterest.findAll({
-        include:
-        [{
-            model: Interest            
-        }],
-        where: {user_id: userId}
-        }
-    )
     .then(interests => callback(interests))
     .catch(error => callback(error));
   
