@@ -4,7 +4,7 @@ module.exports = function(app){
       var_env = require('../../config/var.json');
       
   //Controllers
-  var login = require('./register.controllers');
+  var login = require('./register.controller');
 
 app.route('/signup')
   .post(login.signup);

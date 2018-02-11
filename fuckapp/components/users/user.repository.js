@@ -25,6 +25,12 @@ exports.findUserByEmail = function (email) {
         {role: 'api'});
 };
 
+exports.findUserByUsername = function (username) {
+    return User.findOne(
+        {where:{username: username}},
+        {role: 'api'});
+};
+
 exports.findUserById = function(userId) {
     return User.findOne(
         {where: {id: userId}},

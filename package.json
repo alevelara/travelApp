@@ -21,9 +21,9 @@
   },
   "homepage": "https://gitlab.com/fuck-app/backend#README",
   "dependencies": {
-    "angular": "^1.6.5",
-    "mongodb": "^2.2.30",
-    "socket.io": "^2.0.3"
+    "angular": "^1.6.9",
+    "mongodb": "^2.2.34",
+    "socket.io": "^2.0.4"
   },
   "config": {
     "pre-git": {
