@@ -16,11 +16,13 @@ module.exports = function(sequelize, DataTypes) {
         },
         username:{
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: 'usernameEmailIndex'
         },
         full_name:{
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: 'usernameEmailIndex'
         },
         email:{
             type: DataTypes.STRING,
@@ -68,11 +70,13 @@ module.exports = function(sequelize, DataTypes) {
             access: {
                 api: false,
                 self: false   
+
             }
         },
         hash: {
             type: DataTypes.STRING,
             allowNull: false,
+
             access:  {
                 api: false,
                 self: false   
@@ -84,13 +88,14 @@ module.exports = function(sequelize, DataTypes) {
             access:  {
                 api: false,
                 self: false   
+
             }
         }
         
     },{
         setterMethods: {
             password: function(password){
-                const buff = crypto.randomBytes(17).toString('hex');
+                const buff = crypto.randomBytes(16).toString('hex');
                 const hash = crypto.pbkdf2Sync(password, buff, 1000, 64, 'sha256').toString('hex');
 
                 this.salt = buff;

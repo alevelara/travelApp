@@ -33,6 +33,7 @@ exports.generateJwt = function(user) {
 };
 
 exports.validPassword = function(password, user) {
+    console.log("validatePassword  " + user.salt)
     var hash = crypto.pbkdf2Sync(password, user.salt, 1000, 64, 'sha256').toString('hex');
     return user.hash === hash;        
 };
