@@ -24,6 +24,5 @@ exports.uploadSinglePhoto = function(){
 };
 
 exports.uploadMultiplePhotos = function(){
-    var upload = multer({storage: STORAGE}).array("photo_multiple",10);
-    return upload;
+    return multer({storage: STORAGE}).array("photo_multiple",10);
 };
