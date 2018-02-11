@@ -32,5 +32,5 @@ function validateSecureRequest(req, res, next) {
     } catch(error) {
         return res.status(result.status).json({error_message: error.message});
     }
-    next()
+    next();
 }

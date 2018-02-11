@@ -17,7 +17,7 @@ db:
             username: "root"
             database: "fuckapp"
             password: "fuckapp"
-            host: "127.0.0.1"
+            host: "localhost"
             dialect: "mysql"
             DBHost: "mysql://localhost/fuckApp"
         mongo:
@@ -28,7 +28,7 @@ db:
             username: "root"
             database: "fuckapp"
             password: "fuckapp"
-            host: "127.0.0.1"
+            host: "localhost"
             dialect: "mysql"
             DBHost: "mysql://localhost/fuckApp_test"
         mongo:

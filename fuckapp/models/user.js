@@ -2,12 +2,13 @@
 
 //Modules
 const crypto = require('crypto');
-const ssaclAttributeRoles = require('ssacl-attribute-roles');
+const ssaclAttributeRoles = require('sequelize-attribute-roles');
 
 module.exports = function(sequelize, DataTypes) {
+    
     ssaclAttributeRoles(sequelize);
-
-    var user = sequelize.define('user', {
+    
+    var user = sequelize.define('user', {                
         id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -64,19 +65,28 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: true,
             defaultValue: null,
-            roles: false
+            access: {
+                api: false,
+                self: false   
+            }
         },
         hash: {
             type: DataTypes.STRING,
             allowNull: false,
-            roles: false
+            access:  {
+                api: false,
+                self: false   
+            }
         },
         salt: {
             type: DataTypes.STRING,
             allowNull: false,
-            roles: false
+            access:  {
+                api: false,
+                self: false   
+            }
         }
-
+        
     },{
         setterMethods: {
             password: function(password){
@@ -93,5 +103,6 @@ module.exports = function(sequelize, DataTypes) {
     });
 
     ssaclAttributeRoles(user);
+    
     return user;
 };

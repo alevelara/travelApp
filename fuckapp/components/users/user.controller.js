@@ -43,22 +43,12 @@ exports.updateUser = function(req, res) {
     const userId = req.params.id;
     const user = req.body.user;
 
-    validateUser(user)
+    utilUser.validateUser(user)
         .then(user =>  userRepository.updateUserById(userId, user))
         .then(result => userRepository.findUserById(userId))
         .then(user => res.status(200).json({user: user}))
         .catch(error => res.status(500).json({error_message: error.message}));
 };
-
-function validateUser(user) {
-    return new Promise(function (fulfill, reject) {
-        if (!user) {
-            reject("User is null")
-            return;
-        }
-        fulfill(user)
-    })
-}
 
  exports.updateUserInterest = function(req, res){
     var token = req.headers.auth_token;    

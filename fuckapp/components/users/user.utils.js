@@ -44,3 +44,16 @@ exports.verifyUser = function(token, result){
     });
 };
 
+
+
+exports.validateUser = function(user) {
+    return new Promise(function (fulfill, reject) {
+        if (!user) {
+            reject("User is null");
+            return;
+        }
+        fulfill(user);
+    });
+};
+
+

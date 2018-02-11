@@ -14,7 +14,7 @@ db:
     dev: 
         mysql:
             driver: "mysql"
-            username: "fuckapp"
+            username: "root"
             database: "fuckapp"
             password: "fuckapp"
             host: "localhost"
@@ -25,7 +25,7 @@ db:
     test: 
         mysql:
             driver: "mysql"
-            username: "fuckapp"
+            username: "root"
             database: "fuckapp_test"
             password: "fuckapp"
             host: "localhost"
