@@ -3,7 +3,7 @@
 module.exports = function(sequelize, DataTypes){
     return sequelize.define('interest', {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             primaryKey: true,
             autoIncrement: true
         },

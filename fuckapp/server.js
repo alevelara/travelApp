@@ -28,6 +28,7 @@ const sequelize = new Sequelize(
     }
 );
 
+
 sequelize.authenticate().then(() => {
     logger.info('Connection has been established successfully.')
 }).catch(err => {
