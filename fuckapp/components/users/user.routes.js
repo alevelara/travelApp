@@ -16,6 +16,8 @@ module.exports = function(app){
 
     app.route('/user/password/reset')
         .post(users.resetPassword);
+    
+    app.post('/user/search', validateSecureRequest, users.searchByName);
 };
 
 

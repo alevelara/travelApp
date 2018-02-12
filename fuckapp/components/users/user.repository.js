@@ -2,6 +2,9 @@
 
 const models = require('../../models');
 const User = models['user'];
+var Sequelize = require('../../server').sequelize;
+const Op = Sequelize.Op;
+
 
 
 exports.getAllUsers = function (callback) {
@@ -35,6 +38,12 @@ exports.findUserById = function(userId) {
     return User.findOne(
         {where: {id: userId}},
         {role: 'api'})
+}
+
+exports.matchUserByUserName = function(name, offset) {
+    return Sequelize.query(`SELECT * FROM users where full_name like :name OR username like :name LIMIT 20 OFFSET ${offset}`,
+        { replacements: { name: '%' + name + '%' , offset : offset }, 
+        type: Sequelize.QueryTypes.SELECT })
 };
 
 exports.updateUserById = function(userId, user) {
