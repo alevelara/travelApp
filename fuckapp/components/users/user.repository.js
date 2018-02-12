@@ -1,16 +1,16 @@
 'use strict';
 
-const models = require('../../models');
-const User = models['user'];
+var models = require('../../models');
+var User = models['user'];
 var Sequelize = require('../../server').sequelize;
-const Op = Sequelize.Op;
+var Op = Sequelize.Op;
 
 
 
 exports.getAllUsers = function (callback) {
     User.findAll({role: 'api'})
     .then(users => callback(users))
-    .catch(error => callback(error))
+    .catch(error => callback(error));
 };
 
 exports.createUser = function(newUser) {
@@ -37,13 +37,13 @@ exports.findUserByUsername = function (username) {
 exports.findUserById = function(userId) {
     return User.findOne(
         {where: {id: userId}},
-        {role: 'api'})
-}
+        {role: 'api'});
+};
 
 exports.matchUserByUserName = function(name, offset) {
     return Sequelize.query(`SELECT * FROM users where full_name like :name OR username like :name LIMIT 20 OFFSET ${offset}`,
         { replacements: { name: '%' + name + '%' , offset : offset }, 
-        type: Sequelize.QueryTypes.SELECT })
+        type: Sequelize.QueryTypes.SELECT });
 };
 
 exports.updateUserById = function(userId, user) {
@@ -56,5 +56,5 @@ exports.updateUserById = function(userId, user) {
         }, {
             where: {id: userId},
         }
-    )
+    );
 };

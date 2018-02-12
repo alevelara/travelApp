@@ -20,7 +20,7 @@ exports.getAllUsers = function(req, res){
             res.status(200).json({'users': users});
         });
     } catch (error) {
-        res.status(500).json({err: 'Server Fail'})
+        res.status(500).json({err: 'Server Fail'});
     }
 };
 
@@ -32,9 +32,9 @@ exports.getUser = function(req, res){
         .findUserById(userId)
         .then(user => {
             if (user) {
-                res.status(200).json({user: user})
+                res.status(200).json({user: user});
             } else {
-                res.status(404).json({error_message: "user not found"})
+                res.status(404).json({error_message: "user not found"});
             }
         })
         .catch(error => res.status(500).json({error_message: "Server error"}));
@@ -56,13 +56,13 @@ exports.searchByName = function(req, res){
     var name = req.body.name;
     var offset = req.body.offset;
     if(offset == null){
-        offset = '0'
+        offset = '0';
     }
     userRepository.matchUserByUserName(name, offset)
         .then(users => {
             offset = offset + LIMIT_SEARCH_USER_BY_NAME;
-            res.status(200).json({user: users,offset:offset})
-        })
+            res.status(200).json({user: users,offset:offset});
+        });
 };
 
  exports.updateUserInterest = function(req, res){ 
@@ -113,7 +113,7 @@ exports.getUserInterests = function(req, res){
                 .status(404)
                 .json({status:"error", error_message: "Error retrieving user"});
             } else {
-                return res.status(200).json({interests:user.interests})
+                return res.status(200).json({interests:user.interests});
             }
         });
     }

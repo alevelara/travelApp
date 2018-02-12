@@ -17,7 +17,7 @@ exports.login = function(req, res) {
             res.status(401).json({error_message: "Incorrect password"});
             return;
         }
-        const token = registerUtil.generateJwt(user);
+        var token = registerUtil.generateJwt(user);
         res.status(200).json({
             status:'success',
             session_info:{
@@ -33,14 +33,14 @@ exports.login = function(req, res) {
 };
 
 exports.signup = function(req, res) {
-    const newUser = {
+    var newUser = {
         username: req.body.username,
         full_name: req.body.full_name,
         email: req.body.email,
         password: req.body.password
     };
 
-    checkUserExists(newUser)
+    registerUtil.checkUserExists(newUser)
         .then(() => userRepository.createUser(newUser))
         .then(user => {
             console.log("New user created: " + user);
@@ -50,9 +50,9 @@ exports.signup = function(req, res) {
                 const token = registerUtil.generateJwt(user);
                 // After success login, we'll send a email verification
                 //mailCtrl.sendEmail(user.email);
-                res.status(200).json({
+                res.status(200).json( {
                     status:'success',
-                    session_info:{
+                    session_info: {
                         token:token,
                         user:user
                     }
@@ -61,31 +61,7 @@ exports.signup = function(req, res) {
         })
         .catch(error => {
             console.error(error);
-            res.status(400).json({status:"error", error_message: error})
-        })
+            res.status(400).json({status:"error", error_message: error});
+        });
 };
 
-
-function checkUserExists(newUser) {
-    return new Promise(function (fulfill, reject) {
-        userRepository.findUserByUsername(newUser.username)
-            .then(user => {
-                if(user) {
-                    reject(`User with username ${newUser.username} already exists`);
-                } else {
-                    userRepository.findUserByEmail(newUser.email)
-                        .then(user => {
-                            if(user) {
-                                reject(`User with email ${newUser.email} already exists`);
-                            } else {
-                                fulfill();
-                            }
-                        })
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                reject(error)
-            })
-    })
-}

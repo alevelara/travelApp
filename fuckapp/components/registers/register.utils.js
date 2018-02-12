@@ -33,7 +33,32 @@ exports.generateJwt = function(user) {
 };
 
 exports.validPassword = function(password, user) {
-    console.log("validatePassword  " + user.salt)
+    console.log("validatePassword  " + user.salt);
     var hash = crypto.pbkdf2Sync(password, user.salt, 1000, 64, 'sha256').toString('hex');
     return user.hash === hash;        
+};
+
+
+exports.checkUserExists = function(newUser) {
+    return new Promise(function (fulfill, reject) {
+        userRepository.findUserByUsername(newUser.username)
+            .then(user => {
+                if(user) {
+                    reject(`User with username ${newUser.username} already exists`);
+                } else {
+                    userRepository.findUserByEmail(newUser.email)
+                        .then(user => {
+                            if(user) {
+                                reject(`User with email ${newUser.email} already exists`);
+                            } else {
+                                fulfill();
+                            }
+                        });
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                reject(error);
+            });
+    });
 };
