@@ -11,6 +11,7 @@ const userRepository = require('./user.repository');
 const utilRegister = require('../registers/register.utils');
 const utilUser = require('./user.utils');
 
+const LIMIT_SEARCH_USER_BY_NAME = 20;
 
 // Get all users
 exports.getAllUsers = function(req, res){
@@ -50,7 +51,21 @@ exports.updateUser = function(req, res) {
         .catch(error => res.status(500).json({error_message: error.message}));
 };
 
- exports.updateUserInterest = function(req, res){
+exports.searchByName = function(req, res){
+    console.log("nombre de usuario "+name);  
+    var name = req.body.name;
+    var offset = req.body.offset;
+    if(offset == null){
+        offset = '0'
+    }
+    userRepository.matchUserByUserName(name, offset)
+        .then(users => {
+            offset = offset + LIMIT_SEARCH_USER_BY_NAME;
+            res.status(200).json({user: users,offset:offset})
+        })
+};
+
+ exports.updateUserInterest = function(req, res){ 
     var token = req.headers.auth_token;    
     var result = {
         payload: null,

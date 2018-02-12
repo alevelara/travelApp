@@ -3,7 +3,7 @@
 module.exports = function(sequelize, DataTypes){
     return sequelize.define('rating', {
         id:{
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes){
             required: true
         },
         photo_ratio_id:{
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             references: {
                 model: 'photos',
                 key: 'id',
