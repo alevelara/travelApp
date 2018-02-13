@@ -68,11 +68,11 @@ exports.searchByName = function(req, res){
 };
 
 exports.getUserInterests = function(req, res){  
-        var userId = req.params.id;    
-    
-        userRepository.getInterestsByUserId(userId)
-        .then(userinterest => res.status(200).json({"interests": userinterest}))                                            
-        .catch(error => res.status(500).json({error_message: error.message}));
+    var userId = req.params.id;        
+    userRepository.getInterestsByUserId(userId)
+        .then(userinterests => res.status(200).json({"interests": userinterests}))      
+        .catch (error => res.status(500).json({error_message: error.message}));
+
 }; 
 
 exports.sendEmailUserPassword = function(req, res){    
