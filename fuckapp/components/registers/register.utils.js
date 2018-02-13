@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const env_var = require('../../config/var.json');
 
+const userRepository = require('../users/user.repository');
 var logger = require('../../components/logger/logger');
 
 exports.getUserByEmail = function(username, callback){

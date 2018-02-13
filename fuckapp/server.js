@@ -1,12 +1,11 @@
 const config = require('./config/config'),
     Sequelize = require('sequelize'),
     logger = require('./components/logger/logger'),
-    // models
+    // models 
     models = require("./models/index"),
     // env vars
     driver = config.get('dbdriver'),
     env = config.get('env');
-
 
 const sequelize = new Sequelize(
     config.get('db:' + env + ':' + driver + ':database'),
@@ -30,9 +29,9 @@ const sequelize = new Sequelize(
 
 
 sequelize.authenticate().then(() => {
-    logger.info('Connection has been established successfully.')
+    logger.info('Connection has been established successfully.');
 }).catch(err => {
-    logger.error('Unable to connect to the database:', err)
+    logger.error('Unable to connect to the database:', err);
 });
 
 exports.sequelize = sequelize;

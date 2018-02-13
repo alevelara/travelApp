@@ -1,14 +1,9 @@
 //Models
-var interests = require('../../models/interest');
+var interestsRepository = require('../interests/interest.repository');
+var userUtil = require('../users/user.utils');
 
   exports.getInterests = function(req,res){
-     interests.find({}, function(err, interests){
-        if (err){
-            res.status(500);
-            res.send(err);        
-        }else{
-            res.status(200);
-            res.json({"interests": interests})
-        }
-     });
- };
+    interestsRepository.getAllInterests()
+        .then(interests => res.status(200).json({interests:interests }))
+        .catch(error => res.status(500).json({"message_error": error}));        
+  };

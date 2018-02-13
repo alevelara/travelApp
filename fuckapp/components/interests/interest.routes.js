@@ -1,10 +1,8 @@
 module.exports = function(app){
 
     //Controllers
-    var interests = require('./interest.controllers')
-
-    app.route('/interests')
-        .get(interests.getInterests);
-     //   .post(interests.insert_interest)
-
-}
+    var interests = require('./interest.controllers');
+    var secureRequest = require('../../config/secureRequest');
+ 
+    app.get('/interests', secureRequest.validateSecureRequest, interests.getInterests);
+};

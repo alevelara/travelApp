@@ -17,7 +17,7 @@ var path = require('path'),
  require('./config/passport');
 
 // servidor, socket.io y mongo
-var server = require('http').createServer(app),
+var mainServer = require('http').createServer(app),
     io = require('socket.io')(server);
 
 // view engine setup
@@ -52,7 +52,6 @@ app.use(function(req,res){
 });
 
 app.listen(port);
-
 
 
 module.exports = app;

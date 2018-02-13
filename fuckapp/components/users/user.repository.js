@@ -56,5 +56,26 @@ exports.updateUserById = function(userId, user) {
         }, {
             where: {id: userId},
         }
-    );
+    )
+        .then(result => {
+            this.findUserById(userId, function (user) {                
+                callback(user);
+            });
+        })
+        .catch(error =>  callback(error));            
+};
+
+exports.getInterestsByUserId = function(userId){        
+    
+    var querySQL = 'Select interest.* from interests interest ' + 
+    'LEFT JOIN userinterests ui ON interest.id = ui.interest_id ' +
+    'where ui.user_id = :user_id';
+    Sequelize.query(querySQL, 
+    {
+        replacements: { user_id: userId},
+        type: Sequelize.QueryTypes.SELECT        
+    })
+    .then(interests => callback(interests))
+    .catch(error => callback(error));
+  
 };

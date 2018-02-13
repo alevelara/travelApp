@@ -70,7 +70,6 @@ module.exports = function(sequelize, DataTypes) {
             access: {
                 api: false,
                 self: false   
-
             }
         },
         hash: {
@@ -90,8 +89,7 @@ module.exports = function(sequelize, DataTypes) {
                 self: false   
 
             }
-        }
-        
+        }        
     },{
         setterMethods: {
             password: function(password){
@@ -106,8 +104,15 @@ module.exports = function(sequelize, DataTypes) {
             }
         }
     });
-
-    ssaclAttributeRoles(user);
     
+    user.associate = models => {
+        user.hasMany(models.userInterest, {
+            foreignKey: 'user_id',
+            sourceKey: 'id'
+        });
+    };
+
+    ssaclAttributeRoles(user);  
+
     return user;
 };
