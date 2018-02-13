@@ -4,19 +4,12 @@ const userUtil = require('./user.utils');
 module.exports = function(app){
 
     app.get('/users', validateSecureRequest, users.getAllUsers);
-
     app.get('/user/:id', validateSecureRequest, users.getUser);
     app.put('/user/:id', validateSecureRequest, users.updateUser);
-
     app.get('/user/:id/interests', validateSecureRequest, users.getUserInterests);
     app.get('/user/:id/interests', validateSecureRequest, users.updateUserInterest);
-
-    app.route('/user/password/recovery')
-        .post(users.sendEmailUserPassword);
-
-    app.route('/user/password/reset')
-        .post(users.resetPassword);
-    
+    app.post('/user/password/recovery', validateSecureRequest , users.sendEmailToUserWithResetPasswordToken);
+    app.post('/user/password/reset', validateSecureRequest , users.resetPassword);
     app.post('/user/search', validateSecureRequest, users.searchByName);
 };
 
