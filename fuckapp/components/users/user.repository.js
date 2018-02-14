@@ -28,6 +28,14 @@ exports.findUserByEmail = function (email) {
         {role: 'api'});
 };
 
+exports.findUserByEmailAndResetPasswordToken = function (email, resetPassWordToken) {
+    return User.findOne(
+        {   where:  {
+            email: email,
+            reset_password_token:resetPassWordToken
+        }},{role: 'api'});
+};
+
 exports.findUserByUsername = function (username) {
     return User.findOne(
         {where:{username: username}},
@@ -58,3 +66,22 @@ exports.updateUserById = function(userId, user) {
         }
     );
 };
+
+exports.updateUserPasswordById = function(userId, password) {
+    return User.update({
+            password: password
+        }, {
+            where: {id: userId},
+        }
+    );
+};
+
+exports.updateUserResetPassWordTokenById = function(id , resetPassWordToken) {
+    return User.update({
+        reset_password_token: resetPassWordToken
+    }, {
+        where: {id : id},
+    });
+};
+
+

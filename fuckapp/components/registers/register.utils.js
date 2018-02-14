@@ -4,21 +4,10 @@ const user = models.user;
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const env_var = require('../../config/var.json');
-
+const userRepository = require('../users/user.repository');
 var logger = require('../../components/logger/logger');
 
-exports.getUserByEmail = function(username, callback){
-    logger.debug(username);
-    user.findOne({email: username}, function(err, user){
-        logger.debug(user);
-        if(err){                       
-            logger.error(err);
-            return callback(err);
-        }else{            
-            return callback(user);
-        }
-    });
-};
+
 
 exports.generateJwt = function(user) {
     var expiry = new Date();
