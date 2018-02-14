@@ -10,7 +10,7 @@ module.exports = function(app){
     app.put('/user/:id', secureRequest.validateSecureRequest, users.updateUser);
 
     app.get('/user/:id/interests', secureRequest.validateSecureRequest, users.getUserInterests);
-   // app.get('/user/interests', secureRequest.validateSecureRequest, users.updateUserInterest);
+    app.put('/user/:id/interests', secureRequest.validateSecureRequest, users.setUserInterests);
 
     app.route('/user/password/recovery')
         .post(users.sendEmailUserPassword);

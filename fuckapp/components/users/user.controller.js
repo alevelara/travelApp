@@ -54,7 +54,7 @@ exports.updateUser = function(req, res) {
 };
 
 exports.searchByName = function(req, res){
-    console.log("nombre de usuario "+name);  
+
     var name = req.body.name;
     var offset = req.body.offset;
     if(offset == null){
@@ -74,6 +74,15 @@ exports.getUserInterests = function(req, res){
         .catch (error => res.status(500).json({error_message: error.message}));
 
 }; 
+
+exports.setUserInterests = function(req,res){
+    var userId = req.params.id;
+    var interests = req.params.interests;
+    userRepository.checkInterests(userId, interests)
+        .then(interest => userRepository.updateUserInterest(interest))
+        .then(result => res.status(200).json({"interests": userinterests})) 
+        .catch(error => res.status(500).json({error_message: error.message}));
+};
 
 exports.sendEmailUserPassword = function(req, res){    
     var userLogin = utilRegister.getUserByEmail(req.body.email, function(userLogin){
