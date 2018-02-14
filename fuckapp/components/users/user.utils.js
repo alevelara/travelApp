@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const env_var = require('../../config/var.json');
 
 exports.generatePassword = function(){
-    return password = generator.generate({
+    return generator.generate({
         length: 10,
         numbers: true
     });
