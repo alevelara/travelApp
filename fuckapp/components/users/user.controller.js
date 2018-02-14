@@ -139,10 +139,6 @@ exports.sendEmailToUserWithResetPasswordToken = function(req, res){
         const resetPasswordtoken = utilUser.generatePassword()
         try{
             userRepository.updateUserResetPassWordTokenById(user.id, resetPasswordtoken)
-        }catch(error){
-            res.status(500).json({error_message: error.message});
-        }
-        try{
             mailController.sendNewPasswordEmail(req.body.email, password, res);
             return res.status(200).json({ status:"success", message:"Your email has sended correctly."});
         }catch(error){

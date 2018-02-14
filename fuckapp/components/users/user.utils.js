@@ -6,7 +6,7 @@ var generator = require('generate-password'),
     env_var = require('../../config/var.json');
 
 exports.generatePassword = function(){
-    return password = generator.generate({
+    return generator.generate({
         length: 10,
         numbers: true
     });
