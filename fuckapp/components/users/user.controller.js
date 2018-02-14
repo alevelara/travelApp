@@ -76,35 +76,6 @@ exports.getUserInterests = function(req, res){
 
 }; 
 
-<<<<<<< HEAD
-exports.sendEmailUserPassword = function(req, res){    
-    var userLogin = utilRegister.getUserByEmail(req.body.email, function(userLogin){
-        if(userLogin){            
-            var password = utilUser.generatePassword(password, function(password){                          
-                user.findByIdAndUpdate(userLogin._id, {reset_password_token:password}, function(err, user){
-                    if(err){
-                        return res
-                        .status(500)
-                        .json({message_error:"Error updating token forgotten password: " + err.message});
-                    }else{                         
-                        mailController.sendNewPasswordEmail(req.body.email, password, res);
-                        if (res.statusCode == 500){
-                            return res
-                            .json({message_error:"Error sending email: " + err.message});
-                        }else if (res.statusCode == 200){
-                            return res                            
-                            .json({status:"success", message:"Your email has sended correctly."});
-                        }
-                       
-                    }
-                });
-            });
-        }else{
-            res.status(401).json({message_error:"BACK ERROR"});
-            logger.error('Incorrect user: date: %d', Date.now.toString());           
-           return;
-        }      
-=======
 exports.getUserInterests = function(req, res){
     var token = req.headers.auth_token;
     var result = {
@@ -144,33 +115,10 @@ exports.sendEmailToUserWithResetPasswordToken = function(req, res){
         }catch(error){
             res.status(500).json({error_message: error.message});
         }
->>>>>>> dae16c7a5e9083065daff62d61928ad3e9fe8df1
     });
 };
 
 exports.resetPassword = function(req, res){
-<<<<<<< HEAD
-
-    var userLogin = utilUser.getUserByEmailAndToken(req.body.email, req.body.reset_password_token, function(userLogin){        
-        if(userLogin){
-            userLogin.setPassword(req.body.new_password);
-            userLogin.save(function(err, user){
-                if(err){
-                    return res
-                    .status(500)
-                    .send({message:"Request error"});
-                }else{
-                    token = userLogin.generateJwt();                    
-                    return res.status(200).json({status:'success', session_info:{"token":token,user:{"_id":userLogin._id,"email":userLogin.email,"name":userLogin.name}}});
-                }
-            });
-        }else{
-            return res
-            .status(401)
-            .json({message_error:"User doesn't exists"});
-        }
-    });  
-=======
     userRepository.findUserByEmailAndResetPasswordToken(req.body.email,req.body.reset_password_token)
     .then(user => {
         userRepository.updateUserPasswordById(user.id, req.body.new_password)
@@ -178,5 +126,4 @@ exports.resetPassword = function(req, res){
         .catch(error => res.status(500).json({error_message: error.message}));
     }) 
     .catch(error => res.status(500).json({error_message: error.message}));
->>>>>>> dae16c7a5e9083065daff62d61928ad3e9fe8df1
 };

@@ -4,10 +4,6 @@ const user = models.user;
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const env_var = require('../../config/var.json');
-<<<<<<< HEAD
-
-=======
->>>>>>> dae16c7a5e9083065daff62d61928ad3e9fe8df1
 const userRepository = require('../users/user.repository');
 var logger = require('../../components/logger/logger');
 
