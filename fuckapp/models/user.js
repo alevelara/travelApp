@@ -64,7 +64,7 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: null
         },
         reset_password_token:{
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: true,
             defaultValue: null,
             access: {

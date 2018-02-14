@@ -64,7 +64,8 @@ exports.searchByName = function(req, res){
         .then(users => {
             offset = offset + LIMIT_SEARCH_USER_BY_NAME;
             res.status(200).json({user: users,offset:offset});
-        });
+        })
+        .catch(error => res.status(500).json({error_message: error.message}));
 };
 
 exports.getUserInterests = function(req, res){  
@@ -75,6 +76,7 @@ exports.getUserInterests = function(req, res){
 
 }; 
 
+<<<<<<< HEAD
 exports.sendEmailUserPassword = function(req, res){    
     var userLogin = utilRegister.getUserByEmail(req.body.email, function(userLogin){
         if(userLogin){            
@@ -102,10 +104,56 @@ exports.sendEmailUserPassword = function(req, res){
             logger.error('Incorrect user: date: %d', Date.now.toString());           
            return;
         }      
+=======
+exports.getUserInterests = function(req, res){
+    var token = req.headers.auth_token;
+    var result = {
+        payload: null,
+        status: 0
+    };
+    utilUser.verifyUser(token, result);
+    if(result.status == 404){
+       return res.
+       status(404).
+       json({error_message:"Token not found"});
+    }else if(result.status == 401){
+       return res.
+       status(401).
+       json({error_message:"Token has expired"});
+    }else if(result.status == 200){ 
+         user.findOne({_id: result.payload.id}).populate('interests').exec( function(err, user) {
+            if (err) {
+                return res
+                .status(404)
+                .json({status:"error", error_message: "Error retrieving user"});
+            } else {
+                return res.status(200).json({interests:user.interests});
+            }
+        });
+    }
+};
+
+exports.sendEmailToUserWithResetPasswordToken = function(req, res){    
+    userRepository.findUserByEmail(req.body.email)
+    .then( user => {
+        const resetPasswordtoken = utilUser.generatePassword()
+        try{
+            userRepository.updateUserResetPassWordTokenById(user.id, resetPasswordtoken)
+        }catch(error){
+            res.status(500).json({error_message: error.message});
+        }
+        try{
+            mailController.sendNewPasswordEmail(req.body.email, password, res);
+            return res.status(200).json({ status:"success", message:"Your email has sended correctly."});
+        }catch(error){
+            res.status(500).json({error_message: error.message});
+        }
+>>>>>>> dae16c7a5e9083065daff62d61928ad3e9fe8df1
     });
 };
 
 exports.resetPassword = function(req, res){
+<<<<<<< HEAD
 
     var userLogin = utilUser.getUserByEmailAndToken(req.body.email, req.body.reset_password_token, function(userLogin){        
         if(userLogin){
@@ -126,4 +174,13 @@ exports.resetPassword = function(req, res){
             .json({message_error:"User doesn't exists"});
         }
     });  
+=======
+    userRepository.findUserByEmailAndResetPasswordToken(req.body.email,req.body.reset_password_token)
+    .then(user => {
+        userRepository.updateUserPasswordById(user.id, req.body.new_password)
+        .then(() => {res.status(200).json({user: user})})
+        .catch(error => res.status(500).json({error_message: error.message}));
+    }) 
+    .catch(error => res.status(500).json({error_message: error.message}));
+>>>>>>> dae16c7a5e9083065daff62d61928ad3e9fe8df1
 };
