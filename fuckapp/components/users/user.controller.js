@@ -11,8 +11,6 @@ const userRepository = require('./user.repository');
 const utilRegister = require('../registers/register.utils');
 const utilUser = require('./user.utils');
 
-const secureRequest = require('../../config/secureRequest');
-
 const LIMIT_SEARCH_USER_BY_NAME = 20;
 
 // Get all users
@@ -67,22 +65,6 @@ exports.searchByName = function(req, res){
         });
 };
 
-exports.getUserInterests = function(req, res){  
-    var userId = req.params.id;        
-    userRepository.getInterestsByUserId(userId)
-        .then(userinterests => res.status(200).json({"interests": userinterests}))      
-        .catch (error => res.status(500).json({error_message: error.message}));
-
-}; 
-
-exports.setUserInterests = function(req,res){
-    var userId = req.params.id;
-    var interests = req.params.interests;
-    userRepository.checkInterests(userId, interests)
-        .then(interest => userRepository.updateUserInterest(interest))
-        .then(result => res.status(200).json({"interests": userinterests})) 
-        .catch(error => res.status(500).json({error_message: error.message}));
-};
 
 exports.sendEmailUserPassword = function(req, res){    
     var userLogin = utilRegister.getUserByEmail(req.body.email, function(userLogin){
