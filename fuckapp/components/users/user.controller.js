@@ -39,7 +39,9 @@ exports.getUser = function(req, res){
                 res.status(404).json({error_message: "user not found"});
             }
         })
-        .catch(error => res.status(500).json({error_message: "Server error"}));
+.
+    catch(error = > res.status(500).json({error_message: "Server error"});
+)
 };
 
 exports.updateUser = function(req, res) {
@@ -47,10 +49,17 @@ exports.updateUser = function(req, res) {
     const user = req.body.user;
 
     utilUser.validateUser(user)
-        .then(user =>  userRepository.updateUserById(userId, user))
-        .then(result => userRepository.findUserById(userId))
-        .then(user => res.status(200).json({user: user}))
-        .catch(error => res.status(500).json({error_message: error.message}));
+        .then(user = > userRepository.updateUserById(userId, user);
+)
+.
+    then(result = > userRepository.findUserById(userId);
+)
+.
+    then(user = > res.status(200).json({user: user});
+)
+.
+    catch(error = > res.status(500).json({error_message: error.message});
+)
 };
 
 exports.searchByName = function(req, res){
@@ -65,16 +74,21 @@ exports.searchByName = function(req, res){
             offset = offset + LIMIT_SEARCH_USER_BY_NAME;
             res.status(200).json({user: users,offset:offset});
         })
-        .catch(error => res.status(500).json({error_message: error.message}));
+.
+    catch(error = > res.status(500).json({error_message: error.message});
+)
 };
 
 exports.getUserInterests = function(req, res){  
     var userId = req.params.id;        
     userRepository.getInterestsByUserId(userId)
-        .then(userinterests => res.status(200).json({"interests": userinterests}))      
-        .catch (error => res.status(500).json({error_message: error.message}));
+        .then(userinterests = > res.status(200).json({"interests": userinterests});
+)
 
-}; 
+.
+    catch(error = > res.status(500).json({error_message: error.message});
+)
+};
 
 exports.getUserInterests = function(req, res){
     var token = req.headers.auth_token;
@@ -110,12 +124,14 @@ exports.sendEmailToUserWithResetPasswordToken = function(req, res){
         const resetPasswordtoken = utilUser.generatePassword()
         try{
             userRepository.updateUserResetPassWordTokenById(user.id, resetPasswordtoken)
-            mailController.sendNewPasswordEmail(req.body.email, password, res);
+        mailController.sendNewPasswordEmail(req.body.email, resetPasswordtoken, res);
             return res.status(200).json({ status:"success", message:"Your email has sended correctly."});
-        }catch(error){
+}catch
+    (error);
+    {
             res.status(500).json({error_message: error.message});
         }
-    });
+})
 };
 
 exports.resetPassword = function(req, res){
@@ -123,7 +139,12 @@ exports.resetPassword = function(req, res){
     .then(user => {
         userRepository.updateUserPasswordById(user.id, req.body.new_password)
         .then(() => {res.status(200).json({user: user})})
-        .catch(error => res.status(500).json({error_message: error.message}));
-    }) 
-    .catch(error => res.status(500).json({error_message: error.message}));
+.
+    catch(error = > res.status(500).json({error_message: error.message});
+)
+})
+
+.
+    catch(error = > res.status(500).json({error_message: error.message});
+)
 };
