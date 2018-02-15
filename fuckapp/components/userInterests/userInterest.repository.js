@@ -25,8 +25,13 @@ exports.updateUserInterestStatus = function(userId, interestId, status){
     });
 };
 
-exports.getUserInterestByPair = function(userId, userInterests){    
-    for(var userInterest in userInterests){
+//Arreglar, esto hay que darle una vuelta 
+//Lo suyo es llamar a esta funcion dentro del bucle desde fuera y pasarle el userInterest en vez de array de intereses
+//para que te devuelva una promise y poder enlazarla con la otra que viene del checkInterests.
+
+//Lo suyo es que el checkInterests devuelva un valor y según ese valor llamar al update o el create. No realizarlo dentro del método
+exports.getUserInterestByPair = function(userId, arrayUserInterests){    
+    for(var userInterest in arrayUserInterests){
         var querySQL = 'Select * from userinterests where user_id = :user_id AND interest_id = :interest_id';
         return Sequelize.query(querySQL, 
             {
