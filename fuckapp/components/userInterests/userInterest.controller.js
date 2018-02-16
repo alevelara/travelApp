@@ -1,21 +1,48 @@
 
 //repos
-const userRepository = require('./userInterest.repository');
+const userInterestRepository = require('./userInterest.repository');
 
 exports.getUserInterests = function(req, res){  
-    var userId = req.params.id;        
-    userRepository.getActiveInterestsByUserId(userId)
-        .then(userinterests => res.status(200).json({"interests": userinterests}))      
-        .catch (error => res.status(500).json({error_message: error.message}));
-
+    var userId = req.params.id;
+    userInterestRepository.getActiveInterestsByUserId(userId)
+        .then(userInterests => res.status(200).json({interests: userInterests}))
+        .catch(error => res.status(500).json({error_message: error.message}));
 }; 
 
-exports.setUserInterests = function(req,res){
+exports.updateUserInterests = function(req,res){
     var userId = req.params.id;
-    var interests = req.params.interests;
-   
-    userRepository.checkActiveInterests(userId, interests)
-        .then(interest => userRepository.updateUserInterest(interest))
-        .then(result => res.status(200).json({"interests": userinterests})) 
-        .catch(error => res.status(500).json({error_message: error.message}));
+    var selectedInterests = req.body.interests;
+
+    userInterestRepository.getInterestsByUserId(userId)
+        .then(userInterests => {
+            processUserInterestsPromise(new Set(selectedInterests), new Set(userInterests), userId)
+                .then(res.status(200).json({success: true}));
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).json({error_message:"Error updating interests"});
+        });
+};
+
+var processUserInterestsPromise = function (selectedInterests, userInterests, userId) {
+    return new Promise(function (fulfill, reject) {
+        var union = new Set([...selectedInterests, ...userInterests]);
+
+        var selectedIds = new Set();
+        selectedInterests.forEach(function(selected) {
+             selectedIds.add(selected.id)
+        });
+
+        union.forEach(function (item) {
+            if (!selectedIds.has(item.id)) {
+                item.status = 0;
+            } else {
+                item.status = 1;
+            }
+            console.log(item);
+            userInterestRepository.updateOrInsert(item, userId)
+                .catch(error => reject(error))
+        });
+        fulfill();
+    })
 };

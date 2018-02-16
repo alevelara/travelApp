@@ -1,13 +1,10 @@
-
 var models = require('../../models');
-var userInterests = models['userInterest'];
+var UserInterest = models['userInterest'];
 var Sequelize = require('../../server').sequelize;
-var Op = Sequelize.Op;
 
-const utilUserInterests = require('./userInterest.utils');
 
 exports.createActiveUserInterest = function(userId, interestId){
-    return userInterests.create({
+    return UserInterest.create({
         user_id: userId,
         interest_id: interestId,
         status: 1
@@ -15,7 +12,7 @@ exports.createActiveUserInterest = function(userId, interestId){
 };
 
 exports.updateUserInterestStatus = function(userId, interestId, status){
-    return userInterests.update({
+    return UserInterest.update({
         status: status,
 
         where:{
@@ -25,31 +22,25 @@ exports.updateUserInterestStatus = function(userId, interestId, status){
     });
 };
 
-//Arreglar, esto hay que darle una vuelta 
-//Lo suyo es llamar a esta funcion dentro del bucle desde fuera y pasarle el userInterest en vez de array de intereses
-//para que te devuelva una promise y poder enlazarla con la otra que viene del checkInterests.
+exports.updateOrInsert = function(interest, userId) {
+    const query =
+        'INSERT INTO userInterests (interest_id, user_id, status) ' +
+        'VALUES(:interest_id, :user_id, :status) ' +
+        'ON DUPLICATE KEY UPDATE status=:status';
 
-//Lo suyo es que el checkInterests devuelva un valor y según ese valor llamar al update o el create. No realizarlo dentro del método
-exports.getUserInterestByPair = function(userId, arrayUserInterests){    
-    for(var userInterest in arrayUserInterests){
-        var querySQL = 'Select * from userinterests where user_id = :user_id AND interest_id = :interest_id';
-        return Sequelize.query(querySQL, 
-            {
-                replacements: { 
-                    user_id: userId,
-                    interest_id: userInterest.interestId
-                },
-                type: Sequelize.QueryTypes.SELECT        
-            });
-            
-            return utilUserInterests.checkInterests(userId, userInterest);
-    }
-       
+    return Sequelize.query(query, {
+        replacements: {
+            interest_id: interest.id,
+            user_id: userId,
+            status: interest.status},
+        type: Sequelize.QueryTypes.INSERT
+    });
 };
+
 
 exports.getActiveInterestsByUserId = function(userId){            
     var querySQL = 'Select interest.* from interests interest ' + 
-    'LEFT JOIN userinterests ui ON interest.id = ui.interest_id ' +
+    'LEFT JOIN userInterests ui ON interest.id = ui.interest_id ' +
     'where ui.user_id = :user_id AND ui.status = 1';
 
     return Sequelize.query(querySQL, 
@@ -61,7 +52,7 @@ exports.getActiveInterestsByUserId = function(userId){
 
 exports.getInterestsByUserId = function(userId){            
     var querySQL = 'Select interest.* from interests interest ' + 
-    'LEFT JOIN userinterests ui ON interest.id = ui.interest_id ' +
+    'LEFT JOIN userInterests ui ON interest.id = ui.interest_id ' +
     'where ui.user_id = :user_id';
 
     return Sequelize.query(querySQL, 

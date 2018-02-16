@@ -5,6 +5,6 @@ module.exports = function(app){
     var secureRequest = require('../../config/secureRequest');
  
     app.get('/user/:id/interests', secureRequest.validateSecureRequest, userInterests.getUserInterests);
-    app.put('/user/:id/interests', secureRequest.validateSecureRequest, userInterests.setUserInterests);
+    app.put('/user/:id/interests', secureRequest.validateSecureRequest, userInterests.updateUserInterests);
 
 };
