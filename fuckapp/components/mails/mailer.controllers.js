@@ -34,7 +34,7 @@ exports.sendEmail = function(email){
 
 };
 
-exports.sendNewPasswordEmail = function(email,password, res){
+exports.sendNewPasswordEmail = function(email, password, res){
     var transporter = nodemailer.createTransport(smtpTransport({
         service: 'Gmail',
         auth: {

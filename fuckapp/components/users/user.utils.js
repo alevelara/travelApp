@@ -1,14 +1,15 @@
 
 var generator = require('generate-password'),
     user = require('../../models/user'),
-    text = require('body-parser');
+    text = require('body-parser'),
+     jwt = require('jsonwebtoken'),
+    env_var = require('../../config/var.json');
 
-exports.generatePassword = function(pw, callback){
-    var password = generator.generate({
+exports.generatePassword = function(){
+    return generator.generate({
         length: 10,
         numbers: true
     });
-    return callback(password);
 };
 
 exports.getUserByEmailAndToken = function(username, tokenPassword, callback){

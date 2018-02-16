@@ -41,7 +41,7 @@ describe('Register', function(){
             res.body.session_info.user.id.should.be.a("number");
             res.body.session_info.user.should.have.property('email');
             res.body.session_info.user.email.should.be.a("String");
-            res.body.session_info.user.should.have.property('name');
+            res.body.session_info.user.should.have.property('full_name');
             res.body.session_info.user.name.should.be.a("String");
             done();
         });    
