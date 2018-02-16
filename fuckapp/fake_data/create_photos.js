@@ -1,7 +1,7 @@
 const fs = require('fs');
 const photoController = require('../components/photos/photo.controller');
 
-const path = "./photos";
+const path = __dirname + "/photos";
 
 fs.readdir(path, function(err, items) {
     for (var i=0; i<items.length; i++) {

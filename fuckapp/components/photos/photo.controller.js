@@ -6,7 +6,7 @@ const Promise = require('promise');
 
 
 exports.savePhoto = function (req, res) {
-    this.savePhotoFile(req.file)
+    module.exports.savePhotoFile(req.file)
         .then(photo => res.status(200).json({photo_id: photo.id}))
         .catch(error => {
             console.error(error);
