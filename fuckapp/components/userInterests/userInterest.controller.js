@@ -40,6 +40,7 @@ var processUserInterestsPromise = function (selectedInterests, userInterests, us
                 item.status = 1;
             }
             console.log(item);
+            //TODO: This should be done in one transaction
             userInterestRepository.updateOrInsert(item, userId)
                 .catch(error => reject(error))
         });

@@ -1,32 +1,37 @@
-var models = require('../../models');
-var UserInterest = models['userInterest'];
-var Sequelize = require('../../server').sequelize;
+const Sequelize = require('../../server').sequelize;
 
+const TABLE_NAME = "userInterests";
 
-exports.createActiveUserInterest = function(userId, interestId){
-    return UserInterest.create({
-        user_id: userId,
-        interest_id: interestId,
-        status: 1
-    });
+exports.getInterestsByUserId = function(userId){
+    const querySQL =
+        `SELECT interest.* FROM interests interest ' +
+        'LEFT JOIN ${TABLE_NAME} ui ON interest.id = ui.interest_id ' +
+        'where ui.user_id = :user_id`;
+
+    return Sequelize.query(querySQL,
+        {
+            replacements: { user_id: userId},
+            type: Sequelize.QueryTypes.SELECT
+        });
 };
 
-exports.updateUserInterestStatus = function(userId, interestId, status){
-    return UserInterest.update({
-        status: status,
+exports.getActiveInterestsByUserId = function(userId){
+    const querySQL =
+        `SELECT interest.* FROM interests interest ' +
+        'LEFT JOIN ${TABLE_NAME} ui ON interest.id = ui.interest_id ' +
+        'where ui.user_id = :user_id AND ui.status = 1`;
 
-        where:{
-            user_id: userId,
-            interest_id: interestId
-        }
-    });
+    return Sequelize.query(querySQL, {
+            replacements: { user_id: userId},
+            type: Sequelize.QueryTypes.SELECT
+        });
 };
 
 exports.updateOrInsert = function(interest, userId) {
     const query =
-        'INSERT INTO userInterests (interest_id, user_id, status) ' +
+        `INSERT INTO ${TABLE_NAME} (interest_id, user_id, status) ' +
         'VALUES(:interest_id, :user_id, :status) ' +
-        'ON DUPLICATE KEY UPDATE status=:status';
+        'ON DUPLICATE KEY UPDATE status=:status`;
 
     return Sequelize.query(query, {
         replacements: {
@@ -35,29 +40,4 @@ exports.updateOrInsert = function(interest, userId) {
             status: interest.status},
         type: Sequelize.QueryTypes.INSERT
     });
-};
-
-
-exports.getActiveInterestsByUserId = function(userId){            
-    var querySQL = 'Select interest.* from interests interest ' + 
-    'LEFT JOIN userInterests ui ON interest.id = ui.interest_id ' +
-    'where ui.user_id = :user_id AND ui.status = 1';
-
-    return Sequelize.query(querySQL, 
-    {
-        replacements: { user_id: userId},
-        type: Sequelize.QueryTypes.SELECT        
-    });    
-};
-
-exports.getInterestsByUserId = function(userId){            
-    var querySQL = 'Select interest.* from interests interest ' + 
-    'LEFT JOIN userInterests ui ON interest.id = ui.interest_id ' +
-    'where ui.user_id = :user_id';
-
-    return Sequelize.query(querySQL, 
-    {
-        replacements: { user_id: userId},
-        type: Sequelize.QueryTypes.SELECT        
-    });    
 };
