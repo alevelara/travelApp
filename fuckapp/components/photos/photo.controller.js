@@ -6,7 +6,7 @@ const Promise = require('promise');
 
 
 exports.savePhoto = function (req, res) {
-    savePhoto(req.file)
+    this.savePhotoFile(req.file)
         .then(photo => res.status(200).json({photo_id: photo.id}))
         .catch(error => {
             console.error(error);
@@ -31,14 +31,17 @@ exports.getPhoto = function(req, res) {
             res.status(404).json({error_message: `Photo with id ${photoId} not found`}));
 };
 
-function savePhoto(photo) {
+exports.savePhotoFile = function(photo) {
     return new Promise(function(fulfill, reject) {
         validatePhotoPromise(photo)
             .then(() => photoRepository.savePhoto(sanitizePhoto(photo)))
             .then(savedPhoto => fulfill(savedPhoto))
-            .catch(error => reject(error));
+            .catch(error => {
+                console.log(error);
+                reject(error);
+            });
     })
-}
+};
 
 function validatePhotoPromise(file) {
     return new Promise(function(fulfill, reject) {
