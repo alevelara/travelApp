@@ -13,6 +13,7 @@ exports.updateUserInterests = function(req,res){
     var userId = req.params.id;
     var selectedInterests = req.body.interests;
 
+    // TODO: Check that the selectedInterests exist in the Interest table
     userInterestRepository.getInterestsByUserId(userId)
         .then(userInterests => {
             processUserInterestsPromise(new Set(selectedInterests), new Set(userInterests), userId)
