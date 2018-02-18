@@ -2,6 +2,11 @@ const Sequelize = require('../../server').sequelize;
 
 const TABLE_NAME = "userInterests";
 
+/**
+ * Get user interests
+ * @param userId UserId
+ * @returns {Promise}
+ */
 exports.getInterestsByUserId = function(userId){
     const querySQL =
         `SELECT interest.* FROM interests interest ` +
@@ -15,6 +20,12 @@ exports.getInterestsByUserId = function(userId){
         });
 };
 
+/**
+ * Get Active interest for User
+ *
+ * @param userId UserId
+ * @returns {Promise}
+ */
 exports.getActiveInterestsByUserId = function(userId){
     const querySQL =
         `SELECT interest.* FROM interests interest ` +
@@ -27,6 +38,13 @@ exports.getActiveInterestsByUserId = function(userId){
         });
 };
 
+/**
+ * Update user interest
+ *
+ * @param interest Interest
+ * @param userId UserId
+ * @returns {Promise}
+ */
 exports.updateOrInsert = function(interest, userId) {
     const query =
         `INSERT INTO ${TABLE_NAME} (interest_id, user_id, status) ` +

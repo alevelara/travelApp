@@ -2,16 +2,31 @@
 //repos
 const userInterestRepository = require('./userInterest.repository');
 
+/**
+ * Get list of user interest filtered by userID
+ *
+ * @param req Request
+ * @param res Response
+ * @param req.params.id ID of user
+ */
 exports.getUserInterests = function(req, res){  
-    var userId = req.params.id;
+    const userId = req.params.id;
     userInterestRepository.getActiveInterestsByUserId(userId)
         .then(userInterests => res.status(200).json({interests: userInterests}))
         .catch(error => res.status(500).json({error_message: error.message}));
-}; 
+};
 
+/**
+ * Update User interest
+ *
+ * @param req Request
+ * @param res Response
+ * @param req.params.id User Id
+ * @param req.body.interests Interest selected by the user
+ */
 exports.updateUserInterests = function(req,res){
-    var userId = req.params.id;
-    var selectedInterests = req.body.interests;
+    const userId = req.params.id;
+    const selectedInterests = req.body.interests;
 
     // TODO: Check that the selectedInterests exist in the Interest table
     userInterestRepository.getInterestsByUserId(userId)
@@ -25,11 +40,11 @@ exports.updateUserInterests = function(req,res){
         });
 };
 
-var processUserInterestsPromise = function (selectedInterests, userInterests, userId) {
+const processUserInterestsPromise = function (selectedInterests, userInterests, userId) {
     return new Promise(function (fulfill, reject) {
-        var union = new Set([...selectedInterests, ...userInterests]);
+        const union = new Set([...selectedInterests, ...userInterests]);
 
-        var selectedIds = new Set();
+        let selectedIds = new Set();
         selectedInterests.forEach(function(selected) {
              selectedIds.add(selected.id)
         });
