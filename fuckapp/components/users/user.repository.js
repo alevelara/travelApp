@@ -7,12 +7,9 @@ const Sequelize = require('../../server').sequelize;
 /**
  * Get all users
  *
- * @param callback
  */
-exports.getAllUsers = function (callback) {
-    User.findAll({role: 'api'})
-    .then(users => callback(users))
-    .catch(error => callback(error));
+exports.getAllUsers = function () {
+   return  User.findAll();
 };
 
 /**
@@ -37,8 +34,7 @@ exports.createUser = function(newUser) {
  */
 exports.findUserById = function(userId) {
     return User.findOne(
-        {where: {id: userId}},
-        {role: 'api'});
+        {where: {id: userId}});
 };
 
 /**

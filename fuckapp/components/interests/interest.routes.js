@@ -1,5 +1,5 @@
 module.exports = function(app){
-    //Controllersconst
+    //Controllers
     const interests = require('./interest.controllers');
     const secureRequest = require('../../config/secureRequest');
  

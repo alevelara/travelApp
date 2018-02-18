@@ -13,7 +13,7 @@ exports.getUserInterests = function(req, res){
     const userId = req.params.id;
     userInterestRepository.getActiveInterestsByUserId(userId)
         .then(userInterests => res.status(200).json({interests: userInterests}))
-        .catch(error => res.status(500).json({error_message: error.message}));
+        .catch(() => res.status(500).json({error_message: "Server error "}));
 };
 
 /**
@@ -36,7 +36,7 @@ exports.updateUserInterests = function(req,res){
         })
         .catch(error => {
             console.error(error);
-            res.status(500).json({error_message:"Error updating interests"});
+            res.status(500).json({error_message:"Server error "});
         });
 };
 

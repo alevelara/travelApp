@@ -13,13 +13,9 @@ const LIMIT_SEARCH_USER_BY_NAME = 20;
  * @param res Response
  */
 exports.getAllUsers = function(req, res){
-    try {
-        userRepository.getAllUsers(function (users) {
-            res.status(200).json({'users': users});
-        });
-    } catch (error) {
-        res.status(500).json({err: 'Server Fail'});
-    }
+    userRepository.getAllUsers()
+        .then(users => res.status(200).json({'users': users}))
+            .catch(() =>res.status(500).json({error_message: 'Server error '}));
 };
 
 /**
@@ -39,7 +35,7 @@ exports.getUser = function(req, res){
             } else {
                 res.status(404).json({error_message: "user not found"});
             }
-        }).catch(res.status(500).json({error_message: "Server error"}));
+        }).catch(() => res.status(500).json({error_message: "Server error "}));
 };
 
 /**
@@ -58,7 +54,7 @@ exports.updateUser = function(req, res) {
         .then(user => userRepository.updateUserById(userId, user))
         .then(userRepository.findUserById(userId))
         .then(user => res.status(200).json({user: user}))
-        .catch(error => res.status(500).json({error_message: error.message}))
+        .catch(() => res.status(500).json({error_message: "Server error "}))
 };
 
 /**
@@ -81,7 +77,7 @@ exports.searchByName = function(req, res){
         .then(users => {
             offset = offset + LIMIT_SEARCH_USER_BY_NAME;
             res.status(200).json({user: users,offset:offset});
-        }).catch(error => res.status(500).json({error_message: error.message}));
+        }).catch(() => res.status(500).json({error_message: "Server error "}));
 };
 
 /**
@@ -116,5 +112,5 @@ exports.resetPassword = function(req, res){
     .then(user => {
         userRepository.updateUserPasswordById(user.id, req.body.new_password)
         .then(res.status(200).json({user: user}))
-            .catch(error => res.status(500).json({error_message: error.message}))});
+            .catch(() => res.status(500).json({error_message: "Server error "}))});
 };

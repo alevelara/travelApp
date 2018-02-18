@@ -52,7 +52,7 @@ exports.signup = function(req, res) {
         .then(user => {
             console.log("New user created: " + user);
             if(!user){
-                res.status(500).json({status:"error", error_message: "error creating user"});
+                res.status(500).json({status:"error", error_message: "Server error "});
             } else {
                 const token = registerUtil.generateJwt(user);
                 // After success login, we'll send a email verification
@@ -68,7 +68,7 @@ exports.signup = function(req, res) {
         })
         .catch(error => {
             console.error(error);
-            res.status(400).json({status:"error", error_message: error});
+            res.status(400).json({status:"error", error_message: "Server error "});
         });
 };
 
