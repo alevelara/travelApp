@@ -5,8 +5,6 @@ var User = models['user'];
 var Sequelize = require('../../server').sequelize;
 var Op = Sequelize.Op;
 
-
-
 exports.getAllUsers = function (callback) {
     User.findAll({role: 'api'})
     .then(users => callback(users))
@@ -65,18 +63,6 @@ exports.updateUserById = function(userId, user) {
             where: {id: userId},
         }
     );       
-};
-
-exports.getInterestsByUserId = function(userId, callback){            
-    var querySQL = 'Select interest.* from interests interest ' + 
-    'LEFT JOIN userinterests ui ON interest.id = ui.interest_id ' +
-    'where ui.user_id = :user_id';
-
-    return Sequelize.query(querySQL, 
-    {
-        replacements: { user_id: userId},
-        type: Sequelize.QueryTypes.SELECT        
-    });    
 };
 
 exports.updateUserPasswordById = function(userId, password) {

@@ -56,12 +56,6 @@ exports.searchByName = function(req, res){
         }).catch(error => res.status(500).json({error_message: error.message}));
 };
 
-exports.getUserInterests = function(req, res){  
-    let userId = req.params.id;
-    userRepository.getInterestsByUserId(userId)
-        .then(userinterests => res.status(200).json({"interests": userinterests}))
-            .catch(error => res.status(500).json({error_message: error.message}));
-};
 
 exports.getUserInterests = function(req, res){
     const token = req.headers.auth_token;
@@ -91,7 +85,7 @@ exports.getUserInterests = function(req, res){
     }
 };
 
-exports.sendEmailToUserWithResetPasswordToken = function(req, res){    
+exports.sendEmailToUserWithResetPasswordToken = function(req, res){
     userRepository.findUserByEmail(req.body.email)
     .then( user => {
         const resetPasswordtoken = utilUser.generatePassword();
