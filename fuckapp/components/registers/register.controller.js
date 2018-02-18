@@ -1,23 +1,24 @@
 //Modules
-var passport = require('passport'),
-    userRepository = require('../users/user.repository'),
-    logger = require('../../components/logger/logger');
-
-//Controllers
-var mailCtrl = require('../mails/mailer.controllers');
+const passport = require('passport'),
+    userRepository = require('../users/user.repository');
 
 //Utils
-var registerUtil = require('./register.utils');
+const registerUtil = require('./register.utils');
 
+/**
+ * Log in
+ *
+ * @param req Request
+ * @param res Response
+ */
 exports.login = function(req, res) {
-    passport.authenticate('local', function(err, user, info){
+    passport.authenticate('local', function(err, user){
         if (err || !user){
             console.error(err);
-            logger.error('Login fail: date: %s', Date.now.toString());
             res.status(401).json({error_message: "Incorrect password"});
             return;
         }
-        var token = registerUtil.generateJwt(user);
+        let token = registerUtil.generateJwt(user);
         res.status(200).json({
             status:'success',
             session_info:{
@@ -32,8 +33,14 @@ exports.login = function(req, res) {
     })(req,res);
 };
 
+/**
+ * Sing Up
+ *
+ * @param req Request
+ * @param res Response
+ */
 exports.signup = function(req, res) {
-    var newUser = {
+    let newUser = {
         username: req.body.username,
         full_name: req.body.full_name,
         email: req.body.email,

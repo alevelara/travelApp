@@ -1,5 +1,4 @@
 const users = require('./user.controller');
-const userUtil = require('./user.utils');
 const secureRequest = require('../../config/secureRequest');
 
 module.exports = function(app){

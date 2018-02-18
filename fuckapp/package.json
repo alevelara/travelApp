@@ -53,6 +53,7 @@
     "ssacl-attribute-roles": "^1.0.0",
     "supertest": "^3.0.0",
     "swig": "^1.4.2",
+    "winston-transport": "^3.0.1",
     "util": "^0.10.3"
   },
   "devDependencies": {
@@ -60,7 +61,8 @@
     "chai-http": "^2.0.1",
     "mocha": "^2.4.5",
     "nodemon": "^1.14.12",
-    "pre-commit": "^1.2.2"
+    "pre-commit": "^1.2.2",
+    "winston-compat": "^0.0.1"
   },
   "pre-commit": "npm test"
 }

@@ -1,16 +1,25 @@
 'use strict';
 
-var models = require('../../models');
-var User = models['user'];
-var Sequelize = require('../../server').sequelize;
-var Op = Sequelize.Op;
+const models = require('../../models');
+const User = models['user'];
+const Sequelize = require('../../server').sequelize;
 
+/**
+ * Get all users
+ *
+ * @param callback
+ */
 exports.getAllUsers = function (callback) {
     User.findAll({role: 'api'})
     .then(users => callback(users))
     .catch(error => callback(error));
 };
 
+/**
+ * Create User
+ *
+ * @param newUser User to create
+ */
 exports.createUser = function(newUser) {
     return User.create({
         username: newUser.username,
@@ -20,12 +29,37 @@ exports.createUser = function(newUser) {
     });
 };
 
+/**
+ * Get User filtered by userId
+ *
+ * @param userId User Id to for filter
+ * @returns {Query|Promise|Promise<Model>|void|*}
+ */
+exports.findUserById = function(userId) {
+    return User.findOne(
+        {where: {id: userId}},
+        {role: 'api'});
+};
+
+/**
+ * Get User filtered by email
+ *
+ * @param email Email to filter
+ * @returns {Query|Promise|Promise<Model>|void|*}
+ */
 exports.findUserByEmail = function (email) {
     return User.findOne(
         {where:{email: email}},
         {role: 'api'});
 };
 
+/**
+ * Find User by email and reset password token
+ *
+ * @param email Email
+ * @param resetPassWordToken Reset password token
+ * @returns {Query|Promise|Promise<Model>|void|*}
+ */
 exports.findUserByEmailAndResetPasswordToken = function (email, resetPassWordToken) {
     return User.findOne(
         {   where:  {
@@ -34,24 +68,41 @@ exports.findUserByEmailAndResetPasswordToken = function (email, resetPassWordTok
         }},{role: 'api'});
 };
 
+/**
+ * Find User by name
+ *
+ * @param username Name for filter
+ * @returns {Query|Promise|Promise<Model>|void|*}
+ */
 exports.findUserByUsername = function (username) {
     return User.findOne(
         {where:{username: username}},
         {role: 'api'});
 };
 
-exports.findUserById = function(userId) {
-    return User.findOne(
-        {where: {id: userId}},
-        {role: 'api'});
-};
-
+/**
+ * Get all users who his name contains @param name
+ *
+ * @param name Name for filter
+ * @param offset Offset of database
+ * @returns {Promise}
+ */
 exports.matchUserByUserName = function(name, offset) {
-    return Sequelize.query(`SELECT * FROM users where full_name like :name OR username like :name LIMIT 20 OFFSET ${offset}`,
-        { replacements: { name: '%' + name + '%' , offset : offset }, 
+    let query = `SELECT * FROM users where full_name like :name OR username like :name LIMIT 20 OFFSET ${offset}`;
+
+    return Sequelize.query(query, { replacements: {
+            name: '%' + name + '%' ,
+            offset : offset
+        },
         type: Sequelize.QueryTypes.SELECT });
 };
 
+/**
+ * Update user with id equals @param userId
+ *
+ * @param userId User Id for filter
+ * @param user User
+ */
 exports.updateUserById = function(userId, user) {
     return User.update({
             full_name: user.full_name,
@@ -65,6 +116,12 @@ exports.updateUserById = function(userId, user) {
     );       
 };
 
+/**
+ * Update User password fitered by userId
+ *
+ * @param userId UserId to filter
+ * @param password Password for update
+ */
 exports.updateUserPasswordById = function(userId, password) {
     return User.update({
             password: password
@@ -74,6 +131,12 @@ exports.updateUserPasswordById = function(userId, password) {
     );
 };
 
+/**
+ * Update reset password token to user filtered by id
+ *
+ * @param id User id
+ * @param resetPassWordToken Reset password token to update
+ */
 exports.updateUserResetPassWordTokenById = function(id , resetPassWordToken) {
     return User.update({
         reset_password_token: resetPassWordToken
