@@ -27,7 +27,10 @@ exports.sendEmail = function(email, res){
 
     transporter.sendMail(mailOption)
         .then(res.status(200).json({message: "Email sent "+email}))
-        .catch(error => res.status(500).json({error_message:error}));
+        .catch(error =>{
+            console.log(error);
+            res.status(500).json({error_message:error});
+        });
 };
 
 /**
@@ -55,5 +58,8 @@ exports.sendNewPasswordEmail = function(email, password, res){
 
     transporter.sendMail(mailOption)
         .then(res.status(200).json({message: "Email sent "+email}))
-        .catch(error => res.status(500).json({error_message:error}));
+        .catch((error) =>{
+            console.log(error);
+            res.status(500).json({error_message: "Server error "})
+        });
 };

@@ -15,7 +15,7 @@ exports.login = function(req, res) {
     passport.authenticate('local', function(err, user){
         if (err || !user){
             console.error(err);
-            res.status(401).json({error_message: "Incorrect password"});
+            res.status(500).json({error_message: "Incorrect password"});
             return;
         }
         let token = registerUtil.generateJwt(user);
@@ -66,9 +66,9 @@ exports.signup = function(req, res) {
                 });
             }
         })
-        .catch(error => {
-            console.error(error);
-            res.status(400).json({status:"error", error_message: "Server error "});
+        .catch((error) =>{
+            console.log(error);
+            res.status(500).json({error_message: "Server error "});
         });
 };
 
