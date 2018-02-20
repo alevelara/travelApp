@@ -13,12 +13,15 @@ const registerUtil = require('./register.utils');
  */
 exports.login = function(req, res) {
     passport.authenticate('local', function(err, user){
-        if (err || !user){
-            console.error(err);
-            res.status(500).json({error_message: "Incorrect password"});
+        if (err){
+            console.error(err.message);
+            res.status(500).json({error_message: "Server fail"});
             return;
         }
-        let token = registerUtil.generateJwt(user);
+        else if(!user){
+            res.status(401).json({error_message: "Incorrect user or password"});
+        }else{
+            let token = registerUtil.generateJwt(user);
         res.status(200).json({
             status:'success',
             session_info:{
@@ -29,7 +32,7 @@ exports.login = function(req, res) {
                     name:user.full_name
                 }
             }});
-
+        }
     })(req,res);
 };
 
