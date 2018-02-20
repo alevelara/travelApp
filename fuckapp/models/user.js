@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
     
     ssaclAttributeRoles(sequelize);
     
-    var user = sequelize.define('user', {                
+    let user = sequelize.define('user', {
         id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -104,7 +104,11 @@ module.exports = function(sequelize, DataTypes) {
             }
         }
     });
-    
+
+    /**
+     * @param models          Information about the object.
+     * @param models.userInterest   Information about the object's members.
+     */
     user.associate = models => {
         user.hasMany(models.userInterest, {
             foreignKey: 'user_id',

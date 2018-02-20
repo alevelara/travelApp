@@ -18,11 +18,20 @@ const STORAGE = multer.diskStorage({
     }        
 });
 
-
+/**
+ * Function to upload a single photo
+ *
+ * @returns {*}
+ */
 exports.uploadSinglePhoto = function(){
     return multer({storage: STORAGE}).single("photo");
 };
 
+/**
+ * Function to upload multiples photos
+ *
+ * @returns {*}
+ */
 exports.uploadMultiplePhotos = function(){
     return multer({storage: STORAGE}).array("photo_multiple",10);
 };

@@ -3,18 +3,15 @@
  * @author AlbertJ
  *
  */
-
-var
-    path = require('path'),
-    winston = require('winston');
+const winston = require('winston');
 
 module.exports = winston;
 
 winston.init = function () {
     // Levels, lowest to highest: silly, debug, verbose, info, warn, error
     // default = 'debug'
-    var logLevel = 'debug';
-    var logFile = '../../fuckapp.log';
+    const logLevel = 'debug';
+    const logFile = '../../fuckapp.log';
 
     winston.remove(winston.transports.Console);
     winston.add(winston.transports.Console, {level: logLevel, colorize: true, timestamp: true});

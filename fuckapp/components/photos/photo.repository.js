@@ -3,6 +3,11 @@
 const models = require('../../models');
 const Photo = models['photo'];
 
+/**
+ * Create photo in database
+ *
+ * @param photo Photo to create
+ */
 exports.savePhoto = function (photo) {
     return Photo.create(
         {
@@ -18,6 +23,12 @@ exports.savePhoto = function (photo) {
     )
 };
 
+/**
+ * Get photo filtered by @param photoId
+ *
+ * @param photoId PhotoId for filter
+ * @returns {Query|Promise|Promise<Model>|void|*}
+ */
 exports.findPhotoById = function (photoId) {
     return Photo.findOne({where: {id: photoId}})
 };

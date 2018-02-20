@@ -1,23 +1,27 @@
 //Modules
-var passport = require('passport'),
-    userRepository = require('../users/user.repository'),
-    logger = require('../../components/logger/logger');
-
-//Controllers
-var mailCtrl = require('../mails/mailer.controllers');
+const passport = require('passport'),
+    userRepository = require('../users/user.repository');
 
 //Utils
-var registerUtil = require('./register.utils');
+const registerUtil = require('./register.utils');
 
+/**
+ * Log in
+ *
+ * @param req Request
+ * @param res Response
+ */
 exports.login = function(req, res) {
-    passport.authenticate('local', function(err, user, info){
-        if (err || !user){
-            console.error(err);
-            logger.error('Login fail: date: %s', Date.now.toString());
-            res.status(401).json({error_message: "Incorrect password"});
+    passport.authenticate('local', function(err, user){
+        if (err){
+            console.error(err.message);
+            res.status(500).json({error_message: "Server fail"});
             return;
         }
-        var token = registerUtil.generateJwt(user);
+        else if(!user){
+            res.status(401).json({error_message: "Incorrect user or password"});
+        }else{
+            let token = registerUtil.generateJwt(user);
         res.status(200).json({
             status:'success',
             session_info:{
@@ -28,12 +32,18 @@ exports.login = function(req, res) {
                     name:user.full_name
                 }
             }});
-
+        }
     })(req,res);
 };
 
+/**
+ * Sing Up
+ *
+ * @param req Request
+ * @param res Response
+ */
 exports.signup = function(req, res) {
-    var newUser = {
+    let newUser = {
         username: req.body.username,
         full_name: req.body.full_name,
         email: req.body.email,
@@ -45,7 +55,7 @@ exports.signup = function(req, res) {
         .then(user => {
             console.log("New user created: " + user);
             if(!user){
-                res.status(500).json({status:"error", error_message: "error creating user"});
+                res.status(500).json({status:"error", error_message: "Server error "});
             } else {
                 const token = registerUtil.generateJwt(user);
                 // After success login, we'll send a email verification
@@ -59,9 +69,9 @@ exports.signup = function(req, res) {
                 });
             }
         })
-        .catch(error => {
-            console.error(error);
-            res.status(400).json({status:"error", error_message: error});
+        .catch((error) =>{
+            console.log(error);
+            res.status(500).json({error_message: "Server error "});
         });
 };
 

@@ -3,6 +3,14 @@
 const jwt = require('jsonwebtoken');
 const env_var = require('./var.json');
 
+/**
+ * Validate token header
+ *
+ * @param req Request
+ * @param res Response
+ * @param next
+ * @param req.headers.auth_token
+ */
 exports.validateSecureRequest = function(req, res, next) {
     const token = req.headers.auth_token;
     const result = {
@@ -26,7 +34,7 @@ function verifyUser(token, result){
             result.message = 'Token not found';
             throw new Error(result.message);
         }else{
-            var expiredTime = (payload.exp * 1000);
+            let expiredTime = (payload.exp * 1000);
             if(expiredTime <= Date.now()){
                 result.status = 401;
                 result.message = "Token has expired";
@@ -37,4 +45,4 @@ function verifyUser(token, result){
             }
         }
     });
-};
+}

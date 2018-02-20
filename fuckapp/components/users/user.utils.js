@@ -1,9 +1,6 @@
 
-var generator = require('generate-password'),
-    user = require('../../models/user'),
-    text = require('body-parser'),
-     jwt = require('jsonwebtoken'),
-    env_var = require('../../config/var.json');
+const generator = require('generate-password'),
+    user = require('../../models/user');
 
 exports.generatePassword = function(){
     return generator.generate({

@@ -1,12 +1,16 @@
 //Modules
-var nodemailer = require('nodemailer'),
+const nodemailer = require('nodemailer'),
     smtpTransport = require('nodemailer-smtp-transport'),
-    vars = require('../../config/var.json'),
-    logger = require('../../components/logger/logger');
+    vars = require('../../config/var.json');
 
-exports.sendEmail = function(email){
-
-    var transporter = nodemailer.createTransport(smtpTransport({
+/**
+ * Function to send a dummy email
+ *
+ * @param email Email to send
+ * @param res
+ */
+exports.sendEmail = function(email, res){
+    let transporter = nodemailer.createTransport(smtpTransport({
         service: 'Gmail',
         auth: {
             user: vars.development.email,
@@ -14,28 +18,30 @@ exports.sendEmail = function(email){
         },
         debug: true // include SMTP traffic in the logs,
     }));
-
-    var mailOption = {
+    let mailOption = {
         from: vars.development.email,
         to: email,
         subject: 'Asunto Prueba',
         text:'Login correcto PRUEBA'
     };
 
-    transporter.sendMail(mailOption, function(error, info){
-        if(error){            
-            logger.error(email);
-            logger.error(error.message);
-        }else{
-            logger.debug(email);
-            logger.debug("Email sent");
-        }
-    });
-
+    transporter.sendMail(mailOption)
+        .then(res.status(200).json({message: "Email sent "+email}))
+        .catch(error =>{
+            console.log(error);
+            res.status(500).json({error_message:error});
+        });
 };
 
+/**
+ * Send email to User @param email with the password passed in @param password
+ *
+ * @param email Email to
+ * @param password Password to send
+ * @param res Response
+ */
 exports.sendNewPasswordEmail = function(email, password, res){
-    var transporter = nodemailer.createTransport(smtpTransport({
+    let transporter = nodemailer.createTransport(smtpTransport({
         service: 'Gmail',
         auth: {
             user: vars.development.email,
@@ -43,24 +49,17 @@ exports.sendNewPasswordEmail = function(email, password, res){
         },
         debug: true // include SMTP traffic in the logs,
     }));
-
-    var mailOption = {
+    let mailOption = {
         from: vars.development.email,
         to: email,
         subject: 'Asunto Prueba',
         text:'Your new password is '+ password
     };
 
-    transporter.sendMail(mailOption, function(error, info){
-        if(error){            
-            logger.error(email);
-            logger.error(error.message);
-            res.status(500);
-        }else{
-            logger.debug(email);
-            logger.debug("Email sent");
-            res.status(200);
-        }
-    });
-
+    transporter.sendMail(mailOption)
+        .then(res.status(200).json({message: "Email sent "+email}))
+        .catch((error) =>{
+            console.log(error);
+            res.status(500).json({error_message: "Server error "})
+        });
 };
