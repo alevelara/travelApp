@@ -17,15 +17,14 @@ exports.getAllUsers = function(req, res){
     }
 };
 
-
 exports.getUser = function(req, res){
-    const userId = req.params.id;
+    var userId = req.params.id;
 
     userRepository.findUserById(userId)
-        .then(user => {
-            if (user) {
-                res.status(200).json({user: user});
-            } else {
+        .then(user => {            
+            if(user) {
+              return res.status(200).json({user: user});
+            } else {                
                 res.status(404).json({error_message: "user not found"});
             }
         }).catch(res.status(500).json({error_message: "Server error"}));
@@ -39,12 +38,13 @@ exports.updateUser = function(req, res) {
         .then(user => userRepository.updateUserById(userId, user))
         .then(userRepository.findUserById(userId))
         .then(user => res.status(200).json({user: user}))
-        .catch(error => res.status(500).json({error_message: error.message}))
+        .catch(error => res.status(500).json({error_message: error.message}));
 };
 
 exports.searchByName = function(req, res){
     const name = req.body.name;
     let offset = req.body.offset;
+
     console.log("nombre de usuario "+name);
     if(offset == null){
         offset = '0';
@@ -52,7 +52,7 @@ exports.searchByName = function(req, res){
     userRepository.matchUserByUserName(name, offset)
         .then(users => {
             offset = offset + LIMIT_SEARCH_USER_BY_NAME;
-            res.status(200).json({user: users,offset:offset});
+            res.status(200).json({user: users, offset:offset});
         }).catch(error => res.status(500).json({error_message: error.message}));
 };
 

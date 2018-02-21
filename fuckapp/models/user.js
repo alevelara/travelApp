@@ -10,9 +10,9 @@ module.exports = function(sequelize, DataTypes) {
     
     var user = sequelize.define('user', {                
         id:{
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV1,
+            primaryKey: true            
         },
         username:{
             type: DataTypes.STRING,
@@ -44,7 +44,8 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true
         },
         photo_profile_id:{
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV1,
             references: {
                 model: 'photos',
                 key: 'id',

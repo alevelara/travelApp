@@ -3,16 +3,17 @@
 module.exports = function(sequelize, DataTypes){
     const interest =  sequelize.define('interest', {
         id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV1,
+            primaryKey: true            
         },
         name: {
             type: DataTypes.STRING,
             allowNull: false
         },
         photo_id:{
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV1,
             references: {
                 model: 'photos',
                 key: 'id',

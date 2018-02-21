@@ -11,10 +11,9 @@ var registerUtil = require('./register.utils');
 
 exports.login = function(req, res) {
     passport.authenticate('local', function(err, user, info){
-        if (err || !user){
-            console.error(err);
+        if (!user){            
             logger.error('Login fail: date: %s', Date.now.toString());
-            res.status(401).json({error_message: "Incorrect password"});
+            res.status(401).json({error_message: info.error_message});
             return;
         }
         var token = registerUtil.generateJwt(user);

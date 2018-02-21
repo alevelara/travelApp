@@ -44,8 +44,7 @@ exports.findUserByUsername = function (username) {
 
 exports.findUserById = function(userId) {
     return User.findOne(
-        {where: {id: userId}},
-        {role: 'api'});
+        {where: {id: userId}});
 };
 
 exports.matchUserByUserName = function(name, offset) {
