@@ -9,3 +9,16 @@ const Interest = models['interest'];
 exports.getAllInterests = function () {
     return Interest.findAll({role: 'api'});
 };
+
+/**
+ * Get all interest with id in interestIds
+ *
+ * @returns {Promise<Array<Model>>}
+ */
+exports.findInterestsById = function (interestIds) {
+    return Interest.findAll({
+        where: {
+            id: [interestIds]
+        }
+    })
+};

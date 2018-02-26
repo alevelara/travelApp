@@ -1,6 +1,8 @@
-
 //repos
 const userInterestRepository = require('./userInterest.repository');
+const userRepository = require('../users/user.repository');
+const interestRepository = require('../interests/interest.repository');
+const Promise = require('promise');
 
 /**
  * Get list of user interest filtered by userID
@@ -11,7 +13,7 @@ const userInterestRepository = require('./userInterest.repository');
  */
 exports.getUserInterests = function(req, res){  
     const userId = req.params.id;
-    userInterestRepository.getActiveInterestsByUserId(userId)
+    userInterestRepository.getInterestsByUserId(userId)
         .then(userInterests => res.status(200).json({interests: userInterests}))
         .catch((error) =>{
             console.log(error);
@@ -25,44 +27,26 @@ exports.getUserInterests = function(req, res){
  * @param req Request
  * @param res Response
  * @param req.params.id User Id
- * @param req.body.interests Interest selected by the user
+ * @param req.body.interest_ids Interest selected by the user
  */
-exports.updateUserInterests = function(req,res){
+exports.updateUserInterests = function(req, res){
     const userId = req.params.id;
-    const selectedInterests = req.body.interests;
+    const selectedInterestIds = req.body.interest_ids;
 
-    // TODO: Check that the selectedInterests exist in the Interest table
-    userInterestRepository.getInterestsByUserId(userId)
-        .then(userInterests => {
-            processUserInterestsPromise(new Set(selectedInterests), new Set(userInterests), userId)
-                .then(res.status(200).json({success: true}));
+    const findUserPromise = userRepository.findUserById(userId);
+    const findInterestsPromise = interestRepository.findInterestsById(selectedInterestIds);
+
+    Promise.all([findUserPromise, findInterestsPromise])
+        .then(results => {
+            const user = results[0];
+            const selectedInterests = results[1];
+
+            userInterestRepository.updateUserInterests(user,selectedInterests)
+                .then(() => user.getInterests())
+                .then(savedInterests => res.status(200).json({interests: savedInterests}))
         })
         .catch(error => {
-            console.error(error);
-            res.status(500).json({error_message:"Server error "});
+            console.log(error);
+            res.status(500).json({error_message: "Server error "})
         });
-};
-
-const processUserInterestsPromise = function (selectedInterests, userInterests, userId) {
-    return new Promise(function (fulfill, reject) {
-        const union = new Set([...selectedInterests, ...userInterests]);
-
-        let selectedIds = new Set();
-        selectedInterests.forEach(function(selected) {
-             selectedIds.add(selected.id)
-        });
-
-        union.forEach(function (item) {
-            if (!selectedIds.has(item.id)) {
-                item.status = 0;
-            } else {
-                item.status = 1;
-            }
-            console.log(item);
-            //TODO: This should be done in one transaction
-            userInterestRepository.updateOrInsert(item, userId)
-                .catch(error => reject(error))
-        });
-        fulfill();
-    })
 };

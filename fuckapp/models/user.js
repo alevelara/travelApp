@@ -98,21 +98,19 @@ module.exports = function(sequelize, DataTypes) {
 
                 this.salt = buff;
                 this.hash = hash;
-            },
-            interests: function(interests){
-                this.interests = interests;
             }
         }
     });
 
     /**
      * @param models          Information about the object.
-     * @param models.userInterest   Information about the object's members.
+     * @param models.interest   Information about the object's members.
      */
     user.associate = models => {
-        user.hasMany(models.userInterest, {
-            foreignKey: 'user_id',
-            sourceKey: 'id'
+        user.belongsToMany(models.interest, {
+            as: 'Interests',
+            foreignKey: 'userId',
+            through: 'user_interest'
         });
     };
 
