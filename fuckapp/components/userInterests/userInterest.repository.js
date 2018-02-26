@@ -1,6 +1,9 @@
 const Sequelize = require('../../server').sequelize;
+const models = require('../../models');
+const UserModel = models['user'];
+const InterestModel = models['interest'];
 
-const TABLE_NAME = "userInterests";
+const TABLE_NAME = "user_interest";
 
 /**
  * Get user interests
@@ -10,8 +13,8 @@ const TABLE_NAME = "userInterests";
 exports.getInterestsByUserId = function(userId){
     const querySQL =
         `SELECT interest.* FROM interests interest ` +
-        `LEFT JOIN ${TABLE_NAME} ui ON interest.id = ui.interest_id ` +
-        `where ui.user_id = :user_id`;
+        `LEFT JOIN ${TABLE_NAME} ui ON interest.id = ui.interestId ` +
+        `where ui.userId = :user_id`;
 
     return Sequelize.query(querySQL,
         {
@@ -20,42 +23,14 @@ exports.getInterestsByUserId = function(userId){
         });
 };
 
-/**
- * Get Active interest for User
- *
- * @param userId UserId
- * @returns {Promise}
- */
-exports.getActiveInterestsByUserId = function(userId){
-    const querySQL =
-        `SELECT interest.* FROM interests interest ` +
-        `LEFT JOIN ${TABLE_NAME} ui ON interest.id = ui.interest_id ` +
-        `WHERE ui.user_id = :user_id AND ui.status = 1`;
-
-    return Sequelize.query(querySQL, {
-            replacements: { user_id: userId},
-            type: Sequelize.QueryTypes.SELECT
-        });
-};
 
 /**
  * Update user interest
  *
- * @param interest Interest
- * @param userId UserId
+ * @param user User
+ * @param interests Array of Interests
  * @returns {Promise}
  */
-exports.updateOrInsert = function(interest, userId) {
-    const query =
-        `INSERT INTO ${TABLE_NAME} (interest_id, user_id, status) ` +
-        `VALUES(:interest_id, :user_id, :status) ` +
-        `ON DUPLICATE KEY UPDATE status=:status`;
-
-    return Sequelize.query(query, {
-        replacements: {
-            interest_id: interest.id,
-            user_id: userId,
-            status: interest.status},
-        type: Sequelize.QueryTypes.INSERT
-    });
+exports.updateUserInterests = function(user, interests) {
+    return user.setInterests(interests);
 };

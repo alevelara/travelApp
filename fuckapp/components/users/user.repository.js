@@ -33,8 +33,12 @@ exports.createUser = function(newUser) {
  * @returns {Query|Promise|Promise<Model>|void|*}
  */
 exports.findUserById = function(userId) {
-    return User.findOne(
-        {where: {id: userId}});
+    return User.findOne({
+        where: {
+            id: userId
+        },
+        include: 'Interests'
+    });
 };
 
 /**

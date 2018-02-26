@@ -22,13 +22,15 @@ module.exports = function(sequelize, DataTypes){
         }
     });
 
+    /*
+    ESTO PARECE QUE NO HACE FALTA
 
-    interest.associate = models => {
-        interest.hasMany(models.userInterest, {
-            foreignKey: 'interest_id',
-            sourceKey: 'id'
-        });
-    };
+        interest.associate = models => {
+            interest.belongsToMany(models.user, {
+                as: 'Users',
+                foreignKey: 'interestId',
+                through: 'user_interest'});
+        };*/
 
     return interest;
 };
