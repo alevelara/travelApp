@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     ssaclAttributeRoles(sequelize);
     
     var user = sequelize.define('user', {                
-        id:{
+        uuid:{
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
             primaryKey: true            
@@ -43,12 +43,12 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: "",
             allowNull: true
         },
-        photo_profile_id:{
+        photo_profile_uuid:{
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
             references: {
                 model: 'photos',
-                key: 'id',
+                key: 'uuid',
                 deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
             },
             defaultValue: null,
@@ -108,8 +108,8 @@ module.exports = function(sequelize, DataTypes) {
     
     user.associate = models => {
         user.hasMany(models.userInterest, {
-            foreignKey: 'user_id',
-            sourceKey: 'id'
+            foreignKey: 'user_uuid',
+            sourceKey: 'uuid'
         });
     };
 

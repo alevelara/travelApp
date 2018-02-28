@@ -1,16 +1,16 @@
 module.exports = function(sequelize, DataTypes){
     const userInterest =  sequelize.define('userInterest', {
-        id: {
+        uuid: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
             primaryKey: true            
         },
-        user_id: {
+        user_uuid: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
             allowNull: false
         },
-        interest_id:{
+        interest_uuid:{
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
             allowNull: false
