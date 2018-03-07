@@ -1,9 +1,9 @@
 module.exports = function(sequelize, DataTypes){
     return sequelize.define('photo', {
-    id:{
+    id:{       
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true    
     },
     field_name: {
         type: DataTypes.STRING,

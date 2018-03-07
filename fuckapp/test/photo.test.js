@@ -1,31 +1,33 @@
 process.env.NODE_ENV = "test";
 
-const app = require('../../app');
+const app = require('../app');
 const fs = require('fs');
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
-const chaiHttp = require('chai-http');
-chai.use(chaiAsPromised);
-chai.use(chaiHttp);
+const photoController = require('../components/photos/photo.controller');
+
+const chai = require('chai'),
+    chaiHttp = require('chai-http'),
+    chaiAsPromised = require("chai-as-promised"),
+    mocha = require('mocha'),
+    should = chai.should(),
+    expect = chai.expect;        
+    chai.use(chaiHttp);
+    chai.use(chaiAsPromised);
+
 const api = chai.request(app);
-const should = chai.should();
-const expect = chai.expect;
-const photoController = require('../../components/photos/photo.controller');
-
-
 
 describe('savePhoto', function () {
     const photoName = 'viaje.jpg';
-    const photoPath = __dirname + '/' + photoName;
+    const photoPath = __dirname + '/photos/' + photoName;
     var photoId;
+
     it('should store the photo and return its id', function () {
         return api.post('/photo')
             .attach('photo', fs.readFileSync(photoPath), photoName)
             .then((res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.have.property('photo_id');
+                res.should.have.status(200);            
+                res.body.should.have.property('photo_id');
                 photoId = res.body.photo_id;
-            })
+            });
 
     });
     it('should be possible to download the photo using its id', function () {
@@ -33,7 +35,7 @@ describe('savePhoto', function () {
             .then((res) => {
                 expect(res.headers).to.have.property("content-type");
                 expect(res.headers).to.have.property("content-disposition");
-            })
+            });
     });
 });
 

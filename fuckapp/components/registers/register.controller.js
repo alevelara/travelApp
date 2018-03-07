@@ -1,6 +1,7 @@
 //Modules
 const passport = require('passport'),
     userRepository = require('../users/user.repository');
+    //mailCtrl = require('../mails/mailer.controllers');
 
 //Utils
 const registerUtil = require('./register.utils');

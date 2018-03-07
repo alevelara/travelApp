@@ -6,10 +6,9 @@ const nodemailer = require('nodemailer'),
 /**
  * Function to send a dummy email
  *
- * @param email Email to send
- * @param res
+ * @param email Email to send 
  */
-exports.sendEmail = function(email, res){
+exports.sendEmail = function(email){
     let transporter = nodemailer.createTransport(smtpTransport({
         service: 'Gmail',
         auth: {
@@ -26,21 +25,16 @@ exports.sendEmail = function(email, res){
     };
 
     transporter.sendMail(mailOption)
-        .then(res.status(200).json({message: "Email sent "+email}))
-        .catch(error =>{
-            console.log(error);
-            res.status(500).json({error_message:error});
-        });
-};
+        .then(console.log("Email sent " + email)        
+    )};
 
 /**
  * Send email to User @param email with the password passed in @param password
  *
  * @param email Email to
- * @param password Password to send
- * @param res Response
+ * @param password Password to send 
  */
-exports.sendNewPasswordEmail = function(email, password, res){
+exports.sendNewPasswordEmail = function(email, password){
     let transporter = nodemailer.createTransport(smtpTransport({
         service: 'Gmail',
         auth: {
@@ -57,9 +51,5 @@ exports.sendNewPasswordEmail = function(email, password, res){
     };
 
     transporter.sendMail(mailOption)
-        .then(res.status(200).json({message: "Email sent "+email}))
-        .catch((error) =>{
-            console.log(error);
-            res.status(500).json({error_message: "Server error "})
-        });
-};
+        .then(console.log("Email sent " + email)        
+    )};
