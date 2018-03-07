@@ -32,7 +32,7 @@ exports.getUserInterests = function(req, res){
 exports.updateUserInterests = function(req, res){
     const userId = req.params.id;
     const selectedInterestIds = req.body.interest_ids;
-
+    
     const findUserPromise = userRepository.findUserById(userId);
     const findInterestsPromise = interestRepository.findInterestsById(selectedInterestIds);
 

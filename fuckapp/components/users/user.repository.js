@@ -9,7 +9,8 @@ const Sequelize = require('../../server').sequelize;
  *
  */
 exports.getAllUsers = function () {
-   return  User.findAll();
+    
+    return User.findAll();
 };
 
 /**
