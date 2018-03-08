@@ -1,5 +1,6 @@
 process.env.NODE_ENV = "test";
 
+const testUtils = require('./testUtils');
 const app = require('../app');
 const fs = require('fs');
 const photoController = require('../components/photos/photo.controller');
@@ -22,6 +23,7 @@ describe('savePhoto', function () {
 
     it('should store the photo and return its id', function () {
         return api.post('/photo')
+            .set('Authorization', testUtils.getAuthToken())
             .attach('photo', fs.readFileSync(photoPath), photoName)
             .then((res) => {
                 res.should.have.status(200);            
@@ -32,6 +34,7 @@ describe('savePhoto', function () {
     });
     it('should be possible to download the photo using its id', function () {
         return api.get(`/photo/${photoId}`)
+            .set('Authorization', testUtils.getAuthToken())
             .then((res) => {
                 expect(res.headers).to.have.property("content-type");
                 expect(res.headers).to.have.property("content-disposition");

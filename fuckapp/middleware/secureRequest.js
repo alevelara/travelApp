@@ -1,7 +1,7 @@
 
 
 const jwt = require('jsonwebtoken');
-const env_var = require('./var.json');
+const env_var = require('../config/var.json');
 
 /**
  * Validate token header
