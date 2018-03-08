@@ -4,6 +4,8 @@ port: 8080
 serverHost: 'http://localhost'
 env: "dev"
 dbdriver: "mysql"
+basic_http_authorization_user: "quepasa"
+basic_http_authorization_password: "calabasa"
 
 ################################################################################
 # Database settings

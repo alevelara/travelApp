@@ -1,15 +1,13 @@
 {
-	"variables": [],
 	"info": {
 		"name": "FuckApp Api",
-		"_postman_id": "c94b553e-29cd-061f-b696-5234ea4e3095",
+		"_postman_id": "cade674d-5468-a5b1-4d95-cc50db73d7b2",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "register",
-			"description": "",
 			"item": [
 				{
 					"name": "login",
@@ -27,19 +25,18 @@
 						}
 					],
 					"request": {
-						"url": "http://{{domain}}:8080/login",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"email\":\"test@mail.com\",\n\t\"password\": \"12345\"\n}"
 						},
+						"url": "http://{{domain}}:8080/login",
 						"description": "send_email_password"
 					},
 					"response": []
@@ -47,19 +44,18 @@
 				{
 					"name": "sing_up",
 					"request": {
-						"url": "http://{{domain}}:8080/signup",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"email\": \"test@mail.com\",\n  \"full_name\": \"test\",\n  \"password\": \"12345\",\n  \"username\": \"test\"\n}"
 						},
+						"url": "http://{{domain}}:8080/signup",
 						"description": "send_email_password"
 					},
 					"response": []
@@ -68,26 +64,26 @@
 		},
 		{
 			"name": "user",
-			"description": "",
 			"item": [
 				{
 					"name": "get_all_users",
 					"request": {
-						"url": "http://{{domain}}:8080/users",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "auth_token",
-								"value": "{{auth_token}}",
-								"description": ""
+								"value": "{{auth_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://{{domain}}:8080/users",
 						"description": "get_users"
 					},
 					"response": []
@@ -95,21 +91,22 @@
 				{
 					"name": "get_user_by_id",
 					"request": {
-						"url": "http://{{domain}}:8080/user/1",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "auth_token",
-								"value": "{{auth_token}}",
-								"description": ""
+								"value": "{{auth_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://{{domain}}:8080/user/1",
 						"description": "get_users"
 					},
 					"response": []
@@ -117,21 +114,22 @@
 				{
 					"name": "update_user",
 					"request": {
-						"url": "http://{{domain}}:8080/user/1",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "auth_token",
-								"value": "{{auth_token}}",
-								"description": ""
+								"value": "{{auth_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://{{domain}}:8080/user/1",
 						"description": "get_users"
 					},
 					"response": []
@@ -139,18 +137,15 @@
 				{
 					"name": "send_email_password",
 					"request": {
-						"url": "http://localhost:8080/user/password/recovery",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "auth_token",
 								"value": "{{auth_token}}",
-								"description": "",
 								"disabled": true
 							}
 						],
@@ -158,6 +153,7 @@
 							"mode": "raw",
 							"raw": "{\n\t\"email\":\"test@mail.com\"\n}"
 						},
+						"url": "http://localhost:8080/user/password/recovery",
 						"description": "send_email_password"
 					},
 					"response": []
@@ -165,18 +161,15 @@
 				{
 					"name": "reset_user_password",
 					"request": {
-						"url": "http://localhost:8080/user/password/reset",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							},
 							{
 								"key": "auth_token",
-								"value": "{{auth_token}}",
-								"description": ""
+								"value": "{{auth_token}}"
 							}
 						],
 						"body": {
@@ -185,23 +178,21 @@
 								{
 									"key": "email",
 									"value": "fran@mail.com",
-									"description": "",
 									"type": "text"
 								},
 								{
 									"key": "reset_password_token",
 									"value": "0lKgf0TXZ0",
-									"description": "",
 									"type": "text"
 								},
 								{
 									"key": "new_password",
 									"value": "123",
-									"description": "",
 									"type": "text"
 								}
 							]
 						},
+						"url": "http://localhost:8080/user/password/reset",
 						"description": "reset_user_password"
 					},
 					"response": []
@@ -209,24 +200,22 @@
 				{
 					"name": "search_users_by_name",
 					"request": {
-						"url": "http://localhost:8080/user/search",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "auth_token",
-								"value": "{{auth_token}}",
-								"description": ""
+								"value": "{{auth_token}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"name\":\"test\"\n}"
 						},
+						"url": "http://localhost:8080/user/search",
 						"description": "send_email_password"
 					},
 					"response": []
@@ -235,26 +224,56 @@
 		},
 		{
 			"name": "interest",
-			"description": "",
 			"item": [
 				{
 					"name": "List Interest",
 					"request": {
-						"url": "http://{{domain}}:8080/interests",
 						"method": "GET",
 						"header": [
 							{
 								"key": "auth_token",
-								"value": "{{auth_token}}",
-								"description": ""
+								"value": "{{auth_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://{{domain}}:8080/interests",
 						"description": "List all interest\n"
 					},
 					"response": []
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": {
+			"password": "calabasa",
+			"username": "quepasa"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "cf25d426-e17e-4c2f-9213-3995139c801d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c0d114b3-8bc8-492a-918c-03c033d0383b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

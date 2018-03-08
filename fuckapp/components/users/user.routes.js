@@ -1,5 +1,5 @@
 const users = require('./user.controller');
-const secureRequest = require('../../config/secureRequest');
+const secureRequest = require('../../middleware/secureRequest');
 
 module.exports = function(app){
 

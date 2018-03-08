@@ -1,20 +1,21 @@
-var express = require('express'),
-  app = express(),
-  port = process.env.PORT || 8080,
-  bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const cons = require('consolidate');
+const config = require('./config/config');
+const passport = require('passport');
+const methodOverride = require('method-override');
+const server = require('./server');
+const routes = require('./routes');
+const basicAuth = require('./middleware/basicAuth');
 
-//Modules
-var path = require('path'),
-    favicon = require('serve-favicon'),
-    logger = require('morgan'),
-    cookieParser = require('cookie-parser'),
-    cons = require('consolidate'),
-    config = require('./config/config'),
-    passport = require('passport'),
-    methodOverride = require('method-override'),
-    server = require('./server'),
-    routes = require('./routes');
- require('./config/passport');
+require('./middleware/passport');
+
+const app = express();
+const port = process.env.PORT || 8080;
 
 // servidor, socket.io y mongo
 var mainServer = require('http').createServer(app),
@@ -33,6 +34,9 @@ app.use(cookieParser());
 app.use(methodOverride('_method'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
+// Initialize Basic Http Authorization
+basicAuth(app);
 
 //Initialize passport.
 passport.initialize();
