@@ -39,4 +39,4 @@ sequelize.authenticate().then(() => {
 
 exports.sequelize = sequelize;
 
-exports.googleplaces = new GooglePlacesPromises(google_places_key);
+exports.googleplaces = GooglePlacesPromises.setDefaultAPI(google_places_key);

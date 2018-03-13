@@ -8,12 +8,11 @@ const places = require('../../server').googleplaces;
  */
 exports.searchPlaceByName = function(req,res){
     let params = {
-        location: 'pyrmont',
+        location: [40.7127, -74.0059],
+        types: "doctor",
         radius: '500',
-        types: ['store']
     };
-    places.API.placeSearch(params)
-        .then(result => res.status(200).json({result}));
+    return places.placeSearch(params);
 };
 
 

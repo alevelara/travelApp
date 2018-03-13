@@ -9,5 +9,6 @@ const googlePlacesRepository = require('../googlePlaces/googlePlaces.repository'
  * @param res Response
  */
 exports.searchByName= function(req,res){
-    googlePlacesRepository.searchPlaceByName(req,res);
+    googlePlacesRepository.searchPlaceByName(req,res)
+       .then(result => res.status(200).json({result}));
 };
