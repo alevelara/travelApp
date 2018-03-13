@@ -3,7 +3,9 @@ let index = require('./index.routes'),
     login = require('./components/registers/register.routes'),
     interests = require('./components/interests/interest.routes'),
     photos = require('./components/photos/photo.routes'),
-    userInterests = require('./components/userInterests/userInterest.routes');
+    userInterests = require('./components/userInterests/userInterest.routes'),
+    googlePlaces = require('./components/googlePlaces/googlePlaces.routes');
+
 
 module.exports = function(app) {
     index(app);
@@ -12,4 +14,5 @@ module.exports = function(app) {
     interests(app);    
     photos(app);
     userInterests(app);
+    googlePlaces(app);
 };

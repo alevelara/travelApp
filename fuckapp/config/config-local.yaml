@@ -6,6 +6,7 @@ env: "dev"
 dbdriver: "mysql"
 basic_http_authorization_user: "quepasa"
 basic_http_authorization_password: "calabasa"
+google_key: "AIzaSyA90gKIioGv6FE-mfpxcGwjWS_DBTOUMmg"
 
 ################################################################################
 # Database settings

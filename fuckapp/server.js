@@ -5,7 +5,10 @@ const config = require('./config/config'),
     models = require("./models/index"),
     // env vars
     driver = config.get('dbdriver'),
-    env = config.get('env');
+    env = config.get('env'),
+    // google places
+    GooglePlacesPromises  = require('googleplaces-promises'),
+    google_places_key = config.get('google_key');
 
 const sequelize = new Sequelize(
     config.get('db:' + env + ':' + driver + ':database'),
@@ -35,3 +38,5 @@ sequelize.authenticate().then(() => {
 });
 
 exports.sequelize = sequelize;
+
+exports.googleplaces = new GooglePlacesPromises(google_places_key);
