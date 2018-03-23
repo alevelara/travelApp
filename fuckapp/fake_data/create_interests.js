@@ -11,22 +11,22 @@ const createInterests = function () {
             let count = 0;
             photos.forEach(function(photo) {
                 console.log("name: " + names[count]);
-                console.log("photo: " + photo.id);
+                console.log("photo: " + photo.uuid);
                 var interest = {
                     name: names[count++],
-                    photo_id: photo.id,
+                    photo_uuid: photo.uuid,
                 };
                 console.log(interest);
                 addInterest(interest);
-            })
+            });
         });
 };
 
 var addInterest = function (interest) {
     return Interest.create({
         name: interest.name,
-        photo_id: interest.photo_id,
-    })
+        photo_uuid: interest.photo_uuid,
+    });
 };
 
 var getPhotos = function () {

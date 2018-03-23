@@ -18,24 +18,26 @@ const api = chai.request(app);
 
 describe('savePhoto', function () {
     const photoName = 'viaje.jpg';
-    const photoPath = __dirname + '/photos/' + photoName;
-    var photoId;
+    const photoPath = __dirname + '/photos/' + photoName;    
+    const authToken = testUtils.getAuthToken();
+
+    var photoUuid = '';
 
     it('should store the photo and return its id', function () {
         return api.post('/photo')
-            .set('Authorization', testUtils.getAuthToken())
+            .set('Authorization', authToken)
             .attach('photo', fs.readFileSync(photoPath), photoName)
-            .then((res) => {
+            .then(res => {
                 res.should.have.status(200);            
-                res.body.should.have.property('photo_id');
-                photoId = res.body.photo_id;
+                res.body.should.have.property('photo_uuid');
+                photoUuid = res.body.photo_uuid;
             });
 
     });
-    it('should be possible to download the photo using its id', function () {
-        return api.get(`/photo/${photoId}`)
-            .set('Authorization', testUtils.getAuthToken())
-            .then((res) => {
+    it('should be possible to download the photo using its uuid', function () {
+        return api.get(`/photo/${photoUuid}`)
+            .set('Authorization', authToken)
+            .then(res => {
                 expect(res.headers).to.have.property("content-type");
                 expect(res.headers).to.have.property("content-disposition");
             });
@@ -43,7 +45,7 @@ describe('savePhoto', function () {
 });
 
 
-/*
+
 describe('validatePhoto', function () {
     it('should return valid for a valid photo and mime-type', function () {
         const validPhoto = {
@@ -77,4 +79,4 @@ describe('validatePhoto', function () {
         Promise.resolve(photoController.validatePhoto(inValidPhoto))
             .should.be.rejectedWith(badMimeTypeError);
     })
-});*/
+});

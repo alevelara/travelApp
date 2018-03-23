@@ -12,10 +12,11 @@ const Promise = require('promise');
  */
 exports.savePhoto = function (req, res) {
     module.exports.savePhotoFile(req.file)
-        .then(photo => res.status(200).json({photo_id: photo.id}))
+        .then(photo => res.status(200).json({photo_uuid: photo.uuid}))
         .catch(error => {
             console.error(error);
-            res.status(500).json({error_message: "Error saving photo"})});
+            res.status(500).json({error_message: "Error saving photo"});
+        });
 };
 
 /**
@@ -26,10 +27,10 @@ exports.savePhoto = function (req, res) {
  * @param req.params.id Id for filter photo
  */
 exports.getPhoto = function(req, res) {
-    const photoId = req.params.id;
+    const photoUuid = req.params.uuid;
 
     photoRepository
-        .findPhotoById(photoId)
+        .findPhotoByUuid(photoUuid)
         .then(photo => {
             const path = photo.path;
 
@@ -39,7 +40,7 @@ exports.getPhoto = function(req, res) {
             }
         })
         .catch(() =>
-            res.status(404).json({error_message: `Photo with id ${photoId} not found`}));
+            res.status(404).json({error_message: `Photo with id ${photoUuid} not found`}));
 };
 
 /**
@@ -52,12 +53,12 @@ exports.savePhotoFile = function(photo) {
     return new Promise(function(fulfill, reject) {
         validatePhotoPromise(photo)
             .then(() => photoRepository.savePhoto(sanitizePhoto(photo)))
-            .then(savedPhoto => fulfill(savedPhoto))
+            .then(savedPhoto => fulfill(photo))
             .catch(error => {
                 console.log(error);
                 reject(error);
             });
-    })
+    }) 
 };
 
 /**
@@ -85,8 +86,8 @@ function validatePhotoPromise(file) {
         if (!file.mimetype.startsWith("image/")) {
             reject("Invalid mime-type: " + file.mimetype);
         }
-        fulfill(true)
-    })
+        fulfill(true);
+    });
 }
 
 /**
@@ -96,7 +97,7 @@ function validatePhotoPromise(file) {
  * @returns {{field_name: *, original_name, encoding, mime_type, destination: *|photo.destination|{type, allowNull}|RequestDestination|AudioDestinationNode, file_name, path, size}}
  */
 function sanitizePhoto(file) {
-    return {
+    return {            
         field_name: file.fieldname,
         original_name: file.originalname,
         encoding: file.encoding,

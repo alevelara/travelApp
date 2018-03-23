@@ -15,10 +15,10 @@ exports.getAllInterests = function () {
  *
  * @returns {Promise<Array<Model>>}
  */
-exports.findInterestsById = function (interestIds) {
+exports.findInterestsByUuid = function (interestUuids) {
     return Interest.findAll({
         where: {
-            id: [interestIds]
+            uuid: [interestUuids]
         }
     })
 };

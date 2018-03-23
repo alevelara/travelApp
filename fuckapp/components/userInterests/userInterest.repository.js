@@ -10,15 +10,15 @@ const TABLE_NAME = "user_interest";
  * @param userId UserId
  * @returns {Promise}
  */
-exports.getInterestsByUserId = function(userId){
+exports.getInterestsByUserId = function(userUuid){
     const querySQL =
         `SELECT interest.* FROM interests interest ` +
-        `LEFT JOIN ${TABLE_NAME} ui ON interest.id = ui.interestId ` +
-        `where ui.userId = :user_id`;
+        `LEFT JOIN ${TABLE_NAME} ui ON interest.uuid = ui.interest_uuid ` +
+        `where ui.user_uuid = :user_uuid`;
 
     return Sequelize.query(querySQL,
         {
-            replacements: { user_id: userId},
+            replacements: { user_uuid: userUuid},
             type: Sequelize.QueryTypes.SELECT
         });
 };

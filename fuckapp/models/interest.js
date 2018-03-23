@@ -2,35 +2,33 @@
 
 module.exports = function(sequelize, DataTypes){
     const interest =  sequelize.define('interest', {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
+        uuid: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV1,
+            primaryKey: true            
         },
         name: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        photo_id:{
-            type: DataTypes.INTEGER,
+        photo_uuid:{
+            type: DataTypes.UUID,            
             references: {
                 model: 'photos',
-                key: 'id',
+                key: 'uuid',
                 deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
             },
             allowNull: false
         }
     });
 
-    /*
-    ESTO PARECE QUE NO HACE FALTA
 
         interest.associate = models => {
             interest.belongsToMany(models.user, {
                 as: 'Users',
-                foreignKey: 'interestId',
+                foreignKey: 'interest_uuid',
                 through: 'user_interest'});
-        };*/
+        };
 
     return interest;
 };
