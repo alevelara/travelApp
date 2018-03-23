@@ -12,12 +12,12 @@ const Promise = require('promise');
  * @param req.params.id ID of user
  */
 exports.getUserInterests = function(req, res){  
-    const userId = req.params.id;
-    userInterestRepository.getInterestsByUserId(userId)
+    const userUuid = req.params.uuid;
+    userInterestRepository.getInterestsByUserId(userUuid)
         .then(userInterests => res.status(200).json({interests: userInterests}))
         .catch((error) =>{
             console.log(error);
-            res.status(500).json({error_message: "Server error "})
+            res.status(500).json({error_message: "Server error "});
         });
 };
 
@@ -30,23 +30,23 @@ exports.getUserInterests = function(req, res){
  * @param req.body.interest_ids Interest selected by the user
  */
 exports.updateUserInterests = function(req, res){
-    const userId = req.params.id;
-    const selectedInterestIds = req.body.interest_ids;
+    const userUuid = req.params.uuid;
+    const selectedInterestUuids = req.body.interest_uuids;
     
-    const findUserPromise = userRepository.findUserById(userId);
-    const findInterestsPromise = interestRepository.findInterestsById(selectedInterestIds);
+    const findUserPromise = userRepository.findUserByUuid(userUuid);
+    const findInterestsPromise = interestRepository.findInterestsByUuid(selectedInterestUuids);
 
     Promise.all([findUserPromise, findInterestsPromise])
         .then(results => {
             const user = results[0];
             const selectedInterests = results[1];
 
-            userInterestRepository.updateUserInterests(user,selectedInterests)
+            userInterestRepository.updateUserInterests(user, selectedInterests)
                 .then(() => user.getInterests())
-                .then(savedInterests => res.status(200).json({interests: savedInterests}))
+                .then(savedInterests => res.status(200).json({interests: savedInterests}));
         })
         .catch(error => {
             console.log(error);
-            res.status(500).json({error_message: "Server error "})
+            res.status(500).json({error_message: "Server error "});
         });
 };

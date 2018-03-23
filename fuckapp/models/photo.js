@@ -1,9 +1,9 @@
 module.exports = function(sequelize, DataTypes){
-    return sequelize.define('photo', {
-    id:{       
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true    
+    var photo =  sequelize.define('photo', {
+    uuid:{
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV1,
+        primaryKey: true        
     },
     field_name: {
         type: DataTypes.STRING,
@@ -37,4 +37,8 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.INTEGER, 
         allowNull: false
     }
-})};
+
+    });
+
+    return photo;
+};

@@ -2,26 +2,26 @@
 
 module.exports = function(sequelize, DataTypes){
     return sequelize.define('rating', {
-        id:{
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
+        uuid:{
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV1,
+            primaryKey: true            
         },
         name: {
             type: DataTypes.STRING,
             required: true
         },
-        photo_ratio_id:{
-            type: DataTypes.INTEGER,
+        photo_ratio_uuid:{
+            type: DataTypes.UUID,            
             references: {
                 model: 'photos',
-                key: 'id',
+                key: 'uuid',
                 deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
             },
-            allowNull: false
+            allowNull: true
         },
         points:{
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER,            
             required: false
         },
     })

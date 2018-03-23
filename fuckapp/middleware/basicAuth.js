@@ -7,5 +7,5 @@ module.exports = function (app) {
 
     app.use(basicAuth({
         users : { [user]: password }
-    }))
+    }));
 };

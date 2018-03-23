@@ -1,11 +1,11 @@
 
 
 module.exports = function(sequelize, DataTypes){
-    return sequelize.define('city', {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
+    return sequelize.define('city', {       
+        uuid: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV1,  
+            primaryKey: true                                
         },
         name: {
             type: DataTypes.STRING,
@@ -19,5 +19,5 @@ module.exports = function(sequelize, DataTypes){
             type: DataTypes.DOUBLE,
             allowNull: false
         },
-    })
+    });
 };

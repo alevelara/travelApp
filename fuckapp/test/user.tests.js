@@ -11,26 +11,29 @@ var chai = require('chai'),
 chai.use(chaiHttp);
 
 var api = chai.request(app);
+var userUUId = "";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImVtYWlsIjoicHJ1ZWJhMUBmdWNrYXBwLmNvbSIsImV4cCI6MTUyMDE5NTM0My42OTgsImlhdCI6MTUxOTU5MDU0M30.be3yVtbXCTF4ENwI34T4bXhNYycMwsPNZoVkEqplt_w";
-const userId = 1;
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE1MjIzNDQ0OTIuMjgzLCJpYXQiOjE1MjE3NDMyOTJ9.-W2eKhGMu9s7srbTGgGC6Glpwi_2g3gqR3U-BKmt1NE";
 const username = "prueba1";
 const updateUsername = "pruebaUpdate";
 const fullName = "prueba1 test2";
 const updateFullName = "update prueba1 test2";
 const email = "prueba1@fuckapp.com";
-const updateEmail = "prueba2@update.com";
+const updateEmail = "test@mail.com";
 const password = "prueba1";
 var newPassword = "prueba2";
-var resetPasswordtoken = "";
-
+var resetPasswordtoken = '';
+var authToken = testUtils.getAuthToken();
 
 describe('User', function(){
     it('Should get all users', function(done){
         api.get('/users')
             .set('auth_token', token)
-            .set('Authorization', testUtils.getAuthToken())
+            .set('Authorization', authToken)
             .end(function(err, res){
+                console.log(authToken);
+                userUUId = res.body.users[0].uuid;
+                console.log(res.body.users[0].uuid);
                 res.should.have.status(200);
                 res.body.should.have.property('users');
                 res.body.users.should.be.a("Array");
@@ -42,8 +45,8 @@ describe('User', function(){
                 res.body.users[0].description.should.be.a("String");
                 res.body.users[0].should.have.property('hometown');
                 res.body.users[0].hometown.should.be.a("String");
-                res.body.users[0].should.have.property('id');
-                res.body.users[0].id.should.be.a("Number"); // Change to String when merge uuid
+                res.body.users[0].should.have.property('uuid');
+                res.body.users[0].uuid.should.be.a("String");
                 res.body.users[0].should.have.property('username');
                 res.body.users[0].username.should.be.a("String");
                 res.body.users[0].should.have.property('email');
@@ -58,10 +61,10 @@ describe('User', function(){
             });
     });
 
-    it('Should get one user by id', function(done){
-        api.get('/user/'+ userId)
+    it('Should get one user by uuid', function(done){
+        api.get('/user/'+ userUUId)
             .set('auth_token', token)
-            .set('Authorization', testUtils.getAuthToken())
+            .set('Authorization', authToken)
             .end(function(err, res){
                 res.should.have.status(200);
                 res.body.should.have.property('user');
@@ -74,8 +77,8 @@ describe('User', function(){
                 res.body.user.description.should.be.a("String");
                 res.body.user.should.have.property('hometown');
                 res.body.user.hometown.should.be.a("String");
-                res.body.user.should.have.property('id');
-                res.body.user.id.should.be.a("Number"); // Change to String when merge uuid
+                res.body.user.should.have.property('uuid');
+                res.body.user.uuid.should.be.a("String");
                 res.body.user.should.have.property('username');
                 res.body.user.username.should.be.a("String");
                 res.body.user.should.have.property('email');
@@ -92,9 +95,9 @@ describe('User', function(){
 
     it('Should change user password', function(done){
         api.post('/user/password/recovery')
-            .set('Authorization', testUtils.getAuthToken())
+            .set('Authorization', authToken)
             .send({
-                email:email
+                email: updateEmail
             })
             .end(function(err, res){
                 res.should.have.status(200);
@@ -102,9 +105,7 @@ describe('User', function(){
                 res.body.should.have.property('resetPasswordtoken');
                 res.body.status.should.be.a("String");
                 res.body.resetPasswordtoken.should.be.a('String');
-
-                resetPasswordtoken = res.body.resetPasswordtoken;
-
+                resetPasswordtoken = res.body.resetPasswordtoken;                
                 done();
             });
     });
@@ -113,7 +114,7 @@ describe('User', function(){
         api.post('/user/password/reset')
             .set('Authorization', testUtils.getAuthToken())
             .send({
-                email:email,
+                email: updateEmail,
                 reset_password_token: resetPasswordtoken,
                 new_password: newPassword
             })
@@ -129,8 +130,8 @@ describe('User', function(){
                 res.body.user.description.should.be.a("String");
                 res.body.user.should.have.property('hometown');
                 res.body.user.hometown.should.be.a("String");
-                res.body.user.should.have.property('id');
-                res.body.user.id.should.be.a("Number"); // Change to String when merge uuid
+                res.body.user.should.have.property('uuid');
+                res.body.user.uuid.should.be.a("String");
                 res.body.user.should.have.property('username');
                 res.body.user.username.should.be.a("String");
                 res.body.user.should.have.property('email');
@@ -148,9 +149,9 @@ describe('User', function(){
     });
 
     it('Should update an existing user', function(done){
-        api.put('/user/'+ userId)
+        api.put('/user/'+ userUUId)
             .set('auth_token', token)
-            .set('Authorization', testUtils.getAuthToken())
+            .set('Authorization', authToken)
             .send({
                 user:{
                     email:updateEmail,
@@ -168,8 +169,8 @@ describe('User', function(){
                 res.body.user.description.should.be.a("String");
                 res.body.user.should.have.property('hometown');
                 res.body.user.hometown.should.be.a("String");
-                res.body.user.should.have.property('id');
-                res.body.user.id.should.be.a("Number"); // Change to String when merge uuid
+                res.body.user.should.have.property('uuid');
+                res.body.user.uuid.should.be.a("String");
                 res.body.user.should.have.property('username');
                 res.body.user.username.should.be.a("String");
                 res.body.user.should.have.property('email');
@@ -202,8 +203,8 @@ describe('User', function(){
             res.body.users[0].description.should.be.a("String");
             res.body.users[0].should.have.property('hometown');
             res.body.users[0].hometown.should.be.a("String");
-            res.body.users[0].should.have.property('id');
-            res.body.users[0].id.should.be.a("Number"); // Change to String when merge uuid
+            res.body.users[0].should.have.property('uuid');
+            res.body.users[0].uuid.should.be.a("String"); 
             res.body.users[0].should.have.property('username');
             res.body.users[0].username.should.be.a("String");
             res.body.users[0].should.have.property('email');

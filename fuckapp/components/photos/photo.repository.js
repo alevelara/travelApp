@@ -8,9 +8,9 @@ const Photo = models['photo'];
  *
  * @param photo Photo to create
  */
-exports.savePhoto = function (photo) {
+exports.savePhoto = function (photo) {       
     return Photo.create(
-        {
+        {          
             field_name: photo.field_name,
             original_name: photo.original_name,
             encoding: photo.encoding,
@@ -20,7 +20,7 @@ exports.savePhoto = function (photo) {
             path: photo.path,
             size: photo.size
         }
-    )
+    );
 };
 
 /**
@@ -29,6 +29,6 @@ exports.savePhoto = function (photo) {
  * @param photoId PhotoId for filter
  * @returns {Query|Promise|Promise<Model>|void|*}
  */
-exports.findPhotoById = function (photoId) {
-    return Photo.findOne({where: {id: photoId}})
+exports.findPhotoByUuid = function (photoUUid) {
+    return Photo.findOne({where: {uuid: photoUUid}})
 };

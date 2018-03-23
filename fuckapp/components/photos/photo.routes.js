@@ -8,5 +8,5 @@ module.exports = function(app) {
 
     app.post('/photo', uploadSinglePhoto, photoController.savePhoto);
 
-    app.get('/photo/:id', photoController.getPhoto);
+    app.get('/photo/:uuid', photoController.getPhoto);
 };

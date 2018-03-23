@@ -33,10 +33,10 @@ exports.createUser = function(newUser) {
  * @param userId User Id to for filter
  * @returns {Query|Promise|Promise<Model>|void|*}
  */
-exports.findUserById = function(userId) {
+exports.findUserByUuid = function(userUuid) {
     return User.findOne({
         where: {
-            id: userId
+            uuid: userUuid
         },
         include: 'Interests'
     });
@@ -66,7 +66,7 @@ exports.findUserByEmailAndResetPasswordToken = function (email, resetPassWordTok
         {   where:  {
             email: email,
             reset_password_token:resetPassWordToken
-        }},{role: 'api'});
+        }});
 };
 
 /**
@@ -101,10 +101,10 @@ exports.matchUserByUserName = function(name, offset) {
 /**
  * Update user with id equals @param userId
  *
- * @param userId User Id for filter
+ * @param userUuid User Id for filter
  * @param user User
  */
-exports.updateUserById = function(userId, user) {
+exports.updateUserByUuid = function(userUuid, user) {
     return User.update({
             full_name: user.full_name,
             username: user.username,
@@ -112,7 +112,7 @@ exports.updateUserById = function(userId, user) {
             hometown: user.hometown,
             photo_profile_id: user.photo_profile_id
         }, {
-            where: {id: userId},
+            where: {uuid: userUuid},
         }
     );       
 };
@@ -120,14 +120,14 @@ exports.updateUserById = function(userId, user) {
 /**
  * Update User password fitered by userId
  *
- * @param userId UserId to filter
+ * @param userUuid UserUuid to filter
  * @param password Password for update
  */
-exports.updateUserPasswordById = function(userId, password) {
+exports.updateUserPasswordByUuid = function(userUuid, password) {
     return User.update({
             password: password
         }, {
-            where: {id: userId},
+            where: {uuid: userUuid},
         }
     );
 };
@@ -135,14 +135,14 @@ exports.updateUserPasswordById = function(userId, password) {
 /**
  * Update reset password token to user filtered by id
  *
- * @param id User id
+ * @param uuid User uuid
  * @param resetPassWordToken Reset password token to update
  */
-exports.updateUserResetPassWordTokenById = function(id , resetPassWordToken) {
+exports.updateUserResetPassWordTokenByUuid = function(uuid , resetPassWordToken) {
     return User.update({
         reset_password_token: resetPassWordToken
     }, {
-        where: {id : id},
+        where: {uuid : uuid},
     });
 };
 

@@ -29,9 +29,9 @@ exports.getAllUsers = function(req, res){
  * @param req.params.id Id of user
  */
 exports.getUser = function(req, res){
-    const userId = req.params.id;
+    var userUuid = req.params.uuid;
 
-    userRepository.findUserById(userId)
+    userRepository.findUserByUuid(userUuid)
         .then(user => {            
             if(user) {
                 res.status(200).json({user: user});
@@ -54,12 +54,12 @@ exports.getUser = function(req, res){
  * @param req.body.user User
  */
 exports.updateUser = function(req, res) {
-    const userId = req.params.id;
+    const userUuid = req.params.uuid;
     let user = req.body.user;
 
     utilUser.validateUser(user)
-        .then(user => userRepository.updateUserById(userId, user))
-        .then(updateUser => userRepository.findUserById(userId))
+        .then(user => userRepository.updateUserByUuid(userUuid, user))
+        .then(updateUser => userRepository.findUserByUuid(userUuid))
         .then(result => {res.status(200).json({user: result})})
         .catch((error) =>{
                 console.log(error);
@@ -92,6 +92,7 @@ exports.searchByName = function(req, res){
             console.log(error);
             res.status(500).json({error_message: "Server error "})
         });
+
 };
 
 exports.getUserInterests = function(req, res){  
@@ -147,7 +148,7 @@ exports.sendEmailToUserWithResetPasswordToken = function(req, res){
                 res.status(401).json({ error_message: "user not found"});
             }else{
             const resetPasswordtoken = utilUser.generatePassword();
-            userRepository.updateUserResetPassWordTokenById(user.id, resetPasswordtoken)
+            userRepository.updateUserResetPassWordTokenByUuid(user.uuid, resetPasswordtoken)
             .then(user => {
                 mailController.sendNewPasswordEmail(req.body.email, resetPasswordtoken);
                 res.status(200).json({ status:"success", resetPasswordtoken: resetPasswordtoken});
@@ -172,11 +173,13 @@ exports.sendEmailToUserWithResetPasswordToken = function(req, res){
  * @param req.body.new_password New password of user
  */
 exports.resetPassword = function(req, res){
-    userRepository.findUserByEmailAndResetPasswordToken(req.body.email,req.body.reset_password_token)
+    console.log(req.body);
+    userRepository.findUserByEmailAndResetPasswordToken(req.body.email, req.body.reset_password_token)
     .then(user => {
-        userRepository.updateUserPasswordById(user.id, req.body.new_password)
-        .then(() => {res.status(200).json({user: user})})
-        .catch((error) =>{
+        console.log(user);
+        userRepository.updateUserPasswordByUuid(user.uuid, req.body.new_password)
+        .then(() => res.status(200).json({user: user}))
+        .catch((error) => {
             console.log(error);
             res.status(500).json({error_message: "Server error "});
         });

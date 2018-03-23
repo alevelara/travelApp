@@ -8,11 +8,11 @@ module.exports = function(sequelize, DataTypes) {
     
     ssaclAttributeRoles(sequelize);
     
-    let user = sequelize.define('user', {
-        id:{
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
+    var user = sequelize.define('user', {                
+        uuid:{
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV1,
+            primaryKey: true            
         },
         username:{
             type: DataTypes.STRING,
@@ -43,14 +43,13 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: "",
             allowNull: true
         },
-        photo_profile_id:{
-            type: DataTypes.INTEGER,
+        photo_profile_uuid:{
+            type: DataTypes.UUID,            
             references: {
                 model: 'photos',
-                key: 'id',
+                key: 'uuid',
                 deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
-            },
-            defaultValue: null,
+            },            
             allowNull: true
         },
         user_type:{
@@ -109,7 +108,7 @@ module.exports = function(sequelize, DataTypes) {
     user.associate = models => {
         user.belongsToMany(models.interest, {
             as: 'Interests',
-            foreignKey: 'userId',
+            foreignKey: 'user_uuid',
             through: 'user_interest'
         });
     };

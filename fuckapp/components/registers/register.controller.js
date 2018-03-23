@@ -13,6 +13,7 @@ const registerUtil = require('./register.utils');
  * @param res Response
  */
 exports.login = function(req, res) {
+
     passport.authenticate('local', function(err, user){
         if (err){
             console.error(err.message);
