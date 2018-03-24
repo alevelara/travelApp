@@ -53,7 +53,7 @@ exports.savePhotoFile = function(photo) {
     return new Promise(function(fulfill, reject) {
         validatePhotoPromise(photo)
             .then(() => photoRepository.savePhoto(sanitizePhoto(photo)))
-            .then(savedPhoto => fulfill(photo))
+            .then(savedPhoto => fulfill(savedPhoto))
             .catch(error => {
                 console.log(error);
                 reject(error);
