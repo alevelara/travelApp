@@ -27,8 +27,15 @@ module.exports = function(sequelize, DataTypes){
             interest.belongsToMany(models.user, {
                 as: 'Users',
                 foreignKey: 'interest_uuid',
-                through: 'user_interest'});
-        };
+                through: 'user_interest'
+            });
+
+            interest.belongsToMany(models.trip, {
+                as: 'Trips',
+                foreignKey: 'interest_uuid',
+                through: 'trip_interest'
+            });
+        };     
 
     return interest;
 };

@@ -111,7 +111,13 @@ module.exports = function(sequelize, DataTypes) {
             foreignKey: 'user_uuid',
             through: 'user_interest'
         });
-    };
+
+        user.belongsToMany(models.trip, {
+            as: 'Trips',
+            foreignKey: 'user_uuid',
+            through: 'trip_user'
+        });
+    };  
 
     ssaclAttributeRoles(user);  
 

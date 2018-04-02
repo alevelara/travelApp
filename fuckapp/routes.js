@@ -4,12 +4,18 @@ let index = require('./index.routes'),
     interests = require('./components/interests/interest.routes'),
     photos = require('./components/photos/photo.routes'),
     userInterests = require('./components/userInterests/userInterest.routes');
+    tripTypes = require('./components/tripTypes/tripType.routes');
+    trips = require('./components/trips/trip.routes');
 
 module.exports = function(app) {
+
     index(app);
     routes(app);
     login(app);    
     interests(app);    
     photos(app);
     userInterests(app);
+    trips(app);
+    tripTypes(app);
+    
 };
