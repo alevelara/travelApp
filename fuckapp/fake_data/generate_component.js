@@ -1,7 +1,7 @@
 const fs = require('fs');
-const componentFolderName = 'trips';
-const componentFileName = 'trip';
-const fileModelName = 'trip.js';
+const componentFolderName = 'tripTripTypes';
+const componentFileName = 'tripTripType';
+const fileModelName = 'tripTripType.js';
 var folderPath = './components/' + componentFolderName;
 
 

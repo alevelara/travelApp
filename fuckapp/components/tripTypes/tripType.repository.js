@@ -13,3 +13,17 @@ exports.createTripType = function(newTripType) {
         name: newTripType.name
     });
 };
+
+
+/**
+ * Get all trip types by uuids
+ *
+ * @returns {Promise<Array<Model>>}
+ */
+exports.findTripTypeByUuids = function (tripTypeUuids) {
+    return TrypType.findAll({
+        where: {
+            uuid: [tripTypeUuids]
+        }
+    });
+};

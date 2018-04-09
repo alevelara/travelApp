@@ -20,5 +20,5 @@ exports.findInterestsByUuid = function (interestUuids) {
         where: {
             uuid: [interestUuids]
         }
-    })
+    });
 };
