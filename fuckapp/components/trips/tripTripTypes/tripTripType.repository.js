@@ -1,6 +1,6 @@
-const Sequelize = require('../../server').sequelize;
-
-const tripTypeModel = models['tripType'];
+const Sequelize = require('../../../server').sequelize;
+const models = require('../../../models');
+const tripTypeModel = models.tripTypes;
 
 const TABLE_NAME = "trip_trip_type";
 

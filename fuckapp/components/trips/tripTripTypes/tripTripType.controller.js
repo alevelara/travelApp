@@ -1,7 +1,7 @@
 //repos
 const tripTripTyperepository = require('./tripTripType.repository');
-const tripRepostory = require('../trips/trip.repository');
-const tripTypeRepository = require('../tripTypes/tripType.repository');
+const tripRepostory = require('../trip.repository');
+const tripTypeRepository = require('../../tripTypes/tripType.repository');
 const Promise = require('promise');
 
 /**

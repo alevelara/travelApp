@@ -1,7 +1,7 @@
 //repos
 const userInterestRepository = require('./userInterest.repository');
-const userRepository = require('../users/user.repository');
-const interestRepository = require('../interests/interest.repository');
+const userRepository = require('../user.repository');
+const interestRepository = require('../../interests/interest.repository');
 const Promise = require('promise');
 
 /**

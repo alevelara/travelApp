@@ -17,7 +17,11 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: "",
             allowNull: false                    
         },
-        location:{
+        city:{
+            type: DataTypes.STRING,
+            allowNull: false           
+        },
+        duration:{
             type: DataTypes.STRING,
             allowNull: false           
         },

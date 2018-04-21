@@ -1,5 +1,3 @@
-
-
 module.exports = function(sequelize, DataTypes){
     return sequelize.define('city', {       
         uuid: {
@@ -18,6 +16,6 @@ module.exports = function(sequelize, DataTypes){
         longitude: {
             type: DataTypes.DOUBLE,
             allowNull: false
-        },
+        }
     });
 };

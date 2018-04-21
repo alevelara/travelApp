@@ -1,5 +1,5 @@
-const Sequelize = require('../../server').sequelize;
-const models = require('../../models');
+const Sequelize = require('../../../server').sequelize;
+const models = require('../../../models');
 const UserModel = models['user'];
 const InterestModel = models['interest'];
 
