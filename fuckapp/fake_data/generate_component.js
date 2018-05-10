@@ -1,7 +1,7 @@
 const fs = require('fs');
-const componentFolderName = 'tripUsers';
-const componentFileName = 'tripUser';
-const fileModelName = 'tripUser.js';
+const componentFolderName = 'journeys';
+const componentFileName = 'journey';
+const fileModelName = 'journey.js';
 var folderPath = './components/' + componentFolderName;
 
 
@@ -13,7 +13,7 @@ var createFolder = function(){
         console.log("Folder already exists");
     }
 
-}   
+};   
 
 var createFiles = function(){
     generateRepositoryFile();

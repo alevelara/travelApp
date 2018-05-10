@@ -25,15 +25,25 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false           
         },
-        places:{
+        isEditableByParticipants:{
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false           
+        },
+        journeys:{
             type: DataTypes.STRING,
             allowNull: true,
             defaultValue: ''
         },
         created_by:{
             type: DataTypes.UUID,            
+            references: {
+                model: 'users',
+                key: 'uuid',
+                deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE
+            },
             allowNull: false
-        }     
+        }
     });
 
     /**
@@ -57,7 +67,13 @@ module.exports = function(sequelize, DataTypes) {
             as: 'Interests',
             foreignKey: 'trip_uuid',
             through: 'trip_interest'
-        });
+        }); 
+        
+        trip.belongsToMany(models.interest, {
+            as: 'Comments',
+            foreignKey: 'trip_uuid',
+            through: 'trip_comment'
+        }); 
 
     };
 

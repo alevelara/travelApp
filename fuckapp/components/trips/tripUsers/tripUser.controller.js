@@ -29,7 +29,7 @@ exports.getTripUsers = function(req, res){
  * @param req.params.uuid Trip uuid
  * @param req.body.user_uuids Users invited on trip
  */
-exports.updateTripInterests = function(req, res){
+exports.updateTripUsers = function(req, res){
     const tripUuid = req.params.uuid;
     const selectedUserUuids = req.body.user_uuids;
     

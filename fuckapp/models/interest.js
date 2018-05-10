@@ -1,5 +1,3 @@
-
-
 module.exports = function(sequelize, DataTypes){
     const interest =  sequelize.define('interest', {
         uuid: {
@@ -21,7 +19,6 @@ module.exports = function(sequelize, DataTypes){
             allowNull: false
         }
     });
-
 
         interest.associate = models => {
             interest.belongsToMany(models.user, {

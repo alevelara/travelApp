@@ -1,7 +1,7 @@
 'use strict';
 
 const models = require('../../models');
-const Trip = models['trip'];
+const Trip = models.trip;
 const Sequelize = require('../../server').sequelize;
 
 
@@ -51,13 +51,13 @@ exports.getTrip = function(UuidTrip){
     });
 };
 
-exports.updateTrip = function(uuidTrip, trip){
-        console.log(trip);
+exports.updateTrip = function(uuidTrip, trip){        
         return Trip.update({
             title: trip.title,
             city: trip.city,
             duration: trip.duration,
-            places: trip.places            
+            places: trip.places,
+            isEditableByParticipants: trip.isEditableByParticipants            
         }, {
             where: {uuid: uuidTrip},
         }

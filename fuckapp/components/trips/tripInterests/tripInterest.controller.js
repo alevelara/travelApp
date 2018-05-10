@@ -5,7 +5,7 @@ const interestRepository = require('../../interests/interest.repository');
 const Promise = require('promise');
 
 /**
- * Get list of user interest filtered by userID
+ * Get list of interests filtered by tripUuid
  *
  * @param req Request
  * @param res Response
@@ -31,16 +31,16 @@ exports.getTripInterests = function(req, res){
  */
 exports.updateTripInterests = function(req, res){
     const tripUuid = req.params.uuid;
-    const selectedInterestUuids = req.body.interest_uuids;
-    
-    const findUserPromise = tripRepsitory.findTripByUuid(tripUuid);
-    const findInterestsPromise = interestRepository.findInterestsByUuid(selectedInterestUuids);
+    const selectedInterestUuids = req.body.interest_uuids;    
 
-    Promise.all([findUserPromise, findInterestsPromise])
+    const findTripPromise = tripRepsitory.findTripByUuid(tripUuid);
+    const findInterestsPromise = interestRepository.findInterestsByUuid(selectedInterestUuids);
+    
+    Promise.all([findTripPromise, findInterestsPromise])
         .then(results => {
             const trip = results[0];
             const selectedInterests = results[1];
-
+            
             tripInterestRepository.updateTripInterests(trip, selectedInterests)
                 .then(() => trip.getInterests())
                 .then(savedInterests => res.status(200).json({interests: savedInterests}));

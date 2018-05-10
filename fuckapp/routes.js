@@ -9,6 +9,7 @@ let index = require('./index.routes'),
     tripInterests = require('./components/trips/tripInterests/tripInterest.routes');
     tripUser = require('./components/trips/tripUsers/tripUser.routes');
     tripTripTypes = require('./components/trips/tripTripTypes/tripTripType.routes');
+    comments = require('./components/comments/comment.routes');
 
 module.exports = function(app) {
 
@@ -21,7 +22,8 @@ module.exports = function(app) {
     trips(app);
     tripTypes(app);
     tripInterests(app);
-    //tripUser(app);
+    tripUser(app);
+    comments(app);
     tripTripTypes(app);
-    
+
 };

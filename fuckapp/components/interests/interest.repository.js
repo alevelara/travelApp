@@ -1,5 +1,5 @@
 const models = require('../../models');
-const Interest = models['interest'];
+const Interest = models.interest;
 
 /**
  * Get all interest in database
